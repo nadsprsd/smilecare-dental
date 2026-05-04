@@ -11,16 +11,12 @@ export async function PATCH(
     const { status } = await req.json();
     const db = await connectDB();
 
-    console.log("ID received:", id);
-    console.log("Status:", status);
+    console.log("Updating ID:", id, "to:", status);
 
     const result = await db.collection("appointments").updateOne(
       { _id: new ObjectId(id) },
       { $set: { status, updatedAt: new Date() } }
     );
-
-    console.log("Matched:", result.matchedCount);
-    console.log("Modified:", result.modifiedCount);
 
     return Response.json({
       success:  result.modifiedCount > 0,

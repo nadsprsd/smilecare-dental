@@ -100,7 +100,7 @@ export default function Navbar() {
         {/* Mobile menu */}
         {open && (
           <div className="lg:hidden border-t border-gray-100 px-4 pb-4 pt-2">
-            
+            <a
               href="tel:+917994072017"
               className="flex items-center gap-2 px-3 py-3 text-sm font-semibold text-[#00A3E0] mb-1"
             >

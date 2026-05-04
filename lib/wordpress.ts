@@ -1,5 +1,4 @@
-const WP_URL = process.env.NEXT_PUBLIC_WORDPRESS_URL || "https://demo-wp.vercel.app";
-
+const WP_URL = process.env.NEXT_PUBLIC_WORDPRESS_URL || "https://demo-dental.bizgrowonline.com";
 export interface WPPost {
   id: number;
   slug: string;

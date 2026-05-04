@@ -3,18 +3,16 @@ import { ObjectId } from "mongodb";
 import { NextRequest } from "next/server";
 
 export async function PATCH(
-  req: NextRequest,
+  request: NextRequest,
   context: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = await context.params;
-    const { status } = await req.json();
+    const params = await context.params;
+    const { status } = await request.json();
     const db = await connectDB();
 
-    console.log("Updating ID:", id, "to:", status);
-
     const result = await db.collection("appointments").updateOne(
-      { _id: new ObjectId(id) },
+      { _id: new ObjectId(params.id) },
       { $set: { status, updatedAt: new Date() } }
     );
 
@@ -26,6 +24,6 @@ export async function PATCH(
 
   } catch (error) {
     console.error("PATCH error:", error);
-    return Response.json({ success: false, error: String(error) }, { status: 500 });
+    return Response.json({ success: false }, { status: 500 });
   }
 }

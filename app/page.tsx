@@ -231,7 +231,7 @@ export default function HomePage() {
             {[
               { img:"https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=600&q=80", title:"Teeth Whitening",   price:"From ₹3,000",  sub:"8 shades brighter, one session" },
               {
-                img: "https://images.pexels.com/photos/6529116/pexels-photo-6529116.jpeg",
+                img: "https://picsum.photos/seed/braces/600/400",
                 title: "Braces & Aligners",
                 price: "From ₹25,000",
                 sub: "Metal, ceramic, or invisible",

@@ -1,6 +1,6 @@
 "use client";
 
-<h1>NEW APPOINTMENT PAGE TEST</h1>
+
 
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";

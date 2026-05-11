@@ -59,7 +59,7 @@ const SERVICES = [
     subtitle: "Metal · Ceramic · Invisible",
     price: "From ₹25,000",
     duration: "12–24 months",
-    img:  "https://picsum.photos/id/244/900/600",
+    img:  "https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=900&q=85&fit=crop",
     description:
       "Crooked or crowded teeth affect more than your appearance — they are harder to clean, leading to cavities and gum disease over time. We offer all three types of orthodontic treatment: traditional metal braces (most economical), clear ceramic braces (less visible), and Invisalign-style clear aligners (completely invisible). Dr. Arjun Nair uses digital 3D simulation so you see your expected result before a single brace is placed.",
     whyItMatters:

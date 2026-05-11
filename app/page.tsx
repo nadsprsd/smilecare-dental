@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 };
 
 /* ── Real Unsplash images ── */
-const HERO_IMG = "https://images.pexels.com/photos/7800675/pexels-photo-7800675.jpeg";
+const HERO_IMG = "https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=900&q=85&fit=crop";
 const CLINIC_IMG   = "https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=900&q=85&fit=crop";
 const SMILE_IMG    = "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=900&q=85&fit=crop";
 const EQUIP_IMG    = "https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=900&q=85&fit=crop";
@@ -231,7 +231,7 @@ export default function HomePage() {
             {[
               { img:"https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=600&q=80", title:"Teeth Whitening",   price:"From ₹3,000",  sub:"8 shades brighter, one session" },
               {
-                img: "https://picsum.photos/seed/braces/600/400",
+                img: "https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=900&q=85&fit=crop",
                 title: "Braces & Aligners",
                 price: "From ₹25,000",
                 sub: "Metal, ceramic, or invisible",

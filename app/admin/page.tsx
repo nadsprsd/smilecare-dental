@@ -101,7 +101,7 @@ export default async function AdminPage() {
         <div className="max-w-7xl mx-auto flex items-center gap-2 text-green-400 text-xs">
           <Shield size={12} />
           <span className="font-semibold">Security Active:</span>
-          <span className="text-#0D1117">
+          <span className="text-[#0D1117]">
             All data encrypted in transit (TLS 1.3) · Access protected by authentication · 
             Patient data stored securely in MongoDB Atlas · Rate limiting enabled · 
             DPDP Act compliant

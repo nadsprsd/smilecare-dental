@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 };
 
 /* ── Real Unsplash images ── */
-const HERO_IMG = "https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=900&q=85&fit=crop";
+const HERO_IMG = "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=900&q=85&fit=crop";
 const CLINIC_IMG   = "https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=900&q=85&fit=crop";
 const SMILE_IMG    = "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=900&q=85&fit=crop";
 const EQUIP_IMG    = "https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=900&q=85&fit=crop";

@@ -98,7 +98,7 @@ export default async function AdminPage() {
 
       {/* Security notice bar */}
       <div className="bg-green-900/20 border-b border-green-500/20 px-8 py-2.5">
-        <div className="max-w-7xl mx-auto flex items-center gap-2 text-green-400 text-xs">
+        <div className="max-w-7xl mx-auto flex items-center gap-2 text-green-500 text-xs">
           <Shield size={12} />
           <span className="font-semibold">Security Active:</span>
           <span className="text-[#0D1117]">

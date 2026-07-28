@@ -20,7 +20,7 @@ const BLOG_2       = "https://images.unsplash.com/photo-1612349317150-e413f6a5b1
 const BLOG_3       = "https://images.unsplash.com/photo-1581591524425-c7e0978865fc?w=700&q=80&fit=crop";
 
 export default function HomePage() {
-  return (
+  return ( 
     <div className="bg-white">
 
       {/* ════════════════════════════════════════

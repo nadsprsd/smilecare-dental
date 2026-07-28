@@ -4,7 +4,7 @@ import { redirect }    from "next/navigation";
 import Link            from "next/link";
 import {
   Calendar, Clock, Phone,
-  TrendingUp, CheckCircle, AlertCircle, Shield, PenSquare, Users,
+  TrendingUp, CheckCircle, AlertCircle, Shield, PenSquare,
 } from "lucide-react";
 import ConfirmButton from "@/components/ConfirmButton";
 import CancelButton  from "@/components/CancelButton";
@@ -22,15 +22,14 @@ async function getData() {
   return all;
 }
 
-async function getStats() {
+async function getBlogStats() {
   try {
-    const db           = await connectDB();
-    const blogTotal    = await db.collection("posts").countDocuments();
-    const blogPub      = await db.collection("posts").countDocuments({ status: "published" });
-    const patientTotal = await db.collection("patients").countDocuments();
-    return { blogTotal, blogPub, patientTotal };
+    const db        = await connectDB();
+    const total     = await db.collection("posts").countDocuments();
+    const published = await db.collection("posts").countDocuments({ status: "published" });
+    return { total, published };
   } catch {
-    return { blogTotal: 0, blogPub: 0, patientTotal: 0 };
+    return { total: 0, published: 0 };
   }
 }
 
@@ -49,7 +48,7 @@ function StatusBadge({ status }: { status?: string }) {
 export default async function AdminPage() {
   await checkAuth();
 
-  const [data, stats] = await Promise.all([getData(), getStats()]);
+  const [data, blogStats] = await Promise.all([getData(), getBlogStats()]);
 
   const today     = new Date().toISOString().split("T")[0];
   const todayApts = data.filter((d: any) => d.date === today);
@@ -67,7 +66,7 @@ export default async function AdminPage() {
   return (
     <div className="min-h-screen bg-[#F4F7FA]">
 
-      {/* Header */}
+      {/* ── Header ── */}
       <div className="bg-[#0D1117] px-8 py-5">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-4">
@@ -91,13 +90,9 @@ export default async function AdminPage() {
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <Link href="/admin/patients"
-              className="hidden md:flex items-center gap-1.5 text-white/50 hover:text-white text-xs border border-white/15 px-3 py-2 transition-colors">
-              <Users size={12} /> Patients
-            </Link>
             <Link href="/admin/blog"
-              className="hidden md:flex items-center gap-1.5 text-white/50 hover:text-white text-xs border border-white/15 px-3 py-2 transition-colors">
-              <PenSquare size={12} /> Blog
+              className="flex items-center gap-1.5 text-white/50 hover:text-white text-xs border border-white/15 px-3 py-2 transition-colors hidden md:flex">
+              <PenSquare size={12} /> Blog Manager
             </Link>
             <Link href="/"
               className="text-white/50 hover:text-white text-xs border border-white/15 px-3 py-2 transition-colors hidden md:block">
@@ -114,63 +109,35 @@ export default async function AdminPage() {
           <Shield size={11} />
           <span className="font-semibold">Security Active:</span>
           <span className="text-green-400/70">
-            TLS 1.3 · Auth protected · Rate limiting · DPDP Act 2023 compliant
+            TLS 1.3 encryption · Auth protected · Rate limiting enabled · DPDP Act compliant
           </span>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-6 md:px-8 py-8">
 
-        {/* Quick navigation */}
+        {/* ── Quick navigation ── */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
           {[
-            {
-              label: "Appointments",
-              href:  "/admin",
-              icon:  "📅",
-              desc:  `${data.length} total · ${pending.length} pending`,
-              active: true,
-            },
-            {
-              label: "Patient Records",
-              href:  "/admin/patients",
-              icon:  "👥",
-              desc:  `${stats.patientTotal} registered patients`,
-              active: false,
-            },
-            {
-              label: "Blog Manager",
-              href:  "/admin/blog",
-              icon:  "✍️",
-              desc:  `${stats.blogTotal} posts · ${stats.blogPub} published`,
-              active: false,
-            },
-            {
-              label: "Write Article",
-              href:  "/admin/blog/new",
-              icon:  "➕",
-              desc:  "New blog post",
-              active: false,
-            },
+            { label: "Appointments",  href: "/admin",          icon: "📅", desc: `${data.length} total bookings`,         active: true  },
+            { label: "Blog Manager",  href: "/admin/blog",     icon: "✍️", desc: `${blogStats.total} posts · ${blogStats.published} published`, active: false },
+            { label: "Write Article", href: "/admin/blog/new", icon: "➕", desc: "New blog post",                         active: false },
+            { label: "View Website",  href: "/",               icon: "🌐", desc: "See live site",                         active: false },
           ].map(nav => (
             <Link key={nav.label} href={nav.href}
-              className={`p-4 border transition-all ${
+              className={`p-4 border transition-all group ${
                 nav.active
                   ? "bg-[#0D1117] border-[#0D1117] text-white"
                   : "bg-white border-gray-100 hover:border-[#C9A96E]"
               }`}>
               <div className="text-2xl mb-2">{nav.icon}</div>
-              <div className={`font-bold text-sm ${nav.active ? "text-white" : "text-[#0D1117]"}`}>
-                {nav.label}
-              </div>
-              <div className={`text-xs mt-0.5 ${nav.active ? "text-white/60" : "text-[#4A5568]"}`}>
-                {nav.desc}
-              </div>
+              <div className={`font-bold text-sm ${nav.active ? "text-white" : "text-[#0D1117]"}`}>{nav.label}</div>
+              <div className={`text-xs mt-0.5 ${nav.active ? "text-white/60" : "text-[#4A5568]"}`}>{nav.desc}</div>
             </Link>
           ))}
         </div>
 
-        {/* Stat cards */}
+        {/* ── Stat cards ── */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           {[
             { label: "Total Bookings", value: data.length,      Icon: Calendar,    color: "text-[#0D1117]",  border: "border-t-2 border-[#0D1117]"  },
@@ -188,7 +155,7 @@ export default async function AdminPage() {
           ))}
         </div>
 
-        {/* Today + Chart */}
+        {/* ── Today + Chart ── */}
         <div className="grid lg:grid-cols-3 gap-6 mb-8">
           <div className="bg-white shadow-sm p-6">
             <h3 className="font-bold text-[#0D1117] mb-4 flex items-center gap-2 text-xs uppercase tracking-widest">
@@ -215,7 +182,7 @@ export default async function AdminPage() {
           </div>
 
           <div className="bg-white shadow-sm p-6 lg:col-span-2">
-            <h3 className="font-bold text-[#0D1117] mb-5 flex items-center gap-2 text-xs uppercase tracking-widests">
+            <h3 className="font-bold text-[#0D1117] mb-5 flex items-center gap-2 text-xs uppercase tracking-widest">
               <TrendingUp size={13} className="text-[#C9A96E]" /> Most Booked Services
             </h3>
             {topServices.length === 0 ? (
@@ -238,7 +205,7 @@ export default async function AdminPage() {
           </div>
         </div>
 
-        {/* Appointments table */}
+        {/* ── Appointments table ── */}
         <div className="bg-white shadow-sm mb-6">
           <div className="px-6 py-5 border-b border-gray-100 flex items-center justify-between flex-wrap gap-3">
             <h3 className="font-bold text-[#0D1117] text-xs uppercase tracking-widest">
@@ -254,6 +221,7 @@ export default async function AdminPage() {
             <div className="text-center py-20 text-[#4A5568]">
               <Calendar size={40} className="mx-auto mb-3 opacity-30" />
               <p className="font-medium">No appointments yet</p>
+              <p className="text-sm mt-1 opacity-60">Appointments appear here when patients book</p>
             </div>
           ) : (
             <div className="overflow-x-auto">
@@ -320,7 +288,8 @@ export default async function AdminPage() {
                           <a
                             href={`https://wa.me/${(apt.phone||"").replace(/\D/g,"").length===10?"91"+apt.phone.replace(/\D/g,""):apt.phone.replace(/\D/g,"")}`}
                             target="_blank" rel="noopener noreferrer"
-                            className="bg-[#25D366] hover:bg-[#128C7E] text-white text-[10px] font-bold px-2.5 py-1.5 transition-colors">
+                            className="bg-[#25D366] hover:bg-[#128C7E] text-white text-[10px] font-bold px-2.5 py-1.5 transition-colors"
+                          >
                             WA
                           </a>
                         </div>
@@ -333,7 +302,7 @@ export default async function AdminPage() {
           )}
         </div>
 
-        {/* Security info */}
+        {/* ── Security info ── */}
         <div className="bg-white border border-green-100 p-6 shadow-sm">
           <div className="flex items-center gap-2 mb-4">
             <Shield size={16} className="text-green-500" />
@@ -350,7 +319,10 @@ export default async function AdminPage() {
             ].map(i => (
               <div key={i.t} className="flex items-start gap-2">
                 <div className="w-1.5 h-1.5 rounded-full bg-green-500 mt-1.5 shrink-0" />
-                <div><div className="font-semibold text-[#0D1117] mb-0.5">{i.t}</div>{i.d}</div>
+                <div>
+                  <div className="font-semibold text-[#0D1117] mb-0.5">{i.t}</div>
+                  {i.d}
+                </div>
               </div>
             ))}
           </div>

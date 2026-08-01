@@ -147,7 +147,7 @@ export default function GalleryPage() {
       <div className="relative h-80 overflow-hidden bg-[#0D1117]">
         <Image
           src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=1600&q=80"
-          alt="SmileCare Gallery"
+          alt="Vee Care Gallery"
           fill
           className="object-cover opacity-35"
           sizes="100vw"
@@ -162,7 +162,7 @@ export default function GalleryPage() {
           >
             See the Results
             <br />
-            <span className="italic text-[#C9A96E]">For Yourself.</span>
+            <span className="italic text-[#C1583B]">For Yourself.</span>
           </h1>
           <p className="text-white/60 mt-4 text-base max-w-xl">
             Real patient transformations, our clinic, our team, and our procedures — nothing staged.
@@ -202,7 +202,7 @@ export default function GalleryPage() {
               <button
                 key={item.id}
                 onClick={() => setLightbox(item.id)}
-                className="group relative overflow-hidden aspect-square text-left focus:outline-none focus:ring-2 focus:ring-[#C9A96E]"
+                className="group relative overflow-hidden aspect-square text-left focus:outline-none focus:ring-2 focus:ring-[#C1583B]"
               >
                 <Image
                   src={item.img}
@@ -214,7 +214,7 @@ export default function GalleryPage() {
                 {/* Hover overlay */}
                 <div className="absolute inset-0 bg-[#0D1117]/0 group-hover:bg-[#0D1117]/65 transition-all duration-400 flex flex-col justify-end p-4">
                   <div className="translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                    <div className="text-[#C9A96E] text-[10px] font-bold tracking-widest uppercase mb-1">
+                    <div className="text-[#C1583B] text-[10px] font-bold tracking-widest uppercase mb-1">
                       {item.cat}
                     </div>
                     <div className="text-white text-sm font-medium leading-snug">
@@ -250,7 +250,7 @@ export default function GalleryPage() {
         >
           Want Results Like These?
           <br />
-          <span className="italic text-[#C9A96E]">Let's Get Started.</span>
+          <span className="italic text-[#C1583B]">Let's Get Started.</span>
         </h3>
         <p className="text-white/60 mb-8 max-w-md mx-auto">
           Book a free consultation. Our specialist will tell you exactly what's possible for your smile.

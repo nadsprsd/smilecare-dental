@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X, Phone } from "lucide-react";
@@ -35,9 +36,9 @@ export default function Navbar() {
       {/* Top bar */}
       <div className="bg-[#0A2540] text-white/70 text-xs py-2 hidden md:block">
         <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
-          <span>MG Road, Tripunithura · Mon–Sat 9AM–7PM</span>
+          <span>RM Arcade,Udayamperoor,Tripunithura · Mon–Sat 9AM–7PM</span>
           <a href="tel:+917994072017" className="text-[#00C9B1] font-semibold hover:text-white transition-colors">
-            +91 7994072017
+          +91 8075243127
           </a>
         </div>
       </div>
@@ -52,12 +53,12 @@ export default function Navbar() {
 
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2 shrink-0">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#00A3E0] to-[#0A2540] flex items-center justify-center">
-                <span className="text-white font-black text-base" style={{ fontFamily: "Georgia,serif" }}>S</span>
+              <div className="relative w-10 h-10 shrink-0">
+                <Image src="/logo.png" alt="Vee Care Dental Clinic" fill className="object-contain" priority />
               </div>
               <div className="leading-tight">
-                <div className="font-extrabold text-[#0A2540] text-sm tracking-tight">SmileCare</div>
-                <div className="text-[9px] text-[#00A3E0] font-bold tracking-widest uppercase">Dental Clinic</div>
+                <div className="font-extrabold text-[#0F2E2E] text-sm tracking-tight">Vee Care</div>
+                <div className="text-[9px] text-[#C1583B] font-bold tracking-widest uppercase">Dental Clinic</div>
               </div>
             </Link>
 
@@ -113,7 +114,7 @@ export default function Navbar() {
             <div className="lg:hidden border-t border-gray-100 px-4 pb-5 pt-3">
               <a href="tel:+917994072017"
                 className="flex items-center gap-2 px-3 py-3 text-sm font-semibold text-[#00A3E0] border border-[#00A3E0]/20 rounded-xl mb-3">
-                <Phone size={15} /> +91 7994072017
+                <Phone size={15} /> +91 8075243127
               </a>
               {NAV.map(item => (
                 <Link key={item.href} href={item.href}

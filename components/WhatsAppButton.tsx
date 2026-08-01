@@ -3,7 +3,7 @@
 export default function WhatsAppButton() {
   const phone   = process.env.NEXT_PUBLIC_CLINIC_WHATSAPP || "917994072017";
   const message = encodeURIComponent(
-    "Hi SmileCare! I'd like to book a dental appointment."
+    "Hi Vee Care! I'd like to book a dental appointment."
   );
 
   return (

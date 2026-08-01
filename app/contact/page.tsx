@@ -17,26 +17,26 @@ export default function ContactPage() {
     }
 
     const msg =
-      "Hello SmileCare,\n\n" +
+      "Hello Vee Care,\n\n" +
       "Name: " + form.name + "\n" +
       "Phone: " + form.phone + "\n" +
       "Subject: " + (form.subject || "General Enquiry") + "\n\n" +
       "Message:\n" + form.message + "\n\n" +
-      "-- Sent via SmileCare website contact form";
+      "-- Sent via Vee Care website contact form";
 
     window.open(
-      `https://wa.me/917994072017?text=${encodeURIComponent(msg)}`,
+      `https://wa.me/918075243127?text=${encodeURIComponent(msg)}`,
       "_blank"
     );
     setSent(true);
   };
 
   return (
-    <div className="min-h-screen bg-[#F4F7FA]">
+    <div className="min-h-screen bg-[#F2EDE3]">
 
       {/* Header */}
       <div className="bg-[#0D1117] text-white py-16 text-center px-6">
-        <span className="text-[10px] font-bold tracking-widest uppercase text-[#C9A96E] block mb-3">
+        <span className="text-[10px] font-bold tracking-widest uppercase text-[#C1583B] block mb-3">
           Get In Touch
         </span>
         <h1 className="text-4xl font-bold mb-3" style={{ fontFamily: "Georgia, serif" }}>
@@ -61,8 +61,8 @@ export default function ContactPage() {
                   title: "Address",
                   info: "MG Road, Tripunithura\nErnakulam, Kerala 682301",
                   href: "https://maps.google.com/?q=Tripunithura+Kerala",
-                  color: "text-[#C9A96E]",
-                  bg:    "bg-[#C9A96E]/10",
+                  color: "text-[#C1583B]",
+                  bg:    "bg-[#C1583B]/10",
                 },
                 {
                   icon: Phone,
@@ -111,7 +111,7 @@ export default function ContactPage() {
             <div className="bg-white shadow-sm overflow-hidden">
               <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
                 <h3 className="font-bold text-[#0D1117] text-sm flex items-center gap-2">
-                  <MapPin size={15} className="text-[#C9A96E]" />
+                  <MapPin size={15} className="text-[#C1583B]" />
                   Find Us on Map
                 </h3>
                 <a
@@ -132,12 +132,12 @@ export default function ContactPage() {
                   allowFullScreen
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
-                  title="SmileCare Dental Clinic Location"
+                  title="Vee Care Dental Clinic Location"
                   className="absolute inset-0"
                 />
               </div>
-              <div className="px-5 py-3 bg-[#F4F7FA] text-xs text-[#4A5568] flex items-center gap-2">
-                <MapPin size={12} className="text-[#C9A96E]" />
+              <div className="px-5 py-3 bg-[#F2EDE3] text-xs text-[#4A5568] flex items-center gap-2">
+                <MapPin size={12} className="text-[#C1583B]" />
                 MG Road, Tripunithura, Ernakulam, Kerala 682301
               </div>
             </div>
@@ -154,7 +154,7 @@ export default function ContactPage() {
                 <p className="text-white/50 text-xs mt-0.5">Usually replies within 10 minutes during clinic hours</p>
               </div>
               <a
-                href="https://wa.me/917994072017?text=Hi%20SmileCare!%20I%20have%20a%20question."
+                href="https://wa.me/918075243127?text=Hi%20Vee Care!%20I%20have%20a%20question."
                 target="_blank"
                 rel="noopener noreferrer"
                 className="bg-green-500 hover:bg-green-600 text-white text-xs font-bold px-4 py-2.5 transition-colors shrink-0"
@@ -264,7 +264,7 @@ export default function ContactPage() {
 
                     <button
                       onClick={handleSend}
-                      className="w-full bg-[#0D1117] hover:bg-[#C9A96E] text-white font-semibold py-4 transition-all duration-300 flex items-center justify-center gap-2 text-sm"
+                      className="w-full bg-[#0D1117] hover:bg-[#C1583B] text-white font-semibold py-4 transition-all duration-300 flex items-center justify-center gap-2 text-sm"
                     >
                       <Send size={16} />
                       Send Message via WhatsApp
@@ -300,8 +300,8 @@ export default function ContactPage() {
                 <p className="font-bold text-red-700 text-sm">Dental Emergency?</p>
                 <p className="text-red-500 text-xs mt-0.5">
                   Call us immediately at{" "}
-                  <a href="tel:+917994072017" className="font-bold underline">
-                    +91 7994072017
+                  <a href="tel:+918075243127" className="font-bold underline">
+                    +918075243127
                   </a>
                   {" "}— we accommodate same-day emergency appointments.
                 </p>

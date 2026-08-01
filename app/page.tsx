@@ -1,11 +1,20 @@
+export const dynamic    = "force-dynamic";
+export const revalidate = 0;
+
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight, Play } from "lucide-react";
 import type { Metadata } from "next";
+import CertificatesSection from "@/components/CertificatesSection";
+import VideoTestimonials from "@/components/VideoTestimonials";
+import GoogleReviews from "@/components/GoogleReviews";
+import FAQSection from "@/components/FAQSection";
+import HomeBlogSection from "@/components/HomeBlogSection";
 
 export const metadata: Metadata = {
-  title: "SmileCare Dental — Premium Dental Care in Tripunithura, Kerala",
-  description: "Award-winning dental clinic in Tripunithura. Implants, cosmetic dentistry, orthodontics. Book your free consultation today.",
+  title: "Best Dental Clinic in Tripunithura, Ernakulam — Vee Care",
+  description:
+    "Vee Care Dental Clinic, Kandanad — root canal, dental implants, clear aligners & smile design in Tripunithura, Ernakulam. Evening & Sunday OP available. Book a free consultation.",
 };
 
 /* ── Real Unsplash images ── */
@@ -15,9 +24,6 @@ const SMILE_IMG    = "https://images.unsplash.com/photo-1606811841689-23dfddce3e
 const EQUIP_IMG    = "https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=900&q=85&fit=crop";
 const TEAM_IMG     = "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=900&q=85&fit=crop";
 const PATIENT_IMG  = "https://images.unsplash.com/photo-1598256989800-fe5f95da9787?w=900&q=85&fit=crop";
-const BLOG_1       = "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=700&q=80&fit=crop";
-const BLOG_2       = "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=700&q=80&fit=crop";
-const BLOG_3       = "https://images.unsplash.com/photo-1581591524425-c7e0978865fc?w=700&q=80&fit=crop";
 
 export default function HomePage() {
   return ( 
@@ -31,7 +37,7 @@ export default function HomePage() {
         <div className="absolute inset-0 img-zoom">
           <Image
             src={HERO_IMG}
-            alt="SmileCare Dental Clinic"
+            alt="Vee Care Dental Clinic"
             fill
             className="object-cover object-center opacity-50"
             priority
@@ -54,7 +60,7 @@ export default function HomePage() {
             >
               Dental Care
               <br />
-              <span className="italic text-[#C9A96E]">Crafted</span> for
+              <span className="italic text-[#C1583B]">Crafted</span> for
               <br />
               Your Smile.
             </h1>
@@ -132,7 +138,7 @@ export default function HomePage() {
               </div>
               {/* Floating stat card */}
               <div className="absolute -bottom-6 -right-4 bg-[#0D1117] text-white p-6 shadow-2xl">
-                <div className="display-text text-4xl font-semibold text-[#C9A96E]">10+</div>
+                <div className="display-text text-4xl font-semibold text-[#C1583B]">10+</div>
                 <div className="text-white/60 text-xs mt-1 tracking-wide">Years Serving<br/>Tripunithura</div>
               </div>
             </div>
@@ -140,7 +146,7 @@ export default function HomePage() {
             {/* Text */}
             <div className="lg:pl-8">
               <span className="gold-rule" />
-              <span className="label-text block mb-4">About SmileCare</span>
+              <span className="label-text block mb-4">About Vee Care</span>
               <h2
                 className="display-text text-[#0D1117] mb-6"
                 style={{ fontSize: "clamp(2.2rem, 4vw, 3.5rem)" }}
@@ -150,7 +156,7 @@ export default function HomePage() {
                 Meets Compassion.
               </h2>
               <p className="text-[#4A5568] leading-relaxed mb-5 text-base">
-                SmileCare was founded with one belief — that exceptional dental care should be
+                Vee Care was founded with one belief — that exceptional dental care should be
                 accessible to every family in Kerala. We invested in technology that most clinics
                 in Kochi still don't have, and built a team of specialists who genuinely love what they do.
               </p>
@@ -165,7 +171,7 @@ export default function HomePage() {
                   { heading: "3D Smile Preview", sub: "See results before treatment" },
                   { heading: "ISO Sterilised",   sub: "Hospital-grade hygiene" },
                 ].map(item => (
-                  <div key={item.heading} className="border-l-2 border-[#C9A96E] pl-4">
+                  <div key={item.heading} className="border-l-2 border-[#C1583B] pl-4">
                     <div className="font-semibold text-[#0D1117] text-sm">{item.heading}</div>
                     <div className="text-[#4A5568] text-xs mt-0.5">{item.sub}</div>
                   </div>
@@ -182,7 +188,7 @@ export default function HomePage() {
       {/* ════════════════════════════════════════
           SERVICES — editorial grid
       ════════════════════════════════════════ */}
-      <section className="section-pad bg-[#F4F7FA]">
+      <section className="section-pad bg-[#F2EDE3]">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
 
           {/* Header */}
@@ -193,7 +199,7 @@ export default function HomePage() {
               <h2 className="display-text text-[#0D1117]" style={{ fontSize: "clamp(2.2rem, 4vw, 3.5rem)" }}>
                 Every Treatment,
                 <br />
-                <span className="italic text-[#C9A96E]">One Clinic.</span>
+                <span className="italic text-[#C1583B]">One Clinic.</span>
               </h2>
             </div>
             <Link href="/services" className="btn-outline text-sm self-start md:self-auto">
@@ -219,7 +225,7 @@ export default function HomePage() {
                 <h3 className="display-text text-white text-3xl mb-2">Dental Implants</h3>
                 <p className="text-white/70 text-sm mb-5 max-w-xs">Permanent, natural-looking tooth replacement. Swiss titanium, lifetime warranty.</p>
                 <div className="flex items-center justify-between">
-                  <span className="text-[#C9A96E] font-semibold text-sm">From ₹18,000</span>
+                  <span className="text-[#C1583B] font-semibold text-sm">From ₹18,000</span>
                   <Link href="/services#implants"
                     className="bg-white/15 hover:bg-white/25 text-white text-xs px-4 py-2 border border-white/30 transition-all">
                     Learn More →
@@ -235,8 +241,8 @@ export default function HomePage() {
                 title: "Braces & Aligners",
                 price: "From ₹25,000",
                 sub: "Metal, ceramic, or invisible",
-                },
-              { img:"https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=600&q=80", title:"Root Canal",         price:"From ₹4,000",  sub:"Single-visit, painless RCT" },
+              },
+              { img:"https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=600&q=80", title:"Root Canal",       price:"From ₹4,000",  sub:"Single-visit, painless RCT" },
               { img:"https://images.unsplash.com/photo-1581591524425-c7e0978865fc?w=600&q=80", title:"Kids Dentistry",     price:"From ₹500",    sub:"Gentle, stress-free care" },
             ].map((svc, i) => (
               <Link key={svc.title} href="/services"
@@ -246,7 +252,7 @@ export default function HomePage() {
                 <div className="absolute bottom-0 left-0 p-5">
                   <h3 className="display-text text-white text-xl mb-0.5">{svc.title}</h3>
                   <p className="text-white/60 text-xs mb-2">{svc.sub}</p>
-                  <span className="text-[#C9A96E] font-semibold text-xs">{svc.price}</span>
+                  <span className="text-[#C1583B] font-semibold text-xs">{svc.price}</span>
                 </div>
                 <div className="absolute top-3 right-3 w-8 h-8 bg-white/10 hover:bg-white/20 border border-white/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                   <ArrowUpRight size={14} className="text-white" strokeWidth={1.5} />
@@ -270,7 +276,7 @@ export default function HomePage() {
               <h2 className="display-text text-[#0D1117]" style={{ fontSize: "clamp(2.2rem, 4vw, 3.5rem)" }}>
                 Doctors Who
                 <br />
-                <span className="italic text-[#C9A96E]">Listen First.</span>
+                <span className="italic text-[#C1583B]">Listen First.</span>
               </h2>
             </div>
             <Link href="/doctors" className="btn-outline text-sm self-start">
@@ -307,7 +313,7 @@ export default function HomePage() {
             ].map((doc, i) => (
               <div key={doc.name} className="group">
                 {/* Photo */}
-                <div className="relative overflow-hidden img-zoom aspect-[3/4] mb-5 bg-[#F4F7FA]">
+                <div className="relative overflow-hidden img-zoom aspect-[3/4] mb-5 bg-[#F2EDE3]">
                   <Image
                     src={doc.img}
                     alt={doc.name}
@@ -321,7 +327,7 @@ export default function HomePage() {
                   <div className="absolute bottom-0 left-0 right-0 p-5 translate-y-full group-hover:translate-y-0 transition-transform duration-400">
                     <Link
                       href={`/appointment?doctor=${encodeURIComponent(doc.name)}`}
-                      className="block w-full bg-[#C9A96E] text-white text-sm font-medium py-3 text-center tracking-wide"
+                      className="block w-full bg-[#C1583B] text-white text-sm font-medium py-3 text-center tracking-wide"
                     >
                       Book with {doc.name.split(" ")[1]}
                     </Link>
@@ -332,7 +338,7 @@ export default function HomePage() {
                   <div className="flex items-start justify-between mb-1">
                     <div>
                       <h3 className="display-text text-[#0D1117] text-xl">{doc.name}</h3>
-                      <p className="text-[#C9A96E] text-xs font-medium tracking-wide mt-0.5">{doc.role}</p>
+                      <p className="text-[#C1583B] text-xs font-medium tracking-wide mt-0.5">{doc.role}</p>
                     </div>
                     <span className="text-[#0D1117]/40 text-xs border border-[#0D1117]/15 px-2 py-1">{doc.exp}</span>
                   </div>
@@ -348,6 +354,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      <CertificatesSection variant="highlight" />
+      <VideoTestimonials />
 
       {/* ════════════════════════════════════════
           TESTIMONIALS — full width dark
@@ -365,7 +374,7 @@ export default function HomePage() {
             <h2 className="display-text text-white" style={{ fontSize: "clamp(2.2rem, 4vw, 3.5rem)" }}>
               Real Results,
               <br />
-              <span className="italic text-[#C9A96E]">Real People.</span>
+              <span className="italic text-[#C1583B]">Real People.</span>
             </h2>
           </div>
 
@@ -391,7 +400,7 @@ export default function HomePage() {
                 {/* Stars */}
                 <div className="flex gap-1 mb-5">
                   {[1,2,3,4,5].map(i => (
-                    <svg key={i} width="14" height="14" viewBox="0 0 24 24" fill="#C9A96E">
+                    <svg key={i} width="14" height="14" viewBox="0 0 24 24" fill="#C1583B">
                       <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
                     </svg>
                   ))}
@@ -415,7 +424,7 @@ export default function HomePage() {
             <div>
               <div className="display-text text-5xl text-white font-semibold">4.9</div>
               <div className="flex gap-1 justify-center mt-2">
-                {[1,2,3,4,5].map(i => <svg key={i} width="16" height="16" viewBox="0 0 24 24" fill="#C9A96E"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>)}
+                {[1,2,3,4,5].map(i => <svg key={i} width="16" height="16" viewBox="0 0 24 24" fill="#C1583B"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>)}
               </div>
               <div className="text-white/40 text-xs mt-1">180+ Google Reviews</div>
             </div>
@@ -433,62 +442,21 @@ export default function HomePage() {
         </div>
       </section>
 
+      <GoogleReviews variant="preview" />
+
       {/* ════════════════════════════════════════
           BLOG PREVIEW
       ════════════════════════════════════════ */}
-      <section className="section-pad bg-white">
-        <div className="max-w-7xl mx-auto px-6 md:px-12">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14">
-            <div>
-              <span className="gold-rule" />
-              <span className="label-text block mb-4">Dental Insights</span>
-              <h2 className="display-text text-[#0D1117]" style={{ fontSize: "clamp(2.2rem, 4vw, 3.5rem)" }}>
-                Knowledge From
-                <br />
-                <span className="italic text-[#C9A96E]">Our Experts.</span>
-              </h2>
-            </div>
-            <Link href="/blog" className="btn-outline text-sm self-start">
-              All Articles <ArrowUpRight size={16} strokeWidth={1.5} />
-            </Link>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              { img: BLOG_1, date: "Apr 1, 2025", category: "Oral Health", title: "10 Habits Your Dentist Wishes You Had", read: "3 min" },
-              { img: BLOG_2, date: "Mar 15, 2025", category: "Cosmetic", title: "Implants vs Dentures: The Complete Guide", read: "5 min" },
-              { img: BLOG_3, date: "Feb 20, 2025", category: "Whitening", title: "What Actually Works for Teeth Whitening", read: "4 min" },
-            ].map(post => (
-              <Link key={post.title} href="/blog" className="group block">
-                <div className="relative overflow-hidden img-zoom aspect-video mb-5 bg-[#F4F7FA]">
-                  <Image src={post.img} alt={post.title} fill className="object-cover" sizes="33vw" />
-                  <div className="absolute top-3 left-3">
-                    <span className="bg-[#0D1117] text-white text-[10px] font-medium px-3 py-1 tracking-wider uppercase">
-                      {post.category}
-                    </span>
-                  </div>
-                </div>
-                <div className="text-[#4A5568] text-xs mb-2">{post.date} · {post.read} read</div>
-                <h3
-                  className="display-text text-[#0D1117] text-xl leading-snug group-hover:text-[#C9A96E] transition-colors mb-3"
-                >
-                  {post.title}
-                </h3>
-                <div className="flex items-center gap-2 text-[#0D1117] text-xs font-medium group-hover:gap-3 transition-all">
-                  Read Article <ArrowRight size={13} strokeWidth={1.5} />
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
+      <HomeBlogSection />
 
       {/* ════════════════════════════════════════
           FINAL CTA — full bleed
       ════════════════════════════════════════ */}
+      <FAQSection />
+
       <section className="relative overflow-hidden min-h-[500px] flex items-center">
         <div className="absolute inset-0 img-zoom">
-          <Image src={TEAM_IMG} alt="SmileCare team" fill className="object-cover" sizes="100vw" />
+          <Image src={TEAM_IMG} alt="Vee Care team" fill className="object-cover" sizes="100vw" />
           <div className="absolute inset-0 bg-[#0D1117]/80" />
         </div>
 
@@ -500,7 +468,7 @@ export default function HomePage() {
           >
             Your Best Smile
             <br />
-            <span className="italic text-[#C9A96E]">Starts Here.</span>
+            <span className="italic text-[#C1583B]">Starts Here.</span>
           </h2>
           <p className="text-white/65 mb-10 text-lg max-w-xl mx-auto leading-relaxed">
             Free first consultation. No hidden charges. Same-day appointments available.
@@ -517,10 +485,21 @@ export default function HomePage() {
               Call +91 98765 43210
             </a>
           </div>
+
+          {/* Embedded map — swap the query below for the clinic's exact address once confirmed */}
+          <div className="mt-14 max-w-3xl mx-auto aspect-video border border-white/10">
+            <iframe
+              src="https://www.google.com/maps?q=Vee+Care+Dental+Clinic+Tripunithura&output=embed"
+              width="100%"
+              height="100%"
+              loading="lazy"
+              style={{ border: 0 }}
+              title="Vee Care Dental Clinic location map"
+            />
+          </div>
         </div>
       </section>
 
     </div>
   );
 }
-

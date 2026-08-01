@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function AdminLogin() {
   const router = useRouter();
@@ -31,11 +32,11 @@ export default function AdminLogin() {
     <div className="min-h-screen bg-[#0D1117] flex items-center justify-center px-6">
       <div className="bg-white w-full max-w-sm p-10">
         <div className="text-center mb-8">
-          <div className="w-12 h-12 bg-[#C9A96E] flex items-center justify-center mx-auto mb-4">
-            <span className="text-[#0D1117] font-black text-xl">S</span>
+          <div className="relative w-14 h-14 mx-auto mb-4">
+            <Image src="/logo.png" alt="Vee Care Dental Clinic" fill className="object-contain" />
           </div>
           <h1 className="display-text text-[#0D1117] text-2xl">Admin Login</h1>
-          <p className="text-[#4A5568] text-sm mt-1">SmileCare Dashboard</p>
+          <p className="text-[#4A5568] text-sm mt-1">Vee Care Dashboard</p>
         </div>
 
         <div className="space-y-4">

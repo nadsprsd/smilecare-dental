@@ -6,7 +6,7 @@ import { appointmentSchema, sanitizeForMongo } from "@/lib/validation";
 import { NextRequest }                from "next/server";
 
 export async function GET() {
-  return new Response("SmileCare Appointments API", { status: 200 });
+  return new Response("Vee Care Appointments API", { status: 200 });
 }
 
 export async function POST(req: NextRequest) {

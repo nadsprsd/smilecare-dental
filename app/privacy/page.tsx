@@ -4,7 +4,7 @@ export default function PrivacyPage() {
       <h1 className="text-3xl font-bold mb-6">Privacy Policy</h1>
 
       <p className="text-gray-600 mb-4">
-        At SmileCare Dental Clinic, we respect your privacy and are committed to
+        At Vee Care Dental Clinic, we respect your privacy and are committed to
         protecting your personal information.
       </p>
 

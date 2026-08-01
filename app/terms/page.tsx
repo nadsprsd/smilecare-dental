@@ -5,7 +5,7 @@ export default function TermsPage() {
 
       <p className="text-gray-600 mb-4">
         By using this website, you agree to the terms and conditions of
-        SmileCare Dental Clinic.
+        Vee Care Dental Clinic.
       </p>
 
       <h2 className="font-semibold mt-6 mb-2">Appointments</h2>

@@ -130,7 +130,7 @@ function AppointmentForm() {
       // WhatsApp notification to clinic — plain text, no emojis
       const phone = process.env.NEXT_PUBLIC_CLINIC_WHATSAPP || "917994072017";
       const message =
-        "New Appointment - SmileCare\n\n" +
+        "New Appointment - Vee Care\n\n" +
         "Patient: " + form.name + "\n" +
         "Phone: " + phoneClean + "\n" +
         "Service: " + form.service + "\n" +
@@ -140,7 +140,7 @@ function AppointmentForm() {
         }) + "\n" +
         "Time: " + form.time + "\n" +
         "Notes: " + (form.notes || "None") + "\n\n" +
-        "Booked via SmileCare website";
+        "Booked via Vee Care website";
 
       window.open(
         `https://wa.me/${phone}?text=${encodeURIComponent(message)}`,
@@ -159,7 +159,7 @@ function AppointmentForm() {
   // ── Success screen ──
   if (done) {
     return (
-      <div className="min-h-screen bg-[#F4F7FA] flex items-center justify-center px-4 py-20">
+      <div className="min-h-screen bg-[#F2EDE3] flex items-center justify-center px-4 py-20">
         <div className="bg-white p-8 md:p-12 text-center max-w-md w-full shadow-[0_4px_24px_rgba(10,37,64,0.08)]">
           <div className="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-6">
             <CheckCircle size={36} className="text-green-500" />
@@ -176,7 +176,7 @@ function AppointmentForm() {
           </p>
 
           {/* Booking summary */}
-          <div className="bg-[#F4F7FA] p-4 text-left space-y-2 text-sm mb-6">
+          <div className="bg-[#F2EDE3] p-4 text-left space-y-2 text-sm mb-6">
             {[
               ["Service", form.service],
               ["Date",    new Date(form.date).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })],
@@ -217,7 +217,7 @@ function AppointmentForm() {
   const steps = ["Service", "Date & Time", "Your Details"];
 
   return (
-    <div className="min-h-screen bg-[#F4F7FA]">
+    <div className="min-h-screen bg-[#F2EDE3]">
 
       {/* Header */}
       <div className="bg-[#0D1117] py-12 md:py-16 text-center px-4">
@@ -242,7 +242,7 @@ function AppointmentForm() {
                 <div
                   className={`w-8 h-8 flex items-center justify-center font-bold text-xs transition-all ${
                     step > i + 1
-                      ? "bg-[#C9A96E] text-white"
+                      ? "bg-[#C1583B] text-white"
                       : step === i + 1
                       ? "bg-[#0D1117] text-white"
                       : "bg-gray-200 text-gray-400"
@@ -261,7 +261,7 @@ function AppointmentForm() {
               {i < 2 && (
                 <div
                   className={`flex-1 h-px mx-1.5 mb-4 ${
-                    step > i + 1 ? "bg-[#C9A96E]" : "bg-gray-200"
+                    step > i + 1 ? "bg-[#C1583B]" : "bg-gray-200"
                   }`}
                 />
               )}
@@ -293,7 +293,7 @@ function AppointmentForm() {
                   >
                     <span className="font-medium text-[#0D1117] text-sm">{svc.label}</span>
                     <div className="flex items-center gap-2 shrink-0">
-                      <span className="text-[#C9A96E] text-xs font-semibold">{svc.price}</span>
+                      <span className="text-[#C1583B] text-xs font-semibold">{svc.price}</span>
                       <ChevronRight size={14} className="text-gray-300" />
                     </div>
                   </button>
@@ -307,14 +307,14 @@ function AppointmentForm() {
             <div className="p-5 md:p-8">
               <button
                 onClick={() => setStep(1)}
-                className="flex items-center gap-1 text-[#C9A96E] text-sm mb-4 hover:underline"
+                className="flex items-center gap-1 text-[#C1583B] text-sm mb-4 hover:underline"
               >
                 <ArrowLeft size={14} /> Change service
               </button>
 
               {/* Selected service */}
-              <div className="bg-[#F4F7FA] px-4 py-3 mb-5 border-l-2 border-[#C9A96E]">
-                <div className="text-[10px] font-bold tracking-widest uppercase text-[#C9A96E]">
+              <div className="bg-[#F2EDE3] px-4 py-3 mb-5 border-l-2 border-[#C1583B]">
+                <div className="text-[10px] font-bold tracking-widest uppercase text-[#C1583B]">
                   Selected Service
                 </div>
                 <div className="font-semibold text-[#0D1117] text-sm mt-0.5">
@@ -391,7 +391,7 @@ function AppointmentForm() {
                         </p>
                       </div>
                       {form.doctor === doc.name && (
-                        <CheckCircle size={17} className="text-[#C9A96E] shrink-0" />
+                        <CheckCircle size={17} className="text-[#C1583B] shrink-0" />
                       )}
                     </button>
                   ))}
@@ -406,7 +406,7 @@ function AppointmentForm() {
                   }
                   setStep(3);
                 }}
-                className="w-full bg-[#0D1117] hover:bg-[#C9A96E] text-white font-semibold py-3.5 transition-colors text-sm"
+                className="w-full bg-[#0D1117] hover:bg-[#C1583B] text-white font-semibold py-3.5 transition-colors text-sm"
               >
                 Continue →
               </button>
@@ -418,13 +418,13 @@ function AppointmentForm() {
             <div className="p-5 md:p-8">
               <button
                 onClick={() => setStep(2)}
-                className="flex items-center gap-1 text-[#C9A96E] text-sm mb-4 hover:underline"
+                className="flex items-center gap-1 text-[#C1583B] text-sm mb-4 hover:underline"
               >
                 <ArrowLeft size={14} /> Change date/time
               </button>
 
               {/* Summary */}
-              <div className="bg-[#F4F7FA] p-4 mb-5 space-y-2 text-sm">
+              <div className="bg-[#F2EDE3] p-4 mb-5 space-y-2 text-sm">
                 {[
                   ["Service", form.service],
                   ["Date",    new Date(form.date).toLocaleDateString("en-IN", { weekday: "short", day: "numeric", month: "short" })],
@@ -497,7 +497,7 @@ function AppointmentForm() {
                 </div>
 
                 {/* ── Consent checkbox ── */}
-                <div className="bg-[#F4F7FA] border border-gray-200 p-4">
+                <div className="bg-[#F2EDE3] border border-gray-200 p-4">
                   <label className="flex items-start gap-3 cursor-pointer">
                     <input
                       type="checkbox"
@@ -506,7 +506,7 @@ function AppointmentForm() {
                       className="mt-1 w-4 h-4 shrink-0 accent-[#0D1117]"
                     />
                     <span className="text-xs text-[#4A5568] leading-relaxed">
-                      I consent to SmileCare Dental Clinic storing my name, phone number
+                      I consent to Vee Care Dental Clinic storing my name, phone number
                       and appointment details for the purpose of confirming and managing
                       my appointment. My data will not be shared with third parties.
                       View our{" "}
@@ -528,7 +528,7 @@ function AppointmentForm() {
               <button
                 onClick={handleSubmit}
                 disabled={loading || !form.consent}
-                className="w-full bg-[#0D1117] hover:bg-[#C9A96E] disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold py-3.5 transition-colors mt-5 text-sm"
+                className="w-full bg-[#0D1117] hover:bg-[#C1583B] disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold py-3.5 transition-colors mt-5 text-sm"
               >
                 {loading
                   ? "Saving..."
@@ -569,7 +569,7 @@ export default function AppointmentPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen bg-[#F4F7FA] flex items-center justify-center">
+        <div className="min-h-screen bg-[#F2EDE3] flex items-center justify-center">
           <div className="text-[#4A5568] text-sm">Loading...</div>
         </div>
       }

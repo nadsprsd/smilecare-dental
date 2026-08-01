@@ -2,9 +2,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Check } from "lucide-react";
 import type { Metadata } from "next";
+import { SERVICES as ALL_SERVICES } from "@/lib/services";
 
 export const metadata: Metadata = {
-  title: "Dental Services – SmileCare Tripunithura",
+  title: "Dental Services – Vee Care Tripunithura",
   description:
     "Complete dental services in Tripunithura. Implants, braces, whitening, root canal, kids dentistry and more. Specialist doctors, affordable prices.",
 };
@@ -39,7 +40,7 @@ const SERVICES = [
     duration: "2–3 visits over 3 months",
     img: "https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=900&q=85&fit=crop",
     description:
-      "Dental implants are the gold standard for replacing missing teeth — and for good reason. A Swiss titanium post is placed directly into your jawbone, where it fuses naturally over 6–8 weeks. A custom porcelain crown is then fitted on top, creating a tooth that looks, feels and functions exactly like your natural one. Dr. Priya Menon has completed over 800 successful implant procedures at SmileCare.",
+      "Dental implants are the gold standard for replacing missing teeth — and for good reason. A Swiss titanium post is placed directly into your jawbone, where it fuses naturally over 6–8 weeks. A custom porcelain crown is then fitted on top, creating a tooth that looks, feels and functions exactly like your natural one. Dr. Priya Menon has completed over 800 successful implant procedures at Vee Care.",
     whyItMatters:
       "Unlike dentures that slip or bridges that require grinding adjacent teeth, implants preserve your jawbone, protect neighbouring teeth, and last a lifetime with proper care. They are the only tooth replacement that actually prevents bone loss.",
     includes: [
@@ -103,7 +104,7 @@ const SERVICES = [
     duration: "30–45 minutes",
     img: "https://images.unsplash.com/photo-1581591524425-c7e0978865fc?w=900&q=85&fit=crop",
     description:
-      "A child's first dental experience shapes their relationship with dental care for life. Dr. Sreelakshmi specialises in making that experience positive — even for children who arrive terrified. Our clinic environment uses child-friendly language, colourful decor, and a gentle step-by-step approach that demystifies every instrument before it's used. Children who visit SmileCare regularly grow up comfortable with dental care — which means fewer problems and lower costs as adults.",
+      "A child's first dental experience shapes their relationship with dental care for life. Dr. Sreelakshmi specialises in making that experience positive — even for children who arrive terrified. Our clinic environment uses child-friendly language, colourful decor, and a gentle step-by-step approach that demystifies every instrument before it's used. Children who visit Vee Care regularly grow up comfortable with dental care — which means fewer problems and lower costs as adults.",
     whyItMatters:
       "Childhood cavities left untreated cause pain, infection, and problems with adult teeth development. Early preventive care — fluoride treatments, fissure sealants, and habit guidance — prevents the vast majority of dental problems before they start.",
     includes: [
@@ -190,7 +191,7 @@ export default function ServicesPage() {
       <div className="relative h-80 overflow-hidden bg-[#0D1117]">
         <Image
           src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=1600&q=80"
-          alt="SmileCare Services"
+          alt="Vee Care Services"
           fill
           className="object-cover opacity-40"
           sizes="100vw"
@@ -205,7 +206,7 @@ export default function ServicesPage() {
           >
             Every Treatment,
             <br />
-            <span className="italic text-[#C9A96E]">Under One Roof.</span>
+            <span className="italic text-[#C1583B]">Under One Roof.</span>
           </h1>
           <p className="text-white/60 mt-4 max-w-xl text-base">
             Specialist-led care for every dental need — from your child's first checkup to a complete smile transformation.
@@ -252,11 +253,11 @@ export default function ServicesPage() {
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#0D1117]/80 to-transparent p-6 flex items-end justify-between">
                   <div>
                     <div className="text-white/60 text-xs mb-1">{svc.duration}</div>
-                    <div className="text-[#C9A96E] font-bold text-lg">{svc.price}</div>
+                    <div className="text-[#C1583B] font-bold text-lg">{svc.price}</div>
                   </div>
                   <Link
                     href={`/appointment?service=${encodeURIComponent(svc.title)}`}
-                    className="bg-white text-[#0D1117] text-xs font-semibold px-4 py-2.5 hover:bg-[#C9A96E] hover:text-white transition-all"
+                    className="bg-white text-[#0D1117] text-xs font-semibold px-4 py-2.5 hover:bg-[#C1583B] hover:text-white transition-all"
                   >
                     Book Now →
                   </Link>
@@ -280,8 +281,8 @@ export default function ServicesPage() {
               </p>
 
               {/* Why it matters */}
-              <div className="border-l-2 border-[#C9A96E] pl-4 mb-6 bg-[#C9A96E]/5 py-3 pr-3">
-                <div className="text-[10px] font-bold tracking-widest uppercase text-[#C9A96E] mb-1">
+              <div className="border-l-2 border-[#C1583B] pl-4 mb-6 bg-[#C1583B]/5 py-3 pr-3">
+                <div className="text-[10px] font-bold tracking-widest uppercase text-[#C1583B] mb-1">
                   Why It Matters
                 </div>
                 <p className="text-[#4A5568] text-sm leading-relaxed">{svc.whyItMatters}</p>
@@ -295,8 +296,8 @@ export default function ServicesPage() {
                 <ul className="space-y-2.5">
                   {svc.includes.map((item) => (
                     <li key={item} className="flex items-start gap-3 text-sm text-[#0D1117]">
-                      <div className="w-5 h-5 rounded-full bg-[#C9A96E]/15 border border-[#C9A96E]/40 flex items-center justify-center shrink-0 mt-0.5">
-                        <Check size={11} className="text-[#C9A96E]" strokeWidth={2.5} />
+                      <div className="w-5 h-5 rounded-full bg-[#C1583B]/15 border border-[#C1583B]/40 flex items-center justify-center shrink-0 mt-0.5">
+                        <Check size={11} className="text-[#C1583B]" strokeWidth={2.5} />
                       </div>
                       {item}
                     </li>
@@ -305,7 +306,7 @@ export default function ServicesPage() {
               </div>
 
               {/* Ideal for */}
-              <div className="bg-[#F4F7FA] px-4 py-3 mb-7 border-l-2 border-[#0D1117]/20">
+              <div className="bg-[#F2EDE3] px-4 py-3 mb-7 border-l-2 border-[#0D1117]/20">
                 <span className="text-[10px] font-bold tracking-widest uppercase text-[#0D1117]/50">
                   Ideal For
                 </span>
@@ -323,6 +324,29 @@ export default function ServicesPage() {
         ))}
       </div>
 
+      {/* ── Complete treatment index — links to every service page ── */}
+      <div className="max-w-7xl mx-auto px-6 md:px-12 pb-24">
+        <div className="text-center mb-12">
+          <span className="gold-rule mx-auto" />
+          <span className="label-text block mb-4">Complete Treatment List</span>
+          <h2 className="display-text text-[#0D1117]" style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)" }}>
+            Every Service We Offer
+          </h2>
+        </div>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          {ALL_SERVICES.map((s) => (
+            <Link
+              key={s.slug}
+              href={`/services/${s.slug}`}
+              className="flex items-center justify-between border border-[#E7EAF0] px-5 py-4 text-sm font-medium text-[#0D1117] hover:border-[#C1583B] hover:text-[#C1583B] transition-colors"
+            >
+              {s.title}
+              <ArrowRight size={14} strokeWidth={1.5} />
+            </Link>
+          ))}
+        </div>
+      </div>
+
       {/* ── Bottom CTA ── */}
       <div className="bg-[#0D1117] py-24 text-center px-6">
         <span className="label-text block mb-4">Free Consultation</span>
@@ -332,7 +356,7 @@ export default function ServicesPage() {
         >
           Not Sure Which Treatment?
           <br />
-          <span className="italic text-[#C9A96E]">Let Us Guide You.</span>
+          <span className="italic text-[#C1583B]">Let Us Guide You.</span>
         </h2>
         <p className="text-white/60 mb-8 max-w-md mx-auto text-base leading-relaxed">
           Book a free consultation. Our specialist will examine your teeth, answer every question, and recommend exactly what you need — with full price transparency, zero pressure.

@@ -17,6 +17,7 @@ export interface BlogPost {
   status:          "published" | "draft";
   createdAt:       string;
   updatedAt:       string;
+  tags?: string[];
 }
 
 // Generate URL-friendly slug from title

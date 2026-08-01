@@ -4,7 +4,7 @@ import { ArrowRight, GraduationCap, Clock, Star } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Our Doctors – SmileCare Dental Clinic Tripunithura",
+  title: "Our Doctors – Vee Care Dental Clinic Tripunithura",
   description:
     "Meet our specialist dental team in Tripunithura. Implantologist, orthodontist and pediatric dentist with combined 26 years of experience.",
 };
@@ -44,7 +44,7 @@ const DOCTORS = [
       "Fixed & Removable Prosthodontics",
     ],
     about:
-      "Dr. Priya Menon is the founder of SmileCare and the driving force behind its reputation as Tripunithura's most trusted dental clinic. After completing her postgraduate training in prosthodontics at AIMS Kochi, she pursued advanced implantology training at institutes in Mumbai and Chennai before establishing SmileCare in 2014.",
+      "Dr. Priya Menon is the founder of Vee Care and the driving force behind its reputation as Tripunithura's most trusted dental clinic. After completing her postgraduate training in prosthodontics at AIMS Kochi, she pursued advanced implantology training at institutes in Mumbai and Chennai before establishing Vee Care in 2014.",
     aboutExtended:
       "Over the past 12 years, she has completed more than 800 successful implant procedures — a milestone that places her among the most experienced implantologists in Ernakulam district. Her approach combines surgical precision with an exceptional ability to put anxious patients completely at ease. Patients who arrived terrified of needles regularly describe their experience with Dr. Priya as 'nothing like what I expected — completely painless.'",
     philosophy:
@@ -145,7 +145,7 @@ const DOCTORS = [
       "The most important thing I do isn't the filling or the fluoride treatment — it's making sure the child leaves feeling proud and brave. That experience is what determines whether they'll take care of their teeth for the rest of their life.",
     languages: ["Malayalam", "English"],
     achievements: [
-      "Most Loved Doctor — SmileCare Patient Choice Awards 2023",
+      "Most Loved Doctor — Vee Care Patient Choice Awards 2023",
       "Child Dental Health Awareness Volunteer — 3 schools",
       "Perfect 5.0 Google rating across all reviews",
       "Nitrous oxide sedation certified for anxiety management",
@@ -176,7 +176,7 @@ export default function DoctorsPage() {
           >
             Doctors Who
             <br />
-            <span className="italic text-[#C9A96E]">Truly Care.</span>
+            <span className="italic text-[#C1583B]">Truly Care.</span>
           </h1>
           <p className="text-white/60 mt-4 max-w-xl text-base">
             26 combined years of specialist experience. Three doctors, one shared goal — your best dental health.
@@ -185,7 +185,7 @@ export default function DoctorsPage() {
       </div>
 
       {/* ── Team overview strip ── */}
-      <div className="bg-[#F4F7FA] border-b border-gray-200">
+      <div className="bg-[#F2EDE3] border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-6 py-8 grid grid-cols-3 md:grid-cols-6 gap-6 text-center">
           {[
             { num: "26+", label: "Combined Experience" },
@@ -226,19 +226,19 @@ export default function DoctorsPage() {
               </div>
 
               {/* Stats card */}
-              <div className="bg-[#F4F7FA] border border-gray-100 p-5 mt-0">
+              <div className="bg-[#F2EDE3] border border-gray-100 p-5 mt-0">
                 <div className="grid grid-cols-2 gap-4 mb-4">
                   <div>
                     <div className="display-text text-[#0D1117] text-2xl">{doc.exp}</div>
                     <div className="text-[#4A5568] text-xs mt-0.5">Experience</div>
                   </div>
                   <div>
-                    <div className="display-text text-[#C9A96E] text-2xl">{doc.rating}★</div>
+                    <div className="display-text text-[#C1583B] text-2xl">{doc.rating}★</div>
                     <div className="text-[#4A5568] text-xs mt-0.5">{doc.reviews} reviews</div>
                   </div>
                 </div>
                 <div className="pt-4 border-t border-gray-200 text-xs text-[#4A5568] flex items-center gap-1.5">
-                  <Clock size={12} className="text-[#C9A96E]" />
+                  <Clock size={12} className="text-[#C1583B]" />
                   Available: {doc.available}
                 </div>
                 <div className="mt-3 pt-3 border-t border-gray-200">
@@ -272,8 +272,8 @@ export default function DoctorsPage() {
               <p className="text-[#4A5568] leading-relaxed text-[15px] mb-8">{doc.aboutExtended}</p>
 
               {/* Philosophy quote */}
-              <div className="border-l-2 border-[#C9A96E] pl-5 mb-8 py-2">
-                <div className="text-[10px] font-bold tracking-widest uppercase text-[#C9A96E] mb-2">
+              <div className="border-l-2 border-[#C1583B] pl-5 mb-8 py-2">
+                <div className="text-[10px] font-bold tracking-widest uppercase text-[#C1583B] mb-2">
                   Dr. {doc.name.split(" ")[1]}'s Philosophy
                 </div>
                 <p className="text-[#0D1117] text-base italic leading-relaxed">
@@ -285,7 +285,7 @@ export default function DoctorsPage() {
                 {/* Education */}
                 <div>
                   <div className="flex items-center gap-2 mb-4">
-                    <GraduationCap size={16} className="text-[#C9A96E]" />
+                    <GraduationCap size={16} className="text-[#C1583B]" />
                     <span className="text-[10px] font-bold tracking-widest uppercase text-[#0D1117]">
                       Education
                     </span>
@@ -295,7 +295,7 @@ export default function DoctorsPage() {
                       <li key={e.degree} className="pl-3 border-l border-gray-200">
                         <div className="font-semibold text-[#0D1117] text-sm">{e.degree}</div>
                         <div className="text-[#4A5568] text-xs mt-0.5">{e.institute}</div>
-                        <div className="text-[#C9A96E] text-[10px] mt-0.5 font-medium">{e.year}</div>
+                        <div className="text-[#C1583B] text-[10px] mt-0.5 font-medium">{e.year}</div>
                       </li>
                     ))}
                   </ul>
@@ -309,7 +309,7 @@ export default function DoctorsPage() {
                   <ul className="space-y-2">
                     {doc.specialties.map((s) => (
                       <li key={s} className="flex items-center gap-2 text-sm text-[#4A5568]">
-                        <span className="w-1 h-1 rounded-full bg-[#C9A96E] shrink-0" />
+                        <span className="w-1 h-1 rounded-full bg-[#C1583B] shrink-0" />
                         {s}
                       </li>
                     ))}
@@ -327,7 +327,7 @@ export default function DoctorsPage() {
               {/* Achievements */}
               <div>
                 <div className="flex items-center gap-2 mb-3">
-                  <Star size={14} className="text-[#C9A96E]" />
+                  <Star size={14} className="text-[#C1583B]" />
                   <span className="text-[10px] font-bold tracking-widest uppercase text-[#0D1117]">
                     Achievements
                   </span>
@@ -335,7 +335,7 @@ export default function DoctorsPage() {
                 <ul className="space-y-2">
                   {doc.achievements.map((a) => (
                     <li key={a} className="flex items-start gap-2 text-sm text-[#4A5568]">
-                      <span className="text-[#C9A96E] text-xs mt-0.5 shrink-0">★</span>
+                      <span className="text-[#C1583B] text-xs mt-0.5 shrink-0">★</span>
                       {a}
                     </li>
                   ))}
@@ -347,7 +347,7 @@ export default function DoctorsPage() {
       </div>
 
       {/* ── Join team ── */}
-      <div className="bg-[#F4F7FA] border-t border-gray-100 py-20 text-center px-6">
+      <div className="bg-[#F2EDE3] border-t border-gray-100 py-20 text-center px-6">
         <span className="label-text block mb-3">Join Our Team</span>
         <h3
           className="display-text text-[#0D1117] mb-4"
@@ -357,7 +357,7 @@ export default function DoctorsPage() {
         </h3>
         <p className="text-[#4A5568] mb-8 max-w-md mx-auto text-base leading-relaxed">
           We're always looking for passionate dental professionals who share our commitment to
-          exceptional patient care. SmileCare offers a collaborative, well-equipped environment in Tripunithura.
+          exceptional patient care. Vee Care offers a collaborative, well-equipped environment in Tripunithura.
         </p>
         <a href="mailto:careers@smilecare.in" className="btn-outline text-sm">
           Send Your CV to careers@smilecare.in

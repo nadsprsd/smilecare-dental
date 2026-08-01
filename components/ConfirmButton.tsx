@@ -50,7 +50,7 @@ export default function ConfirmButton({ id, name, phone, service, date, time }: 
 
       const message =
         `Hi ${name},\n\n` +
-        `Your appointment at SmileCare Dental is CONFIRMED.\n\n` +
+        `Your appointment at Vee Care Dental is CONFIRMED.\n\n` +
         `Service : ${service}\n` +
         `Date    : ${formattedDate}\n` +
         `Time    : ${time}\n\n` +
@@ -58,7 +58,7 @@ export default function ConfirmButton({ id, name, phone, service, date, time }: 
         `Please arrive 5 minutes early.\n` +
         `To reschedule, reply to this message or call us.\n\n` +
         `See you soon!\n` +
-        `-- SmileCare Dental Team`;
+        `-- Vee Care Dental Team`;
 
       // 3. Open WhatsApp
       window.open(

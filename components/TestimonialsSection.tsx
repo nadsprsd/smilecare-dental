@@ -13,7 +13,7 @@ const testimonials = [
   },
   {
     name: "Suresh Pillai",
-    text: "Best dental experience I've had. Highly recommend SmileCare.",
+    text: "Best dental experience I've had. Highly recommend Vee Care.",
   },
 ];
 

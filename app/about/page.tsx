@@ -2,15 +2,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Award, Heart, Shield, Users } from "lucide-react";
 import type { Metadata } from "next";
+import CertificatesSection from "@/components/CertificatesSection";
 
 export const metadata: Metadata = {
-  title: "About SmileCare Dental Clinic – Tripunithura, Kerala",
+  title: "About Vee Care Dental Clinic – Tripunithura, Kerala",
   description:
-    "Learn about SmileCare Dental Clinic in Tripunithura. Founded in 2014, we are Ernakulam's most trusted dental clinic with 2,000+ happy patients.",
+    "Learn about Vee Care Dental Clinic in Tripunithura. Founded in 2014, we are Ernakulam's most trusted dental clinic with 2,000+ happy patients.",
 };
 
 const MILESTONES = [
-  { year: "2014", title: "Founded",         desc: "SmileCare opened its doors in Tripunithura with one doctor and a vision for accessible, premium dental care." },
+  { year: "2014", title: "Founded",         desc: "Vee Care opened its doors in Tripunithura with one doctor and a vision for accessible, premium dental care." },
   { year: "2016", title: "First 500 Patients", desc: "Within two years we had treated over 500 patients, earning a reputation for pain-free, transparent treatment." },
   { year: "2019", title: "Expanded Team",   desc: "Added Dr. Arjun Nair (orthodontist) and Dr. Sreelakshmi (pediatric dentist) to serve every family member." },
   { year: "2021", title: "Digital X-Ray",   desc: "Invested in digital X-ray technology — 90% less radiation, instant results, better diagnosis." },
@@ -50,7 +51,7 @@ export default function AboutPage() {
         <div className="absolute inset-0">
           <Image
             src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=1600&q=80"
-            alt="SmileCare Dental Clinic"
+            alt="Vee Care Dental Clinic"
             fill
             className="object-cover opacity-30"
             sizes="100vw"
@@ -59,7 +60,7 @@ export default function AboutPage() {
         </div>
         <div className="absolute inset-0 bg-gradient-to-t from-[#0D1117] via-[#0D1117]/60 to-transparent" />
         <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 pb-20 w-full">
-          <span className="text-[#C9A96E] text-[10px] font-bold tracking-widest uppercase block mb-4">
+          <span className="text-[#C1583B] text-[10px] font-bold tracking-widest uppercase block mb-4">
             Our Story
           </span>
           <h1
@@ -68,7 +69,7 @@ export default function AboutPage() {
           >
             A Decade of Smiles
             <br />
-            <span className="italic text-[#C9A96E]">in Tripunithura.</span>
+            <span className="italic text-[#C1583B]">in Tripunithura.</span>
           </h1>
           <p className="text-white/60 max-w-xl text-base leading-relaxed">
             Founded in 2014 with a simple belief — that every family in Kerala
@@ -102,26 +103,26 @@ export default function AboutPage() {
       <section className="py-20 md:py-28 px-6 md:px-12">
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
           <div>
-            <span className="text-[10px] font-bold tracking-widest uppercase text-[#C9A96E] block mb-3">
+            <span className="text-[10px] font-bold tracking-widest uppercase text-[#C1583B] block mb-3">
               Who We Are
             </span>
-            <div className="w-10 h-0.5 bg-[#C9A96E] mb-5" />
+            <div className="w-10 h-0.5 bg-[#C1583B] mb-5" />
             <h2
               className="text-[#0D1117] font-bold mb-6 leading-tight"
               style={{ fontFamily: "Georgia, serif", fontSize: "clamp(1.8rem, 3.5vw, 3rem)" }}
             >
               More Than a Clinic.
               <br />
-              <span className="italic text-[#C9A96E]">A Family Commitment.</span>
+              <span className="italic text-[#C1583B]">A Family Commitment.</span>
             </h2>
             <p className="text-[#4A5568] leading-relaxed mb-5">
-              SmileCare was born from a frustration. Our founder, Dr. Priya Menon,
+              Vee Care was born from a frustration. Our founder, Dr. Priya Menon,
               watched families in Tripunithura travel 45 minutes to Kochi for basic
               dental procedures — not because better care wasn't possible locally,
               but because no one had invested in bringing it here.
             </p>
             <p className="text-[#4A5568] leading-relaxed mb-5">
-              In 2014, she changed that. SmileCare opened with imported equipment,
+              In 2014, she changed that. Vee Care opened with imported equipment,
               a team trained at the best institutes in Kerala, and one uncompromising
               rule: the same standard of care for every patient, regardless of budget.
             </p>
@@ -130,7 +131,7 @@ export default function AboutPage() {
               them referred by someone who had been treated here before. That is the
               only metric we care about.
             </p>
-            <Link href="/doctors" className="inline-flex items-center gap-2 bg-[#0D1117] hover:bg-[#C9A96E] text-white font-semibold px-6 py-3.5 transition-all duration-300 text-sm">
+            <Link href="/doctors" className="inline-flex items-center gap-2 bg-[#0D1117] hover:bg-[#C1583B] text-white font-semibold px-6 py-3.5 transition-all duration-300 text-sm">
               Meet Our Doctors <ArrowRight size={15} />
             </Link>
           </div>
@@ -150,7 +151,7 @@ export default function AboutPage() {
                 <div className="relative aspect-square overflow-hidden">
                   <Image
                     src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=600&q=85&fit=crop"
-                    alt="SmileCare Clinic"
+                    alt="Vee Care Clinic"
                     fill
                     className="object-cover"
                     sizes="200px"
@@ -168,7 +169,7 @@ export default function AboutPage() {
               </div>
             </div>
             {/* Floating card */}
-            <div className="absolute -bottom-4 -left-4 bg-[#C9A96E] text-white p-5 shadow-xl">
+            <div className="absolute -bottom-4 -left-4 bg-[#C1583B] text-white p-5 shadow-xl">
               <div className="text-3xl font-bold" style={{ fontFamily: "Georgia, serif" }}>10+</div>
               <div className="text-xs opacity-80 mt-0.5">Years Serving<br />Tripunithura</div>
             </div>
@@ -177,13 +178,13 @@ export default function AboutPage() {
       </section>
 
       {/* ── Values ── */}
-      <section className="py-20 bg-[#F4F7FA] px-6 md:px-12">
+      <section className="py-20 bg-[#F2EDE3] px-6 md:px-12">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-14">
-            <span className="text-[10px] font-bold tracking-widest uppercase text-[#C9A96E] block mb-3">
+            <span className="text-[10px] font-bold tracking-widest uppercase text-[#C1583B] block mb-3">
               What We Stand For
             </span>
-            <div className="w-10 h-0.5 bg-[#C9A96E] mx-auto mb-5" />
+            <div className="w-10 h-0.5 bg-[#C1583B] mx-auto mb-5" />
             <h2
               className="text-[#0D1117] font-bold"
               style={{ fontFamily: "Georgia, serif", fontSize: "clamp(1.8rem, 3.5vw, 3rem)" }}
@@ -194,8 +195,8 @@ export default function AboutPage() {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {VALUES.map(v => (
               <div key={v.title} className="bg-white p-7 shadow-sm hover:shadow-md transition-shadow">
-                <div className="w-11 h-11 bg-[#C9A96E]/10 flex items-center justify-center mb-5">
-                  <v.icon size={20} className="text-[#C9A96E]" />
+                <div className="w-11 h-11 bg-[#C1583B]/10 flex items-center justify-center mb-5">
+                  <v.icon size={20} className="text-[#C1583B]" />
                 </div>
                 <h3 className="font-bold text-[#0D1117] mb-3" style={{ fontFamily: "Georgia, serif" }}>
                   {v.title}
@@ -211,10 +212,10 @@ export default function AboutPage() {
       <section className="py-20 md:py-28 px-6 md:px-12">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-14">
-            <span className="text-[10px] font-bold tracking-widest uppercase text-[#C9A96E] block mb-3">
+            <span className="text-[10px] font-bold tracking-widest uppercase text-[#C1583B] block mb-3">
               Our Journey
             </span>
-            <div className="w-10 h-0.5 bg-[#C9A96E] mx-auto mb-5" />
+            <div className="w-10 h-0.5 bg-[#C1583B] mx-auto mb-5" />
             <h2
               className="text-[#0D1117] font-bold"
               style={{ fontFamily: "Georgia, serif", fontSize: "clamp(1.8rem, 3.5vw, 3rem)" }}
@@ -239,7 +240,7 @@ export default function AboutPage() {
                   <div className="relative z-10 flex-shrink-0 w-[60px] md:w-auto md:flex-1 flex md:justify-end">
                     <div className={`${i % 2 === 0 ? "md:mr-8" : "md:ml-8 md:mr-0"}`}>
                       <div className="w-16 h-16 bg-[#0D1117] flex items-center justify-center shrink-0">
-                        <span className="text-[#C9A96E] font-bold text-sm">{m.year}</span>
+                        <span className="text-[#C1583B] font-bold text-sm">{m.year}</span>
                       </div>
                     </div>
                   </div>
@@ -258,8 +259,20 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* ── Certificates & Qualifications ── */}
+      <section className="py-16 px-6 md:px-12">
+        <div className="max-w-7xl mx-auto text-center mb-12">
+          <span className="gold-rule mx-auto" />
+          <span className="label-text block mb-4">Our Credentials</span>
+          <h2 className="display-text text-[#0D1117]" style={{ fontSize: "clamp(2rem, 4vw, 3rem)" }}>
+            Certificates &amp; Qualifications
+          </h2>
+        </div>
+        <CertificatesSection variant="full" />
+      </section>
+
       {/* ── Why choose us ── */}
-      <section className="py-16 bg-[#F4F7FA] px-6 md:px-12">
+      <section className="py-16 bg-[#F2EDE3] px-6 md:px-12">
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
             {[
@@ -284,7 +297,7 @@ export default function AboutPage() {
 
       {/* ── CTA ── */}
       <section className="bg-[#0D1117] py-20 text-center px-6">
-        <span className="text-[10px] font-bold tracking-widest uppercase text-[#C9A96E] block mb-4">
+        <span className="text-[10px] font-bold tracking-widest uppercase text-[#C1583B] block mb-4">
           Experience the Difference
         </span>
         <h2
@@ -293,7 +306,7 @@ export default function AboutPage() {
         >
           Come See Us in Tripunithura.
           <br />
-          <span className="italic text-[#C9A96E]">First visit is free.</span>
+          <span className="italic text-[#C1583B]">First visit is free.</span>
         </h2>
         <p className="text-white/60 mb-8 max-w-md mx-auto text-base leading-relaxed">
           Book a free consultation. No pressure, no obligation — just honest advice
@@ -301,7 +314,7 @@ export default function AboutPage() {
         </p>
         <div className="flex flex-wrap gap-4 justify-center">
           <Link href="/appointment"
-            className="inline-flex items-center gap-2 bg-white text-[#0D1117] hover:bg-[#C9A96E] hover:text-white font-semibold px-8 py-4 transition-all duration-300 text-sm">
+            className="inline-flex items-center gap-2 bg-white text-[#0D1117] hover:bg-[#C1583B] hover:text-white font-semibold px-8 py-4 transition-all duration-300 text-sm">
             Book Free Consultation <ArrowRight size={16} />
           </Link>
           <Link href="/doctors"

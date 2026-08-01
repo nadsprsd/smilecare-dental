@@ -4,19 +4,80 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 
+const SITE_URL = "https://www.veecaredental.in";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "SmileCare Dental Clinic – Tripunithura, Kerala",
-    template: "%s | SmileCare Dental Clinic",
+    default: "Vee Care Dental Clinic – Best Dentist in Tripunithura, Ernakulam",
+    template: "%s | Vee Care Dental Clinic",
   },
   description:
-    "Best dental clinic in Tripunithura. Teeth whitening, implants, braces & more.",
+    "Vee Care Dental Clinic, Kandanad — trusted dental care in Tripunithura & Ernakulam. Root canal, dental implants, clear aligners, smile design & general dentistry. Evening & Sunday OP available. Book a free consultation.",
+  keywords: [
+    "dental clinic Tripunithura",
+    "dentist Ernakulam",
+    "root canal Tripunithura",
+    "dental implants Kandanad",
+    "clear aligners Tripunithura",
+    "smile design Ernakulam",
+    "best dental clinic Tripunithura",
+  ],
   openGraph: {
     type: "website",
     locale: "en_IN",
-    url: "https://smilecare.in",
-    siteName: "SmileCare Dental Clinic",
+    url: SITE_URL,
+    siteName: "Vee Care Dental Clinic",
+    title: "Vee Care Dental Clinic – Best Dentist in Tripunithura, Ernakulam",
+    description:
+      "Trusted dental care in Tripunithura & Ernakulam — root canal, implants, clear aligners, smile design. Evening & Sunday OP available.",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Vee Care Dental Clinic – Best Dentist in Tripunithura, Ernakulam",
+    description:
+      "Trusted dental care in Tripunithura & Ernakulam — root canal, implants, clear aligners, smile design.",
+  },
+  alternates: {
+    canonical: SITE_URL,
+  },
+};
+
+// LocalBusiness / Dentist structured data — this is what tells Google
+// "this is a real local clinic" and directly powers the Maps/local-pack
+// trust signals (rating stars in search results, knowledge panel, etc).
+// Fill in the real phone/address/hours once confirmed — placeholders
+// won't hurt anything, they just won't help until they're accurate.
+const localBusinessSchema = {
+  "@context": "https://schema.org",
+  "@type": "Dentist",
+  name: "Vee Care Dental Clinic",
+  image: `${SITE_URL}/og-image.jpg`,
+  url: SITE_URL,
+  telephone: "+91-98765-43210",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "Kandanad",
+    addressLocality: "Tripunithura",
+    addressRegion: "Kerala",
+    addressCountry: "IN",
+  },
+  areaServed: ["Tripunithura", "Ernakulam", "Kandanad", "Kakkanad", "Kochi"],
+  openingHoursSpecification: [
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+      opens: "09:00",
+      closes: "20:00",
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: "Sunday",
+      opens: "09:00",
+      closes: "14:00",
+    },
+  ],
+  priceRange: "₹₹",
 };
 
 export default function RootLayout({
@@ -27,6 +88,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        <script
+          type="application/ld+json"
+          // eslint-disable-next-line react/no-danger
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
+        />
         <Navbar />
         <main>{children}</main>
         <Footer />

@@ -6,7 +6,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Dental Health Blog – SmileCare Tripunithura",
+  title: "Dental Health Blog – Vee Care Tripunithura",
   description: "Expert dental health tips and guides from our doctors in Tripunithura, Kerala.",
 };
 
@@ -14,7 +14,7 @@ export default async function BlogPage() {
   const posts = await getPublishedPosts();
 
   return (
-    <div className="min-h-screen bg-[#F4F7FA]">
+    <div className="min-h-screen bg-[#F2EDE3]">
       <div className="bg-[#0D1117] text-white py-16 text-center px-6">
         <h1 className="text-4xl font-bold mb-3" style={{ fontFamily: "Georgia, serif" }}>
           Dental Health Blog
@@ -37,7 +37,7 @@ export default async function BlogPage() {
                 className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all hover:-translate-y-1 group"
               >
                 {/* Featured image or placeholder */}
-                <div className="relative h-48 overflow-hidden bg-gradient-to-br from-blue-50 to-[#F4F7FA]">
+                <div className="relative h-48 overflow-hidden bg-gradient-to-br from-blue-50 to-[#F2EDE3]">
                   {post.featuredImage ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img

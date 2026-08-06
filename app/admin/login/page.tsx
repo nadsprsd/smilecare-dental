@@ -33,7 +33,7 @@ export default function AdminLogin() {
       <div className="bg-white w-full max-w-sm p-10">
         <div className="text-center mb-8">
           <div className="relative w-14 h-14 mx-auto mb-4">
-            <Image src="/logo.png" alt="Vee Care Dental Clinic" fill className="object-contain" />
+            <Image src="/logo.png" alt="Vee Care Dental Clinic" fill sizes="56px" className="object-contain" />
           </div>
           <h1 className="display-text text-[#0D1117] text-2xl">Admin Login</h1>
           <p className="text-[#4A5568] text-sm mt-1">Vee Care Dashboard</p>

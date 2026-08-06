@@ -18,7 +18,7 @@ export async function GET(
     const db     = await connectDB();
     const doc    = await db.collection("patients").findOne({ _id: new ObjectId(id) });
     if (!doc) return Response.json({ success: false }, { status: 404 });
-    return Response.json({ success: true, patient: { ...doc, _id: doc._id.toString() } });
+    return Response.json({ success: true, patient: { invoices: [], ...doc, _id: doc._id.toString() } });
   } catch {
     return Response.json({ success: false }, { status: 500 });
   }

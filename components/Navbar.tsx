@@ -54,7 +54,7 @@ export default function Navbar() {
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2 shrink-0">
               <div className="relative w-10 h-10 shrink-0">
-                <Image src="/logo.png" alt="Vee Care Dental Clinic" fill className="object-contain" priority />
+                <Image src="/logo.png" alt="Vee Care Dental Clinic" fill sizes="40px" className="object-contain" priority />
               </div>
               <div className="leading-tight">
                 <div className="font-extrabold text-[#0F2E2E] text-sm tracking-tight">Vee Care</div>

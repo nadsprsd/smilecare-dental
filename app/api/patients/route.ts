@@ -14,7 +14,10 @@ export async function GET(req: NextRequest) {
 
   try {
     const { searchParams } = new URL(req.url);
-    const search = searchParams.get("search") || "";
+    const rawSearch = searchParams.get("search") || "";
+    // Escape regex metacharacters so a search like "john.doe@gmail.com" matches
+    // literally, and so a crafted string can't be used to build a slow regex.
+    const search = rawSearch.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
     const db    = await connectDB();
     const query = search
@@ -78,6 +81,7 @@ export async function POST(req: NextRequest) {
       alerts:          body.alerts               || [],
       treatments:      [],
       xrays:           [],
+      invoices:        [],
       createdAt:       now,
       updatedAt:       now,
     });

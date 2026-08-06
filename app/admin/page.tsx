@@ -4,7 +4,7 @@ import { redirect }    from "next/navigation";
 import Link            from "next/link";
 import Image           from "next/image";
 import {
-  Calendar, Clock, Phone,
+  Calendar, Clock, Phone, ArrowRight,
   TrendingUp, CheckCircle, AlertCircle, Shield, PenSquare, Users,
 } from "lucide-react";
 import ConfirmButton from "@/components/ConfirmButton";
@@ -21,6 +21,19 @@ async function getData() {
   const db  = await connectDB();
   const all = await db.collection("appointments").find().sort({ createdAt: -1 }).toArray();
   return all;
+}
+
+async function getBookings() {
+  try {
+    const db = await connectDB();
+    return await db.collection("bookings")
+      .find({ isActive: true })
+      .sort({ createdAt: -1 })
+      .limit(20)
+      .toArray();
+  } catch {
+    return [];
+  }
 }
 
 async function getStats() {
@@ -50,9 +63,11 @@ function StatusBadge({ status }: { status?: string }) {
 export default async function AdminPage() {
   await checkAuth();
 
-  const [data, stats] = await Promise.all([getData(), getStats()]);
+  const [data, stats, bookings] = await Promise.all([getData(), getStats(), getBookings()]);
 
   const today     = new Date().toISOString().split("T")[0];
+  const todayBookings   = bookings.filter((b: any) => b.date === today);
+  const pendingBookings = bookings.filter((b: any) => b.confirmationStatus === "pending");
   const todayApts = data.filter((d: any) => d.date === today);
   const pending   = data.filter((d: any) => !d.status || d.status === "pending");
   const confirmed = data.filter((d: any) => d.status === "confirmed");
@@ -73,7 +88,7 @@ export default async function AdminPage() {
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-4">
             <div className="relative w-9 h-9 shrink-0">
-              <Image src="/logo.png" alt="Vee Care Dental Clinic" fill className="object-contain" />
+              <Image src="/logo.png" alt="Vee Care Dental Clinic" fill sizes="56px" className="object-contain" />
             </div>
             <div>
               <div className="flex items-center gap-2">
@@ -95,6 +110,14 @@ export default async function AdminPage() {
             <Link href="/admin/patients"
               className="hidden md:flex items-center gap-1.5 text-white/50 hover:text-white text-xs border border-white/15 px-3 py-2 transition-colors">
               <Users size={12} /> Patients
+            </Link>
+            <Link href="/admin/bookings"
+              className="hidden md:flex items-center gap-1.5 text-white/50 hover:text-white text-xs border border-white/15 px-3 py-2 transition-colors">
+              <Calendar size={12} /> Bookings
+            </Link>
+            <Link href="/admin/roster"
+              className="hidden md:flex items-center gap-1.5 text-white/50 hover:text-white text-xs border border-white/15 px-3 py-2 transition-colors">
+              <Clock size={12} /> Roster
             </Link>
             <Link href="/admin/blog"
               className="hidden md:flex items-center gap-1.5 text-white/50 hover:text-white text-xs border border-white/15 px-3 py-2 transition-colors">
@@ -169,6 +192,50 @@ export default async function AdminPage() {
               </div>
             </Link>
           ))}
+        </div>
+
+        {/* New Bookings — from the public booking system (separate from the legacy appointment inquiries below) */}
+        {pendingBookings.length > 0 && (
+          <Link href="/admin/bookings"
+            className="flex items-center justify-between bg-[#C1583B] hover:bg-[#A3462C] text-white px-6 py-4 mb-6 transition-colors">
+            <div className="flex items-center gap-3">
+              <AlertCircle size={20} />
+              <div>
+                <div className="font-bold text-sm">
+                  {pendingBookings.length} new booking{pendingBookings.length !== 1 ? "s" : ""} awaiting confirmation
+                </div>
+                <div className="text-xs text-white/80 mt-0.5">On-call specialist bookings need presence confirmed before the patient's visit</div>
+              </div>
+            </div>
+            <ArrowRight size={18} />
+          </Link>
+        )}
+
+        <div className="bg-white shadow-sm p-6 mb-8">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="font-bold text-[#0D1117] flex items-center gap-2 text-xs uppercase tracking-widest">
+              <Calendar size={13} className="text-[#C1583B]" /> Today's Bookings ({todayBookings.length})
+            </h3>
+            <Link href="/admin/bookings" className="text-xs text-[#4A5568] hover:text-[#0D1117]">View all bookings →</Link>
+          </div>
+          {todayBookings.length === 0 ? (
+            <p className="text-[#4A5568] text-sm text-center py-4">No online bookings for today yet.</p>
+          ) : (
+            <div className="space-y-2">
+              {todayBookings.map((b: any) => (
+                <div key={b._id.toString()} className="flex items-center gap-3 py-2 border-b border-gray-50 last:border-0">
+                  <div className="w-16 shrink-0 text-xs font-bold text-[#0D1117]">{b.time}</div>
+                  <div className="flex-1 min-w-0">
+                    <div className="font-medium text-sm text-[#0D1117] truncate">{b.patientName}</div>
+                    <div className="text-xs text-[#4A5568] truncate">{b.service} · {b.doctorName}</div>
+                  </div>
+                  <span className={`text-[10px] font-bold px-2 py-1 uppercase tracking-wide ${b.confirmationStatus === "confirmed" ? "bg-green-50 text-green-700" : "bg-yellow-50 text-yellow-700"}`}>
+                    {b.confirmationStatus}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Stat cards */}
@@ -358,7 +425,7 @@ export default async function AdminPage() {
         </div>
 
         <div className="mt-4 text-center text-[#4A5568] text-xs">
-          SmileCare Admin · Secured by BizGrowOnline ·{" "}
+          Vee Care Admin · Secured by BizGrowOnline ·{" "}
           <a href="/" className="text-[#C9A96E] hover:underline">Return to website</a>
         </div>
       </div>

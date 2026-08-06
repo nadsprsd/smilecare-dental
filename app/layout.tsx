@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
+import SiteChrome from "@/components/SiteChrome";
 
 const SITE_URL = "https://www.veecaredental.in";
 
@@ -54,7 +52,7 @@ const localBusinessSchema = {
   name: "Vee Care Dental Clinic",
   image: `${SITE_URL}/og-image.jpg`,
   url: SITE_URL,
-  telephone: "+91-98765-43210",
+  telephone: "+91-8075243127",
   address: {
     "@type": "PostalAddress",
     streetAddress: "Kandanad",
@@ -93,10 +91,7 @@ export default function RootLayout({
           // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
         />
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
-        <WhatsAppButton />
+        <SiteChrome>{children}</SiteChrome>
       </body>
     </html>
   );

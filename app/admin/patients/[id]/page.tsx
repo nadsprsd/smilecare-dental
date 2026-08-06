@@ -8,20 +8,32 @@ import {
   Loader, Save, Trash2, Image as ImageIcon, Calendar,
   User, FileText, Activity, Shield,
 } from "lucide-react";
-import { SOURCES, DOCTORS, TREATMENT_TYPES, XRAY_TYPES } from "@/lib/constants";
+import { SOURCES, TREATMENT_TYPES, XRAY_TYPES, MEDICATIONS, FREQUENCY_OPTIONS, MEAL_TIMING_OPTIONS, ROUTE_OPTIONS } from "@/lib/constants";
+import { DOCTORS, doctorsForService } from "@/lib/doctors";
+import InvoiceGenerator from "@/components/InvoiceGenerator";
 
 type Alert = { type: string; message: string };
+type Prescription = {
+  drug: string; strengthMg: string; durationDays: number;
+  frequency: string; mealTiming: string; route: string;
+};
 type Treatment = {
   _id: string; date: string; treatment: string; doctor: string;
   notes: string; estimatedAmount: number; paidAmount: number; status: string;
+  diagnosis?: string; labDetails?: string; prescriptions?: Prescription[];
 };
 type XRay = { _id: string; url: string; date: string; type: string; notes: string };
+type Invoice = {
+  _id: string; invoiceNo: string; mode: "single" | "all";
+  totalEstimated: number; totalPaid: number; totalBalance: number;
+  sentVia: "whatsapp" | "print"; createdAt: string;
+};
 type Patient = {
   _id: string; registrationNumber: string; name: string; phone: string;
   email: string; sex: string; dateOfBirth: string; age: number;
   address: string; source: string; medicalHistory: string;
   dentalHistory: string; allergies: string; alerts: Alert[];
-  treatments: Treatment[]; xrays: XRay[]; createdAt: string;
+  treatments: Treatment[]; xrays: XRay[]; invoices?: Invoice[]; createdAt: string;
 };
 
 const TABS = ["Overview", "Treatments", "X-Rays & Images", "Edit Details"] as const;
@@ -43,7 +55,32 @@ export default function PatientProfilePage() {
     date: new Date().toISOString().split("T")[0],
     treatment: "", doctor: "", notes: "",
     estimatedAmount: "", paidAmount: "", status: "planned",
+    diagnosis: "", labDetails: "",
   });
+
+  // Prescription builder — a treatment can carry multiple prescriptions
+  const [prescriptions, setPrescriptions] = useState<Prescription[]>([]);
+  const [rxDraft, setRxDraft] = useState({
+    drug: "", strengthMg: "", durationDays: "",
+    frequency: FREQUENCY_OPTIONS[1], mealTiming: MEAL_TIMING_OPTIONS[0], route: ROUTE_OPTIONS[0],
+  });
+
+  const addPrescriptionToDraft = () => {
+    if (!rxDraft.drug.trim()) { alert("Select or type a drug name"); return; }
+    setPrescriptions(list => [...list, {
+      drug: rxDraft.drug.trim(),
+      strengthMg: rxDraft.strengthMg.trim(),
+      durationDays: Number(rxDraft.durationDays) || 0,
+      frequency: rxDraft.frequency,
+      mealTiming: rxDraft.mealTiming,
+      route: rxDraft.route,
+    }]);
+    setRxDraft({ drug: "", strengthMg: "", durationDays: "", frequency: FREQUENCY_OPTIONS[1], mealTiming: MEAL_TIMING_OPTIONS[0], route: ROUTE_OPTIONS[0] });
+  };
+
+  const removePrescriptionFromDraft = (index: number) => {
+    setPrescriptions(list => list.filter((_, i) => i !== index));
+  };
 
   // XRay form
   const [showXrayForm, setShowXrayForm] = useState(false);
@@ -54,6 +91,9 @@ export default function PatientProfilePage() {
 
   // Edit form
   const [editForm, setEditForm] = useState<Partial<Patient>>({});
+
+  // Invoice modal
+  const [showInvoice, setShowInvoice] = useState(false);
 
   useEffect(() => {
     async function load() {
@@ -82,13 +122,19 @@ export default function PatientProfilePage() {
     try {
       const res  = await fetch(`/api/patients/${id}/treatments`, {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...treatForm, estimatedAmount: Number(treatForm.estimatedAmount) || 0, paidAmount: Number(treatForm.paidAmount) || 0 }),
+        body: JSON.stringify({
+          ...treatForm,
+          estimatedAmount: Number(treatForm.estimatedAmount) || 0,
+          paidAmount: Number(treatForm.paidAmount) || 0,
+          prescriptions,
+        }),
       });
       const data = await res.json();
       if (data.success) {
         await reload();
         setShowTreatForm(false);
-        setTreatForm({ date: new Date().toISOString().split("T")[0], treatment: "", doctor: "", notes: "", estimatedAmount: "", paidAmount: "", status: "planned" });
+        setTreatForm({ date: new Date().toISOString().split("T")[0], treatment: "", doctor: "", notes: "", estimatedAmount: "", paidAmount: "", status: "planned", diagnosis: "", labDetails: "" });
+        setPrescriptions([]);
       }
     } finally { setSaving(false); }
   };
@@ -190,6 +236,14 @@ export default function PatientProfilePage() {
               className="flex items-center gap-1.5 bg-green-500 hover:bg-green-600 text-white text-xs px-3 py-2 transition-colors">
               WA
             </a>
+            <button onClick={() => setShowInvoice(true)}
+              className="flex items-center gap-1.5 bg-[#C1583B] hover:bg-[#A3462C] text-white text-xs font-bold px-3 py-2 transition-colors">
+              <FileText size={13} /> Invoice
+            </button>
+            <Link href={`/admin/patients/${id}/record`} target="_blank"
+              className="flex items-center gap-1.5 border border-white/20 text-white/70 hover:text-white text-xs px-3 py-2 transition-colors">
+              <FileText size={13} /> Full Record
+            </Link>
             <button onClick={deletePatient}
               className="border border-red-500/30 text-red-400 hover:bg-red-500/10 text-xs px-3 py-2 transition-all">
               Delete
@@ -353,7 +407,7 @@ export default function PatientProfilePage() {
                   </div>
                   <div>
                     <label className="block text-[10px] font-bold tracking-widest uppercase text-[#0D1117] mb-2">Treatment *</label>
-                    <select value={treatForm.treatment} onChange={e => setTreatForm(f => ({ ...f, treatment: e.target.value }))}
+                    <select value={treatForm.treatment} onChange={e => setTreatForm(f => ({ ...f, treatment: e.target.value, doctor: "" }))}
                       className="w-full border-2 border-gray-100 focus:border-[#0D1117] px-4 py-3 outline-none text-sm">
                       <option value="">Select treatment</option>
                       {TREATMENT_TYPES.map(t => <option key={t}>{t}</option>)}
@@ -364,7 +418,15 @@ export default function PatientProfilePage() {
                     <select value={treatForm.doctor} onChange={e => setTreatForm(f => ({ ...f, doctor: e.target.value }))}
                       className="w-full border-2 border-gray-100 focus:border-[#0D1117] px-4 py-3 outline-none text-sm">
                       <option value="">Select doctor</option>
-                      {DOCTORS.map(d => <option key={d}>{d}</option>)}
+                      {/* Only shows doctors who actually treat the selected service — falls back to
+                          the full roster for generic types (Consultation, X-Ray, Other) that aren't
+                          tied to a specific specialist. */}
+                      {(treatForm.treatment && doctorsForService(treatForm.treatment).length > 0
+                        ? doctorsForService(treatForm.treatment)
+                        : DOCTORS
+                      ).map(d => (
+                        <option key={d.id} value={d.name}>{d.name} — {d.specialty}</option>
+                      ))}
                     </select>
                   </div>
                   <div>
@@ -393,13 +455,92 @@ export default function PatientProfilePage() {
                       rows={2} placeholder="Treatment notes, observations..."
                       className="w-full border-2 border-gray-100 focus:border-[#0D1117] px-4 py-3 outline-none text-sm resize-none" />
                   </div>
+                  <div>
+                    <label className="block text-[10px] font-bold tracking-widest uppercase text-[#0D1117] mb-2">Treatment Diagnosis</label>
+                    <textarea value={treatForm.diagnosis} onChange={e => setTreatForm(f => ({ ...f, diagnosis: e.target.value }))}
+                      rows={2} placeholder="e.g. Irreversible pulpitis, tooth #36"
+                      className="w-full border-2 border-gray-100 focus:border-[#0D1117] px-4 py-3 outline-none text-sm resize-none" />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-bold tracking-widest uppercase text-[#0D1117] mb-2">Patient Lab Details</label>
+                    <textarea value={treatForm.labDetails} onChange={e => setTreatForm(f => ({ ...f, labDetails: e.target.value }))}
+                      rows={2} placeholder="e.g. Shade A2, Zirconia crown ordered from XYZ lab"
+                      className="w-full border-2 border-gray-100 focus:border-[#0D1117] px-4 py-3 outline-none text-sm resize-none" />
+                  </div>
                 </div>
+
+                {/* ── Prescription builder ── */}
+                <div className="border-t border-gray-100 pt-5 mb-4">
+                  <label className="block text-[10px] font-bold tracking-widest uppercase text-[#0D1117] mb-3">Prescriptions</label>
+
+                  <div className="grid md:grid-cols-6 gap-3 mb-3">
+                    <div className="md:col-span-2">
+                      <input
+                        list="medication-list"
+                        value={rxDraft.drug}
+                        onChange={e => setRxDraft(f => ({ ...f, drug: e.target.value }))}
+                        placeholder="Drug name"
+                        className="w-full border-2 border-gray-100 focus:border-[#0D1117] px-3 py-2.5 outline-none text-sm"
+                      />
+                      <datalist id="medication-list">
+                        {MEDICATIONS.map(m => <option key={m} value={m} />)}
+                      </datalist>
+                    </div>
+                    <input
+                      value={rxDraft.strengthMg}
+                      onChange={e => setRxDraft(f => ({ ...f, strengthMg: e.target.value }))}
+                      placeholder="Strength (mg)"
+                      className="w-full border-2 border-gray-100 focus:border-[#0D1117] px-3 py-2.5 outline-none text-sm"
+                    />
+                    <input
+                      type="number"
+                      value={rxDraft.durationDays}
+                      onChange={e => setRxDraft(f => ({ ...f, durationDays: e.target.value }))}
+                      placeholder="Days"
+                      className="w-full border-2 border-gray-100 focus:border-[#0D1117] px-3 py-2.5 outline-none text-sm"
+                    />
+                    <select value={rxDraft.frequency} onChange={e => setRxDraft(f => ({ ...f, frequency: e.target.value }))}
+                      className="w-full border-2 border-gray-100 focus:border-[#0D1117] px-2 py-2.5 outline-none text-xs">
+                      {FREQUENCY_OPTIONS.map(f => <option key={f}>{f}</option>)}
+                    </select>
+                    <select value={rxDraft.mealTiming} onChange={e => setRxDraft(f => ({ ...f, mealTiming: e.target.value }))}
+                      className="w-full border-2 border-gray-100 focus:border-[#0D1117] px-2 py-2.5 outline-none text-xs">
+                      {MEAL_TIMING_OPTIONS.map(m => <option key={m}>{m}</option>)}
+                    </select>
+                  </div>
+                  <div className="flex items-center gap-3 mb-4">
+                    <select value={rxDraft.route} onChange={e => setRxDraft(f => ({ ...f, route: e.target.value }))}
+                      className="border-2 border-gray-100 focus:border-[#0D1117] px-3 py-2.5 outline-none text-xs">
+                      {ROUTE_OPTIONS.map(r => <option key={r}>{r}</option>)}
+                    </select>
+                    <button type="button" onClick={addPrescriptionToDraft}
+                      className="flex items-center gap-1.5 bg-[#0F2E2E] hover:bg-[#C1583B] text-white text-xs font-bold px-4 py-2.5 transition-all">
+                      <Plus size={13} /> Add to Prescription
+                    </button>
+                  </div>
+
+                  {prescriptions.length > 0 && (
+                    <div className="space-y-2 mb-2">
+                      {prescriptions.map((rx, i) => (
+                        <div key={i} className="flex items-center justify-between bg-[#F2EDE3] px-4 py-2.5 text-xs">
+                          <span>
+                            <strong>{rx.drug}</strong>{rx.strengthMg && ` ${rx.strengthMg}mg`} — {rx.frequency} · {rx.mealTiming} · {rx.route} · {rx.durationDays} days
+                          </span>
+                          <button type="button" onClick={() => removePrescriptionFromDraft(i)} className="text-red-500 hover:text-red-700 ml-3">
+                            <Trash2 size={13} />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
                 <div className="flex gap-3">
                   <button onClick={addTreatment} disabled={saving}
                     className="flex items-center gap-2 bg-[#0D1117] hover:bg-[#C9A96E] text-white text-sm font-bold px-6 py-3 transition-all disabled:opacity-50">
                     {saving ? <Loader size={14} className="animate-spin" /> : <Save size={14} />} Save Treatment
                   </button>
-                  <button onClick={() => setShowTreatForm(false)}
+                  <button onClick={() => { setShowTreatForm(false); setPrescriptions([]); }}
                     className="border border-gray-200 text-[#4A5568] hover:text-[#0D1117] text-sm px-6 py-3 transition-colors">
                     Cancel
                   </button>
@@ -434,6 +575,28 @@ export default function PatientProfilePage() {
                           {t.doctor} · {new Date(t.date).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })}
                         </div>
                         {t.notes && <div className="text-sm text-[#4A5568] mt-2 italic">{t.notes}</div>}
+                        {t.diagnosis && (
+                          <div className="text-sm text-[#0D1117] mt-3">
+                            <span className="text-[10px] font-bold tracking-widest uppercase text-[#4A5568]">Diagnosis:</span> {t.diagnosis}
+                          </div>
+                        )}
+                        {t.labDetails && (
+                          <div className="text-sm text-[#0D1117] mt-1">
+                            <span className="text-[10px] font-bold tracking-widest uppercase text-[#4A5568]">Lab:</span> {t.labDetails}
+                          </div>
+                        )}
+                        {t.prescriptions && t.prescriptions.length > 0 && (
+                          <div className="mt-3">
+                            <span className="text-[10px] font-bold tracking-widest uppercase text-[#4A5568]">Prescription:</span>
+                            <div className="mt-1.5 space-y-1">
+                              {t.prescriptions.map((rx, i) => (
+                                <div key={i} className="text-xs text-[#4A5568] bg-[#F2EDE3] px-3 py-1.5 inline-block mr-2 mb-1">
+                                  <strong className="text-[#0D1117]">{rx.drug}</strong>{rx.strengthMg && ` ${rx.strengthMg}mg`} — {rx.frequency} · {rx.mealTiming} · {rx.route} · {rx.durationDays}d
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
                       </div>
                       <div className="text-right shrink-0 ml-6">
                         <div className="text-lg font-bold text-[#0D1117]">₹{t.estimatedAmount.toLocaleString("en-IN")}</div>
@@ -527,7 +690,21 @@ export default function PatientProfilePage() {
                   <div key={x._id} className="bg-white shadow-sm overflow-hidden">
                     <div className="relative aspect-video bg-gray-100">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={x.url} alt={x.type} className="w-full h-full object-cover" />
+                      <img
+                        src={x.url}
+                        alt={x.type}
+                        className="w-full h-full object-cover"
+                        onError={e => {
+                          e.currentTarget.style.display = "none";
+                          const fallback = e.currentTarget.nextElementSibling as HTMLElement | null;
+                          if (fallback) fallback.style.display = "flex";
+                        }}
+                      />
+                      <div className="hidden absolute inset-0 items-center justify-center bg-gray-50 text-center px-3">
+                        <span className="text-[11px] text-[#4A5568]">
+                          Couldn&apos;t load this image — the URL may need to be a direct image link (not a Google Drive/Photos share page).
+                        </span>
+                      </div>
                       <button onClick={() => deleteXray(x._id)}
                         className="absolute top-2 right-2 bg-red-500 hover:bg-red-600 text-white p-1.5 rounded transition-colors">
                         <Trash2 size={12} />
@@ -615,6 +792,10 @@ export default function PatientProfilePage() {
           </div>
         )}
       </div>
+
+      {showInvoice && (
+        <InvoiceGenerator patient={patient} onClose={() => setShowInvoice(false)} onLogged={reload} />
+      )}
     </div>
   );
 }

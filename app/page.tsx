@@ -79,7 +79,7 @@ export default function HomePage() {
                 <ArrowRight size={16} strokeWidth={1.5} />
               </Link>
               <a
-                href="https://wa.me/919876543210"
+                href="https://wa.me/918075243127"
                 target="_blank" rel="noopener noreferrer"
                 className="inline-flex items-center gap-2.5 border border-white/30 text-white hover:border-white/70 px-8 py-4 transition-all duration-300 text-sm font-medium tracking-wide"
               >
@@ -479,10 +479,10 @@ export default function HomePage() {
               Book Free Consultation <ArrowRight size={16} strokeWidth={1.5} />
             </Link>
             <a
-              href="tel:+919876543210"
+              href="tel:+918075243127"
               className="inline-flex items-center gap-2.5 border border-white/30 text-white hover:border-white px-8 py-4 transition-all text-sm font-medium tracking-wide"
             >
-              Call +91 98765 43210
+              Call +91 80752 43127
             </a>
           </div>
 

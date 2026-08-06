@@ -28,6 +28,9 @@ export async function POST(
       estimatedAmount: Number(body.estimatedAmount) || 0,
       paidAmount:      Number(body.paidAmount)      || 0,
       status:          body.status          || "planned",
+      diagnosis:       body.diagnosis       || "",
+      labDetails:      body.labDetails      || "",
+      prescriptions:   Array.isArray(body.prescriptions) ? body.prescriptions : [],
     };
 
     const result = await db.collection("patients").updateOne(

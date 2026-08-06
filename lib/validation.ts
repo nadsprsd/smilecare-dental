@@ -14,9 +14,8 @@ const SERVICES = [
 ] as const;
 
 const DOCTORS = [
-  "Dr. Priya Menon",
-  "Dr. Arjun Nair",
-  "Dr. Sreelakshmi R.",
+  "Dr. Vineeth N.H",
+  "Dr. Anumuthu P M",
   "No Preference",
 ] as const;
 
@@ -75,6 +74,49 @@ export const appointmentSchema = z.object({
 });
 
 export type AppointmentInput = z.infer<typeof appointmentSchema>;
+
+// ── New slot-based booking schema (real availability flow) ──
+export const bookingSchema = z.object({
+  patientName: z
+    .string()
+    .min(2, "Name must be at least 2 characters")
+    .max(100, "Name too long")
+    .regex(/^[a-zA-Z\s.'-]+$/, "Name contains invalid characters")
+    .transform(s => s.trim()),
+
+  phone: z
+    .string()
+    .regex(/^[6-9]\d{9}$/, "Enter valid 10-digit Indian mobile number")
+    .transform(s => s.trim()),
+
+  service: z.string().min(1, "Service is required"),
+  doctorId: z.string().min(1, "Doctor is required"),
+
+  date: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "Invalid date format")
+    .refine(d => {
+      const date  = new Date(d);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      return date >= today;
+    }, "Date cannot be in the past"),
+
+  time: z.string().regex(/^\d{2}:\d{2}$/, "Invalid time format"),
+
+  notes: z
+    .string()
+    .max(500, "Notes too long")
+    .optional()
+    .default("")
+    .transform(s => s.replace(/<[^>]*>/g, "").trim()),
+
+  consent: z
+    .boolean()
+    .refine(v => v === true, "You must consent to data collection"),
+});
+
+export type BookingInput = z.infer<typeof bookingSchema>;
 
 export function sanitizeForMongo(data: AppointmentInput) {
   const sanitize = (s: string) =>

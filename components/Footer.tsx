@@ -52,7 +52,7 @@ export default function Footer() {
             {/* Logo */}
             <div className="flex items-center gap-2.5 mb-4">
               <div className="relative w-10 h-10 shrink-0">
-                <Image src="/logo.png" alt="Vee Care Dental Clinic" fill className="object-contain" />
+                <Image src="/logo.png" alt="Vee Care Dental Clinic" fill sizes="56px" className="object-contain" />
               </div>
               <div>
                 <div className="font-bold text-base leading-tight">Vee Care</div>

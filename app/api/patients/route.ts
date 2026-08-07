@@ -1,5 +1,6 @@
 import { connectDB }                  from "@/lib/mongodb";
 import { generateRegistrationNumber }  from "@/lib/patients";
+import { patientSchema }               from "@/lib/validation";
 import { cookies }                     from "next/headers";
 import { NextRequest }                 from "next/server";
 
@@ -52,14 +53,21 @@ export async function POST(req: NextRequest) {
   if (!(await isAuth())) return Response.json({ success: false }, { status: 401 });
 
   try {
-    const body = await req.json();
+    let body: any;
+    try {
+      body = await req.json();
+    } catch {
+      return Response.json({ success: false, message: "Malformed JSON" }, { status: 400 });
+    }
 
-    if (!body.name || !body.phone) {
+    const parsed = patientSchema.safeParse(body);
+    if (!parsed.success) {
       return Response.json(
-        { success: false, message: "Name and phone are required" },
+        { success: false, message: parsed.error.issues[0]?.message || "Invalid input" },
         { status: 400 }
       );
     }
+    const data = parsed.data;
 
     const db   = await connectDB();
     const regNo = await generateRegistrationNumber("VCC");
@@ -67,18 +75,18 @@ export async function POST(req: NextRequest) {
 
     const result = await db.collection("patients").insertOne({
       registrationNumber: regNo,
-      name:            body.name?.trim()          || "",
-      phone:           body.phone?.trim()         || "",
-      email:           body.email?.trim()         || "",
-      sex:             body.sex                   || "Male",
-      dateOfBirth:     body.dateOfBirth           || "",
-      age:             Number(body.age)           || 0,
-      address:         body.address?.trim()       || "",
-      source:          body.source               || "Walk-in",
-      medicalHistory:  body.medicalHistory?.trim()|| "",
-      dentalHistory:   body.dentalHistory?.trim() || "",
-      allergies:       body.allergies?.trim()     || "",
-      alerts:          body.alerts               || [],
+      name:            data.name,
+      phone:           data.phone.trim(),
+      email:           data.email?.trim()          || "",
+      sex:             data.sex                    || "Male",
+      dateOfBirth:     body.dateOfBirth            || "",
+      age:             data.age                    || 0,
+      address:         data.address                || "",
+      source:          data.source                 || "Walk-in",
+      medicalHistory:  data.medicalHistory          || "",
+      dentalHistory:   data.dentalHistory           || "",
+      allergies:       data.allergies               || "",
+      alerts:          Array.isArray(body.alerts) ? body.alerts : [],
       treatments:      [],
       xrays:           [],
       invoices:        [],

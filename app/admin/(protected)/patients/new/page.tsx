@@ -3,7 +3,7 @@ import { useState }  from "react";
 import { useRouter } from "next/navigation";
 import Link          from "next/link";
 import { ArrowLeft, Save, Loader, Plus, Trash2 } from "lucide-react";
-import { SOURCES } from "@/lib/constants";
+import { SOURCES, getISTDateString } from "@/lib/constants";
 
 export default function NewPatientPage() {
   const router  = useRouter();
@@ -52,19 +52,19 @@ export default function NewPatientPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F4F7FA]">
+    <div>
 
       {/* Header */}
-      <div className="bg-[#0D1117] px-8 py-5 sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
+      <div className="bg-white border-b border-gray-100 px-8 py-5 sticky top-0 z-40">
+        <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <Link href="/admin/patients" className="text-white/50 hover:text-white">
+            <Link href="/admin/patients" className="text-[#4A5568] hover:text-[#0D1117]">
               <ArrowLeft size={18} />
             </Link>
-            <span className="text-white font-bold">New Patient</span>
+            <span className="font-bold text-[#0D1117]">New Patient</span>
           </div>
           <button onClick={handleSave} disabled={saving}
-            className="flex items-center gap-2 bg-[#C9A96E] hover:bg-[#b8935a] text-[#0D1117] text-xs font-bold px-5 py-2.5 transition-all disabled:opacity-50">
+            className="flex items-center gap-2 bg-[#C1583B] hover:bg-[#A3462C] text-white text-xs font-bold px-5 py-2.5 transition-all disabled:opacity-50">
             {saving ? <Loader size={14} className="animate-spin" /> : <Save size={14} />}
             Save Patient
           </button>
@@ -78,23 +78,24 @@ export default function NewPatientPage() {
           <h3 className="font-bold text-[#0D1117] text-sm uppercase tracking-widest mb-6 pb-3 border-b border-gray-100">
             Personal Details
           </h3>
+
           <div className="grid md:grid-cols-2 gap-5">
             <div>
               <label className="label-field">Full Name *</label>
               <input type="text" value={form.name} onChange={e => set("name", e.target.value)}
-                placeholder="Patient full name"
+                placeholder="Patient full name" maxLength={100}
                 className="input-field" style={{ fontSize: "16px" }} />
             </div>
             <div>
               <label className="label-field">Phone Number *</label>
               <input type="tel" value={form.phone} onChange={e => set("phone", e.target.value)}
-                placeholder="10-digit mobile number"
+                placeholder="10-digit mobile number" maxLength={15}
                 className="input-field" style={{ fontSize: "16px" }} />
             </div>
             <div>
               <label className="label-field">Email Address</label>
               <input type="email" value={form.email} onChange={e => set("email", e.target.value)}
-                placeholder="patient@email.com"
+                placeholder="patient@email.com" maxLength={254}
                 className="input-field" style={{ fontSize: "16px" }} />
             </div>
             <div>
@@ -107,9 +108,9 @@ export default function NewPatientPage() {
             </div>
             <div>
               <label className="label-field">Date of Birth</label>
-              <input type="date" value={form.dateOfBirth} onChange={e => {
+              <input type="date" value={form.dateOfBirth} max={getISTDateString()} onChange={e => {
                 const dob = new Date(e.target.value);
-                const age = Math.floor((Date.now() - dob.getTime()) / (365.25 * 24 * 60 * 60 * 1000));
+                const age = Math.max(0, Math.floor((Date.now() - dob.getTime()) / (365.25 * 24 * 60 * 60 * 1000)));
                 set("dateOfBirth", e.target.value);
                 set("age", String(age));
               }} className="input-field" style={{ fontSize: "16px" }} />
@@ -123,7 +124,7 @@ export default function NewPatientPage() {
             <div className="md:col-span-2">
               <label className="label-field">Address</label>
               <input type="text" value={form.address} onChange={e => set("address", e.target.value)}
-                placeholder="Street, area, city"
+                placeholder="Street, area, city" maxLength={300}
                 className="input-field" style={{ fontSize: "16px" }} />
             </div>
             <div>
@@ -145,20 +146,20 @@ export default function NewPatientPage() {
               <label className="label-field">Medical History</label>
               <p className="text-[#4A5568] text-xs mb-2">Existing conditions, medications, surgeries</p>
               <textarea value={form.medicalHistory} onChange={e => set("medicalHistory", e.target.value)}
-                rows={3} placeholder="e.g. Diabetes Type 2, BP medication (Amlodipine 5mg), thyroid..."
+                rows={3} placeholder="e.g. Diabetes Type 2, BP medication (Amlodipine 5mg), thyroid..." maxLength={5000}
                 className="input-field resize-none" style={{ fontSize: "16px" }} />
             </div>
             <div>
               <label className="label-field">Dental History</label>
               <p className="text-[#4A5568] text-xs mb-2">Previous dental treatments, extractions, issues</p>
               <textarea value={form.dentalHistory} onChange={e => set("dentalHistory", e.target.value)}
-                rows={3} placeholder="e.g. Root canal on tooth 16 (2022), extraction tooth 48 (2019)..."
+                rows={3} placeholder="e.g. Root canal on tooth 16 (2022), extraction tooth 48 (2019)..." maxLength={5000}
                 className="input-field resize-none" style={{ fontSize: "16px" }} />
             </div>
             <div>
               <label className="label-field">Allergies</label>
               <input type="text" value={form.allergies} onChange={e => set("allergies", e.target.value)}
-                placeholder="e.g. Penicillin, latex, local anaesthesia..."
+                placeholder="e.g. Penicillin, latex, local anaesthesia..." maxLength={1000}
                 className="input-field" style={{ fontSize: "16px" }} />
             </div>
           </div>
@@ -206,7 +207,7 @@ export default function NewPatientPage() {
               className="flex-1 border-2 border-gray-100 focus:border-[#0D1117] px-4 py-2.5 outline-none text-sm"
               style={{ fontSize: "16px" }} />
             <button onClick={addAlert}
-              className="flex items-center gap-1 bg-[#0D1117] hover:bg-[#C9A96E] text-white text-xs font-bold px-4 py-2.5 transition-all shrink-0">
+              className="flex items-center gap-1 bg-[#0D1117] hover:bg-[#C1583B] text-white text-xs font-bold px-4 py-2.5 transition-all shrink-0">
               <Plus size={13} /> Add
             </button>
           </div>
@@ -214,7 +215,7 @@ export default function NewPatientPage() {
 
         {/* Save button */}
         <button onClick={handleSave} disabled={saving}
-          className="w-full flex items-center justify-center gap-2 bg-[#0D1117] hover:bg-[#C9A96E] text-white font-bold py-4 text-sm transition-all disabled:opacity-50">
+          className="w-full flex items-center justify-center gap-2 bg-[#0D1117] hover:bg-[#C1583B] text-white font-bold py-4 text-sm transition-all disabled:opacity-50">
           {saving ? <Loader size={16} className="animate-spin" /> : <Save size={16} />}
           {saving ? "Saving..." : "Save Patient Record"}
         </button>

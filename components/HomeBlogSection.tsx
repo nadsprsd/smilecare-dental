@@ -15,10 +15,10 @@ export default async function HomeBlogSection() {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14">
           <div>
-            <span className="text-[#C9A96E] text-[10px] font-bold tracking-widest uppercase block mb-3">
+            <span className="text-[#C1583B] text-[10px] font-bold tracking-widest uppercase block mb-3">
               Dental Health Tips
             </span>
-            <div className="w-10 h-0.5 bg-[#C9A96E] mb-5" />
+            <div className="w-10 h-0.5 bg-[#C1583B] mb-5" />
             <h2
               className="text-[#0D1117] font-bold"
               style={{ fontFamily: "Georgia, serif", fontSize: "clamp(2rem, 3.5vw, 3rem)" }}
@@ -65,7 +65,7 @@ export default async function HomeBlogSection() {
                 </div>
                 {idx === 0 && (
                   <div className="absolute top-3 right-3">
-                    <span className="bg-[#C9A96E] text-[#0D1117] text-[10px] font-bold px-2.5 py-1">
+                    <span className="bg-[#C1583B] text-[#0D1117] text-[10px] font-bold px-2.5 py-1">
                       Latest
                     </span>
                   </div>

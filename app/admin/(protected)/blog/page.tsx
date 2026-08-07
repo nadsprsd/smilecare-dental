@@ -1,22 +1,13 @@
 export const dynamic   = "force-dynamic";
 export const revalidate = 0;
 
-import { cookies }          from "next/headers";
-import { redirect }         from "next/navigation";
 import { getAllPostsAdmin }  from "@/lib/blog";
 import Link                 from "next/link";
 import { PenSquare, Plus, Eye, Shield, Edit } from "lucide-react";
 import DeletePostButton     from "@/components/admin/DeletePostButton";
 import ToggleStatusButton   from "@/components/admin/ToggleStatusButton";
 
-async function checkAuth() {
-  const c = await cookies();
-  if (c.get("admin_session")?.value !== "authenticated") redirect("/admin/login");
-}
-
 export default async function AdminBlogPage() {
-  await checkAuth();
-
   // Fetch ALL posts including drafts
   const posts = await getAllPostsAdmin();
 
@@ -24,36 +15,18 @@ export default async function AdminBlogPage() {
   const drafts    = posts.filter(p => p.status === "draft");
 
   return (
-    <div className="min-h-screen bg-[#F4F7FA]">
+    <div>
 
       {/* Header */}
-      <div className="bg-[#0D1117] px-8 py-5">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <div className="w-9 h-9 bg-[#C9A96E] flex items-center justify-center">
-              <span className="text-[#0D1117] font-black text-base">S</span>
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="text-white font-bold">SmileCare</span>
-                <span className="text-white/30">·</span>
-                <span className="text-white/50 text-sm">Blog Manager</span>
-              </div>
-            </div>
-          </div>
-          <div className="flex items-center gap-3">
-            <Link href="/admin" className="text-white/50 hover:text-white text-xs border border-white/15 px-3 py-2 transition-colors">
-              ← Dashboard
-            </Link>
-            <Link href="/admin/blog/new"
-              className="flex items-center gap-2 bg-[#C9A96E] hover:bg-[#b8935a] text-[#0D1117] text-xs font-bold px-4 py-2 transition-colors">
-              <Plus size={14} /> New Post
-            </Link>
-          </div>
-        </div>
+      <div className="bg-white border-b border-gray-100 px-8 py-6 flex items-center justify-between">
+        <h1 className="font-bold text-xl text-[#0D1117]">Blog Manager</h1>
+        <Link href="/admin/blog/new"
+          className="flex items-center gap-2 bg-[#C1583B] hover:bg-[#A3462C] text-white text-xs font-bold px-4 py-2 transition-colors">
+          <Plus size={14} /> New Post
+        </Link>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 md:px-8 py-8">
+      <div className="max-w-6xl mx-auto px-6 md:px-8 py-8">
 
         {/* Stats */}
         <div className="grid grid-cols-3 gap-4 mb-8">
@@ -75,11 +48,11 @@ export default async function AdminBlogPage() {
         <div className="bg-white shadow-sm">
           <div className="px-6 py-5 border-b border-gray-100 flex items-center justify-between">
             <h3 className="font-bold text-[#0D1117] text-xs uppercase tracking-widest flex items-center gap-2">
-              <PenSquare size={14} className="text-[#C9A96E]" />
+              <PenSquare size={14} className="text-[#C1583B]" />
               All Blog Posts ({posts.length})
             </h3>
             <Link href="/admin/blog/new"
-              className="flex items-center gap-2 bg-[#0D1117] hover:bg-[#C9A96E] text-white text-xs font-bold px-4 py-2 transition-all">
+              className="flex items-center gap-2 bg-[#0D1117] hover:bg-[#C1583B] text-white text-xs font-bold px-4 py-2 transition-all">
               <Plus size={13} /> Write New Post
             </Link>
           </div>
@@ -168,7 +141,7 @@ export default async function AdminBlogPage() {
 
                           {/* Edit */}
                           <Link href={`/admin/blog/${post._id}`}
-                            className="flex items-center gap-1 bg-[#0D1117] hover:bg-[#C9A96E] text-white text-[10px] font-bold px-2.5 py-1.5 transition-colors">
+                            className="flex items-center gap-1 bg-[#0D1117] hover:bg-[#C1583B] text-white text-[10px] font-bold px-2.5 py-1.5 transition-colors">
                             <Edit size={11} /> Edit
                           </Link>
 

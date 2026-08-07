@@ -2,6 +2,7 @@ import { connectDB } from "@/lib/mongodb";
 import { ObjectId }  from "mongodb";
 import { cookies }   from "next/headers";
 import { NextRequest } from "next/server";
+import { getISTDateString } from "@/lib/constants";
 
 async function isAuth(): Promise<boolean> {
   const c = await cookies();
@@ -21,7 +22,7 @@ export async function POST(
 
     const treatment = {
       _id:             new ObjectId().toString(),
-      date:            body.date            || new Date().toISOString().split("T")[0],
+      date:            body.date            || getISTDateString(),
       treatment:       body.treatment       || "",
       doctor:          body.doctor          || "",
       notes:           body.notes           || "",

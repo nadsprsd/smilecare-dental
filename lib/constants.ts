@@ -116,6 +116,16 @@ export const TREATMENT_TYPES = [
 
 // ── Scheduling module ──
 
+// Returns today's date as YYYY-MM-DD in India Standard Time.
+// IMPORTANT: never use `new Date().toISOString().split("T")[0]` for "today"
+// anywhere in this app — toISOString() always returns the UTC calendar date,
+// which is wrong for India between 12:00am and 5:30am IST (still the
+// previous day in UTC). This was a real reported bug — a booking made in
+// the evening was disappearing from "Today" the next morning before 5:30am.
+export function getISTDateString(date: Date = new Date()): string {
+  return date.toLocaleDateString("en-CA", { timeZone: "Asia/Kolkata" });
+}
+
 export const XRAY_TYPES = [
   "Full Mouth X-Ray (OPG)",
   "Periapical X-Ray",

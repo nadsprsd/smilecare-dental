@@ -1,28 +1,32 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
-import { ArrowLeft, Clock } from "lucide-react";
+import { Clock, ChevronLeft, ChevronRight } from "lucide-react";
 import { DOCTORS } from "@/lib/doctors";
+import { getISTDateString } from "@/lib/constants";
 
 const onCallDoctors = DOCTORS.filter(d => d.type === "on-call");
 
-function nextNDays(n: number): string[] {
+// weekOffset 0 = the 7 days starting today, 1 = the next 7 days, etc.
+function daysForWeek(weekOffset: number): string[] {
   const days: string[] = [];
-  const d = new Date();
-  for (let i = 0; i < n; i++) {
-    days.push(new Date(d.getTime() + i * 86400000).toISOString().split("T")[0]);
+  const base = new Date();
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(base.getTime() + (weekOffset * 7 + i) * 86400000);
+    days.push(getISTDateString(d));
   }
   return days;
 }
 
 export default function RosterGrid() {
-  const days = nextNDays(7);
+  const [weekOffset, setWeekOffset] = useState(0);
+  const days = daysForWeek(weekOffset);
   const [status, setStatus] = useState<Record<string, string>>({}); // key = `${doctorId}_${date}`
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState<string | null>(null);
 
   useEffect(() => {
+    setLoading(true);
     fetch(`/api/roster?start=${days[0]}&end=${days[days.length - 1]}`)
       .then(r => r.json())
       .then(data => {
@@ -33,7 +37,7 @@ export default function RosterGrid() {
         }
       })
       .finally(() => setLoading(false));
-  }, []);
+  }, [weekOffset]);
 
   const toggle = async (doctorId: string, date: string) => {
     const key = `${doctorId}_${date}`;
@@ -52,22 +56,39 @@ export default function RosterGrid() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F4F7FA]">
-      <div className="bg-[#0D1117] px-6 md:px-10 py-6">
-        <div className="max-w-5xl mx-auto">
-          <Link href="/admin" className="flex items-center gap-1.5 text-white/50 hover:text-white text-xs mb-3">
-            <ArrowLeft size={12} /> Dashboard
-          </Link>
-          <h1 className="text-white font-bold text-xl flex items-center gap-2">
-            <Clock size={18} /> On-Call Roster
-          </h1>
-          <p className="text-white/50 text-xs mt-1">
-            Mark each on-call specialist Active for the dates they'll be in clinic. Unmarked = not bookable that day.
-          </p>
-        </div>
+    <div>
+      <div className="bg-white border-b border-gray-100 px-6 md:px-10 py-6">
+        <h1 className="font-bold text-xl text-[#0D1117] flex items-center gap-2">
+          <Clock size={18} /> On-Call Roster
+        </h1>
+        <p className="text-[#4A5568] text-xs mt-1">
+          Mark each on-call specialist Active for the dates they&apos;ll be in clinic. Unmarked = not bookable that day.
+        </p>
       </div>
 
-      <div className="max-w-5xl mx-auto px-6 md:px-10 py-8 overflow-x-auto">
+      <div className="max-w-5xl mx-auto px-6 md:px-10 py-8">
+        <div className="flex items-center justify-between mb-4">
+          <button
+            onClick={() => setWeekOffset(w => Math.max(0, w - 1))}
+            disabled={weekOffset === 0}
+            className="flex items-center gap-1 text-xs font-medium text-[#4A5568] hover:text-[#0D1117] disabled:opacity-30 disabled:cursor-not-allowed"
+          >
+            <ChevronLeft size={14} /> Previous Week
+          </button>
+          <span className="text-sm font-semibold text-[#0D1117]">
+            {new Date(days[0] + "T00:00:00").toLocaleDateString("en-IN", { day: "numeric", month: "short" })}
+            {" – "}
+            {new Date(days[6] + "T00:00:00").toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
+          </span>
+          <button
+            onClick={() => setWeekOffset(w => w + 1)}
+            className="flex items-center gap-1 text-xs font-medium text-[#4A5568] hover:text-[#0D1117]"
+          >
+            Next Week <ChevronRight size={14} />
+          </button>
+        </div>
+
+        <div className="overflow-x-auto">
         {loading ? (
           <p className="text-sm text-[#4A5568]">Loading roster...</p>
         ) : (
@@ -114,6 +135,7 @@ export default function RosterGrid() {
             </tbody>
           </table>
         )}
+        </div>
       </div>
     </div>
   );

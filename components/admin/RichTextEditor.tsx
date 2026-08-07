@@ -256,11 +256,11 @@ export default function RichTextEditor({ value, onChange }: Props) {
           {
             label: "📅 Book Appointment",
             // Uses a real <a> tag with proper href
-            html:  `<div style="background:#0D1117;color:white;padding:18px 24px;text-align:center;margin:20px 0;border-radius:6px;"><p style="color:white;margin:0 0 8px;font-weight:bold;">Ready to fix your dental issue?</p><a href="/appointment" style="display:inline-block;background:#C9A96E;color:white;padding:10px 24px;text-decoration:none;font-weight:bold;border-radius:4px;margin-top:4px;">Book Free Appointment →</a></div><p><br></p>`,
+            html:  `<div style="background:#0D1117;color:white;padding:18px 24px;text-align:center;margin:20px 0;border-radius:6px;"><p style="color:white;margin:0 0 8px;font-weight:bold;">Ready to fix your dental issue?</p><a href="/appointment" style="display:inline-block;background:#C1583B;color:white;padding:10px 24px;text-decoration:none;font-weight:bold;border-radius:4px;margin-top:4px;">Book Free Appointment →</a></div><p><br></p>`,
           },
           {
             label: "❝ Quote",
-            html:  `<blockquote style="border-left:4px solid #C9A96E;padding:10px 18px;margin:16px 0;color:#555;font-style:italic;background:#fffbf5;border-radius:0 6px 6px 0;">Write a patient quote or an important statement here.</blockquote><p><br></p>`,
+            html:  `<blockquote style="border-left:4px solid #C1583B;padding:10px 18px;margin:16px 0;color:#555;font-style:italic;background:#fffbf5;border-radius:0 6px 6px 0;">Write a patient quote or an important statement here.</blockquote><p><br></p>`,
           },
           {
             label: "─ Divider",
@@ -313,7 +313,7 @@ export default function RichTextEditor({ value, onChange }: Props) {
         div[contenteditable] ul         { list-style:disc; padding-left:24px; margin:0 0 12px; }
         div[contenteditable] ol         { list-style:decimal; padding-left:24px; margin:0 0 12px; }
         div[contenteditable] li         { margin:5px 0; line-height:1.7; }
-        div[contenteditable] blockquote { border-left:4px solid #C9A96E; padding:10px 18px; margin:12px 0; color:#555; font-style:italic; background:#fffbf5; }
+        div[contenteditable] blockquote { border-left:4px solid #C1583B; padding:10px 18px; margin:12px 0; color:#555; font-style:italic; background:#fffbf5; }
         div[contenteditable] hr         { border:none; border-top:2px solid #e5e7eb; margin:20px 0; }
         div[contenteditable] a          { color:#00A3E0; text-decoration:underline; }
         div[contenteditable] img        { max-width:100%; height:auto; border-radius:6px; margin:8px 0; display:block; }

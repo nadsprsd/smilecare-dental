@@ -54,7 +54,7 @@ export default function NewPostPage() {
       const next = { ...p, [k]: v };
       if (k === "title") {
         if (!p.slug || p.slug === makeSlug(p.title)) next.slug = makeSlug(v);
-        if (!p.seoTitle) next.seoTitle = v + " | SmileCare Dental";
+        if (!p.seoTitle) next.seoTitle = v + " | Vee Care Dental";
       }
       if (k === "excerpt" && !p.seoDescription) {
         next.seoDescription = v.slice(0, 160);
@@ -138,7 +138,7 @@ export default function NewPostPage() {
               Save Draft
             </button>
             <button onClick={() => handleSave("published")} disabled={saving}
-              className="flex items-center gap-1.5 bg-[#C9A96E] hover:bg-[#b8935a] text-[#0D1117] text-xs font-bold px-4 py-2 transition-all disabled:opacity-50 rounded">
+              className="flex items-center gap-1.5 bg-[#C1583B] hover:bg-[#b8935a] text-[#0D1117] text-xs font-bold px-4 py-2 transition-all disabled:opacity-50 rounded">
               {saving ? <Loader size={12} className="animate-spin" /> : <Eye size={12} />}
               Publish Now
             </button>
@@ -152,7 +152,7 @@ export default function NewPostPage() {
           {(["write","seo","settings"] as const).map(t => (
             <button key={t} onClick={() => setTab(t)}
               className={`px-5 py-3.5 text-sm font-medium transition-colors capitalize border-b-2 ${
-                tab === t ? "border-[#C9A96E] text-[#0D1117]" : "border-transparent text-gray-400 hover:text-gray-700"
+                tab === t ? "border-[#C1583B] text-[#0D1117]" : "border-transparent text-gray-400 hover:text-gray-700"
               }`}>
               {t === "write" ? "✍️ Write" : t === "seo" ? "🔍 SEO" : "⚙️ Settings"}
             </button>
@@ -210,7 +210,7 @@ export default function NewPostPage() {
                 <h3 className="font-bold text-[#0D1117] text-sm mb-4">Publish</h3>
                 <div className="space-y-3">
                   <button onClick={() => handleSave("published")} disabled={saving}
-                    className="w-full flex items-center justify-center gap-2 bg-[#0D1117] hover:bg-[#C9A96E] text-white font-semibold py-3.5 text-sm transition-all disabled:opacity-50 rounded">
+                    className="w-full flex items-center justify-center gap-2 bg-[#0D1117] hover:bg-[#C1583B] text-white font-semibold py-3.5 text-sm transition-all disabled:opacity-50 rounded">
                     <Eye size={15} /> Publish Now
                   </button>
                   <button onClick={() => handleSave("draft")} disabled={saving}
@@ -260,7 +260,7 @@ export default function NewPostPage() {
                     placeholder="Type a tag, press Enter"
                     className="flex-1 border-2 border-gray-100 focus:border-[#0D1117] px-3 py-2 outline-none text-sm transition-colors" />
                   <button type="button" onClick={() => addTag(tagInput)}
-                    className="bg-[#0D1117] text-white text-xs font-bold px-3 py-2 hover:bg-[#C9A96E] hover:text-[#0D1117] transition-colors">
+                    className="bg-[#0D1117] text-white text-xs font-bold px-3 py-2 hover:bg-[#C1583B] hover:text-[#0D1117] transition-colors">
                     Add
                   </button>
                 </div>
@@ -310,7 +310,7 @@ export default function NewPostPage() {
                     SEO Title <span className="font-normal text-gray-400 ml-1 normal-case tracking-normal">(blue link in Google)</span>
                   </label>
                   <input type="text" value={form.seoTitle} onChange={e => set("seoTitle", e.target.value)}
-                    maxLength={70} placeholder="10 Signs You Need a Root Canal | SmileCare Tripunithura"
+                    maxLength={70} placeholder="10 Signs You Need a Root Canal | Vee Care Tripunithura"
                     className="w-full border-2 border-gray-100 focus:border-[#0D1117] px-4 py-3 outline-none text-sm transition-colors"
                     style={{ fontSize: "15px" }} />
                   <div className="flex justify-between mt-1">
@@ -326,7 +326,7 @@ export default function NewPostPage() {
                   </label>
                   <textarea value={form.seoDescription} onChange={e => set("seoDescription", e.target.value)}
                     rows={4} maxLength={165}
-                    placeholder="Learn the 10 warning signs that you might need a root canal. Expert dental advice from SmileCare Dental Clinic, Tripunithura, Kerala."
+                    placeholder="Learn the 10 warning signs that you might need a root canal. Expert dental advice from Vee Care Dental Clinic, Tripunithura, Kerala."
                     className="w-full border-2 border-gray-100 focus:border-[#0D1117] px-4 py-3 outline-none resize-none text-sm transition-colors"
                     style={{ fontSize: "15px" }} />
                   <div className="flex justify-between mt-1">

@@ -1,6 +1,7 @@
 import { connectDB } from "@/lib/mongodb";
 import { cookies }   from "next/headers";
 import { NextRequest } from "next/server";
+import { getISTDateString } from "@/lib/constants";
 
 async function isAuth(): Promise<boolean> {
   const c = await cookies();
@@ -13,7 +14,7 @@ export async function GET(req: NextRequest) {
   if (!(await isAuth())) return Response.json({ success: false }, { status: 401 });
   try {
     const { searchParams } = new URL(req.url);
-    const start = searchParams.get("start") || new Date().toISOString().split("T")[0];
+    const start = searchParams.get("start") || getISTDateString();
     const end   = searchParams.get("end")   || start;
 
     const db = await connectDB();

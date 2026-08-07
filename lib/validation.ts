@@ -118,6 +118,61 @@ export const bookingSchema = z.object({
 
 export type BookingInput = z.infer<typeof bookingSchema>;
 
+// Domains we trust for X-ray/image URLs. Rejects javascript:, data:, ftp:,
+// file:, and any other protocol/host not explicitly allowed (SEC-019).
+const ALLOWED_IMAGE_HOSTS = [
+  "drive.google.com",
+  "lh3.googleusercontent.com", // Google's actual image CDN — Drive/Photos links resolve here
+  "photos.google.com",
+  "i.imgur.com",
+  "imgur.com",
+];
+
+// A plain Google Drive "share" link (.../file/d/FILE_ID/view) is an HTML
+// viewer page, not an image — it can never render in an <img> tag, which is
+// exactly the "couldn't load this image" bug reported. This converts it to
+// Drive's direct-view format automatically so staff don't have to know the
+// difference. Google Photos share links have no stable direct-image format,
+// so those still can't be auto-fixed — recommend Drive or Imgur instead.
+export function normalizeImageUrl(url: string): string {
+  const driveMatch = url.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/);
+  if (driveMatch) {
+    return `https://drive.google.com/uc?export=view&id=${driveMatch[1]}`;
+  }
+  return url;
+}
+
+export function isAllowedImageUrl(url: string): boolean {
+  try {
+    const parsed = new URL(url);
+    if (parsed.protocol !== "https:" && parsed.protocol !== "http:") return false;
+    return ALLOWED_IMAGE_HOSTS.some(host => parsed.hostname === host || parsed.hostname.endsWith("." + host));
+  } catch {
+    return false;
+  }
+}
+
+// Server-side validation for patient records — enforced here regardless of
+// what the admin UI sends, since client-side maxLength is only a UX hint,
+// not a real control. Limits per the August 2026 security assessment (SEC-022).
+export const patientSchema = z.object({
+  name: z.string().trim().min(2, "Name is too short").max(100, "Name is too long")
+    .transform(s => s.replace(/<[^>]*>/g, "")),
+  phone: z.string().trim().regex(/^[0-9+\-\s]{10,15}$/, "Phone must be 10-15 digits"),
+  email: z.string().trim().max(254).optional().or(z.literal("")),
+  sex: z.enum(["Male", "Female", "Other"]).optional(),
+  dateOfBirth: z.string().optional().refine(
+    v => !v || new Date(v) <= new Date(),
+    "Date of birth cannot be in the future"
+  ),
+  age: z.coerce.number().min(0).max(120).optional(),
+  address: z.string().trim().max(300).optional().transform(s => s?.replace(/<[^>]*>/g, "")),
+  source: z.string().max(50).optional(),
+  medicalHistory: z.string().trim().max(5000).optional().transform(s => s?.replace(/<[^>]*>/g, "")),
+  dentalHistory: z.string().trim().max(5000).optional().transform(s => s?.replace(/<[^>]*>/g, "")),
+  allergies: z.string().trim().max(1000).optional().transform(s => s?.replace(/<[^>]*>/g, "")),
+});
+
 export function sanitizeForMongo(data: AppointmentInput) {
   const sanitize = (s: string) =>
     s.replace(/[${}()[\]]/g, "").trim();

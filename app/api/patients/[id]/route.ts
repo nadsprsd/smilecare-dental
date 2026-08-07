@@ -1,5 +1,6 @@
 import { connectDB } from "@/lib/mongodb";
 import { ObjectId }  from "mongodb";
+import { patientSchema } from "@/lib/validation";
 import { cookies }   from "next/headers";
 import { NextRequest } from "next/server";
 
@@ -31,9 +32,23 @@ export async function PATCH(
   if (!(await isAuth())) return Response.json({ success: false }, { status: 401 });
   try {
     const { id } = await context.params;
-    const body   = await req.json();
-    const db     = await connectDB();
 
+    let body: any;
+    try {
+      body = await req.json();
+    } catch {
+      return Response.json({ success: false, message: "Malformed JSON" }, { status: 400 });
+    }
+
+    const parsed = patientSchema.partial().safeParse(body);
+    if (!parsed.success) {
+      return Response.json(
+        { success: false, message: parsed.error.issues[0]?.message || "Invalid input" },
+        { status: 400 }
+      );
+    }
+
+    const db = await connectDB();
     const allowed = [
       "name","phone","email","sex","dateOfBirth","age",
       "address","source","medicalHistory","dentalHistory",
@@ -42,7 +57,9 @@ export async function PATCH(
 
     const update: Record<string, unknown> = { updatedAt: new Date().toISOString() };
     for (const key of allowed) {
-      if (body[key] !== undefined) update[key] = body[key];
+      if ((parsed.data as any)[key] !== undefined) update[key] = (parsed.data as any)[key];
+      else if (key === "dateOfBirth" && body.dateOfBirth !== undefined) update[key] = body.dateOfBirth;
+      else if (key === "alerts" && Array.isArray(body.alerts)) update[key] = body.alerts;
     }
 
     const result = await db.collection("patients").updateOne(

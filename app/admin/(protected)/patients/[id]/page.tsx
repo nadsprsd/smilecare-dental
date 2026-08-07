@@ -8,8 +8,9 @@ import {
   Loader, Save, Trash2, Image as ImageIcon, Calendar,
   User, FileText, Activity, Shield,
 } from "lucide-react";
-import { SOURCES, TREATMENT_TYPES, XRAY_TYPES, MEDICATIONS, FREQUENCY_OPTIONS, MEAL_TIMING_OPTIONS, ROUTE_OPTIONS } from "@/lib/constants";
+import { SOURCES, TREATMENT_TYPES, XRAY_TYPES, MEDICATIONS, FREQUENCY_OPTIONS, MEAL_TIMING_OPTIONS, ROUTE_OPTIONS, getISTDateString } from "@/lib/constants";
 import { DOCTORS, doctorsForService } from "@/lib/doctors";
+import { normalizeImageUrl } from "@/lib/validation";
 import InvoiceGenerator from "@/components/InvoiceGenerator";
 
 type Alert = { type: string; message: string };
@@ -52,7 +53,7 @@ export default function PatientProfilePage() {
   // Treatment form
   const [showTreatForm, setShowTreatForm] = useState(false);
   const [treatForm,     setTreatForm]     = useState({
-    date: new Date().toISOString().split("T")[0],
+    date: getISTDateString(),
     treatment: "", doctor: "", notes: "",
     estimatedAmount: "", paidAmount: "", status: "planned",
     diagnosis: "", labDetails: "",
@@ -85,7 +86,7 @@ export default function PatientProfilePage() {
   // XRay form
   const [showXrayForm, setShowXrayForm] = useState(false);
   const [xrayForm,     setXrayForm]     = useState({
-    url: "", date: new Date().toISOString().split("T")[0],
+    url: "", date: getISTDateString(),
     type: "Full Mouth X-Ray (OPG)", notes: "",
   });
 
@@ -133,7 +134,7 @@ export default function PatientProfilePage() {
       if (data.success) {
         await reload();
         setShowTreatForm(false);
-        setTreatForm({ date: new Date().toISOString().split("T")[0], treatment: "", doctor: "", notes: "", estimatedAmount: "", paidAmount: "", status: "planned", diagnosis: "", labDetails: "" });
+        setTreatForm({ date: getISTDateString(), treatment: "", doctor: "", notes: "", estimatedAmount: "", paidAmount: "", status: "planned", diagnosis: "", labDetails: "" });
         setPrescriptions([]);
       }
     } finally { setSaving(false); }
@@ -151,7 +152,9 @@ export default function PatientProfilePage() {
       if (data.success) {
         await reload();
         setShowXrayForm(false);
-        setXrayForm({ url: "", date: new Date().toISOString().split("T")[0], type: "Full Mouth X-Ray (OPG)", notes: "" });
+        setXrayForm({ url: "", date: getISTDateString(), type: "Full Mouth X-Ray (OPG)", notes: "" });
+      } else {
+        alert(data.message || "Couldn't save this image.");
       }
     } finally { setSaving(false); }
   };
@@ -193,7 +196,7 @@ export default function PatientProfilePage() {
     <div className="min-h-screen bg-[#F4F7FA] flex items-center justify-center">
       <div className="text-center">
         <p className="text-[#0D1117] font-bold">Patient not found</p>
-        <Link href="/admin/patients" className="text-[#C9A96E] text-sm mt-2 block">← Back to patients</Link>
+        <Link href="/admin/patients" className="text-[#C1583B] text-sm mt-2 block">← Back to patients</Link>
       </div>
     </div>
   );
@@ -215,7 +218,7 @@ export default function PatientProfilePage() {
             <div>
               <div className="flex items-center gap-3">
                 <span className="text-white font-bold text-lg">{patient.name}</span>
-                <span className="font-mono text-[#C9A96E] text-sm">{patient.registrationNumber}</span>
+                <span className="font-mono text-[#C1583B] text-sm">{patient.registrationNumber}</span>
               </div>
               <div className="flex items-center gap-3 mt-0.5">
                 <span className="text-white/40 text-xs">{patient.age}y · {patient.sex}</span>
@@ -273,7 +276,7 @@ export default function PatientProfilePage() {
             <button key={tab} onClick={() => setActiveTab(tab)}
               className={`px-5 py-4 text-sm font-medium transition-colors border-b-2 ${
                 activeTab === tab
-                  ? "border-[#C9A96E] text-[#0D1117]"
+                  ? "border-[#C1583B] text-[#0D1117]"
                   : "border-transparent text-[#4A5568] hover:text-[#0D1117]"
               }`}>
               {tab}
@@ -307,9 +310,9 @@ export default function PatientProfilePage() {
               <div className="bg-white shadow-sm p-6">
                 <div className="flex items-center justify-between mb-5">
                   <h3 className="font-bold text-[#0D1117] text-xs uppercase tracking-widest flex items-center gap-2">
-                    <Activity size={13} className="text-[#C9A96E]" /> Recent Treatments
+                    <Activity size={13} className="text-[#C1583B]" /> Recent Treatments
                   </h3>
-                  <button onClick={() => setActiveTab("Treatments")} className="text-[#C9A96E] text-xs hover:underline">
+                  <button onClick={() => setActiveTab("Treatments")} className="text-[#C1583B] text-xs hover:underline">
                     View all →
                   </button>
                 </div>
@@ -344,7 +347,7 @@ export default function PatientProfilePage() {
             <div className="space-y-5">
               <div className="bg-white shadow-sm p-6">
                 <h3 className="font-bold text-[#0D1117] text-xs uppercase tracking-widest mb-4 flex items-center gap-2">
-                  <User size={13} className="text-[#C9A96E]" /> Contact Info
+                  <User size={13} className="text-[#C1583B]" /> Contact Info
                 </h3>
                 <div className="space-y-3 text-sm">
                   <div><span className="text-[#4A5568] text-xs">Phone</span><div className="font-medium text-[#0D1117]">{patient.phone}</div></div>
@@ -373,7 +376,7 @@ export default function PatientProfilePage() {
               {patient.dentalHistory && (
                 <div className="bg-white shadow-sm p-6">
                   <h3 className="font-bold text-[#0D1117] text-xs uppercase tracking-widest mb-3 flex items-center gap-2">
-                    <FileText size={13} className="text-[#C9A96E]" /> Dental History
+                    <FileText size={13} className="text-[#C1583B]" /> Dental History
                   </h3>
                   <p className="text-sm text-[#4A5568] leading-relaxed">{patient.dentalHistory}</p>
                 </div>
@@ -390,14 +393,14 @@ export default function PatientProfilePage() {
                 Treatment History ({patient.treatments.length})
               </h3>
               <button onClick={() => setShowTreatForm(true)}
-                className="flex items-center gap-2 bg-[#0D1117] hover:bg-[#C9A96E] text-white text-xs font-bold px-4 py-2.5 transition-all">
+                className="flex items-center gap-2 bg-[#0D1117] hover:bg-[#C1583B] text-white text-xs font-bold px-4 py-2.5 transition-all">
                 <Plus size={13} /> Add Treatment
               </button>
             </div>
 
             {/* Add treatment form */}
             {showTreatForm && (
-              <div className="bg-white shadow-sm p-7 mb-6 border-l-4 border-[#C9A96E]">
+              <div className="bg-white shadow-sm p-7 mb-6 border-l-4 border-[#C1583B]">
                 <h4 className="font-bold text-[#0D1117] mb-5">New Treatment</h4>
                 <div className="grid md:grid-cols-2 gap-4 mb-4">
                   <div>
@@ -537,7 +540,7 @@ export default function PatientProfilePage() {
 
                 <div className="flex gap-3">
                   <button onClick={addTreatment} disabled={saving}
-                    className="flex items-center gap-2 bg-[#0D1117] hover:bg-[#C9A96E] text-white text-sm font-bold px-6 py-3 transition-all disabled:opacity-50">
+                    className="flex items-center gap-2 bg-[#0D1117] hover:bg-[#C1583B] text-white text-sm font-bold px-6 py-3 transition-all disabled:opacity-50">
                     {saving ? <Loader size={14} className="animate-spin" /> : <Save size={14} />} Save Treatment
                   </button>
                   <button onClick={() => { setShowTreatForm(false); setPrescriptions([]); }}
@@ -621,21 +624,24 @@ export default function PatientProfilePage() {
                 X-Rays & Images ({patient.xrays.length})
               </h3>
               <button onClick={() => setShowXrayForm(true)}
-                className="flex items-center gap-2 bg-[#0D1117] hover:bg-[#C9A96E] text-white text-xs font-bold px-4 py-2.5 transition-all">
+                className="flex items-center gap-2 bg-[#0D1117] hover:bg-[#C1583B] text-white text-xs font-bold px-4 py-2.5 transition-all">
                 <Plus size={13} /> Add Image
               </button>
             </div>
 
             {showXrayForm && (
-              <div className="bg-white shadow-sm p-7 mb-6 border-l-4 border-[#C9A96E]">
+              <div className="bg-white shadow-sm p-7 mb-6 border-l-4 border-[#C1583B]">
                 <h4 className="font-bold text-[#0D1117] mb-5">Add X-Ray / Image</h4>
                 <div className="grid md:grid-cols-2 gap-4 mb-4">
                   <div className="md:col-span-2">
                     <label className="block text-[10px] font-bold tracking-widest uppercase text-[#0D1117] mb-2">Image URL *</label>
                     <input type="url" value={xrayForm.url} onChange={e => setXrayForm(f => ({ ...f, url: e.target.value }))}
-                      placeholder="Paste image URL from Google Drive, Dropbox, or any image host"
+                      placeholder="Paste a Google Drive, Google Photos, or Imgur link"
                       className="w-full border-2 border-gray-100 focus:border-[#0D1117] px-4 py-3 outline-none text-sm" />
-                    <p className="text-xs text-[#4A5568] mt-1">Upload to Google Drive → right-click → Get link → change to Anyone with link → copy URL</p>
+                    <p className="text-xs text-[#4A5568] mt-1">
+                      Google Drive share links (drive.google.com/file/d/.../view) are converted automatically —
+                      no need to find the "direct" link yourself. Only Google Drive, Google Photos, and Imgur links are accepted.
+                    </p>
                   </div>
                   <div>
                     <label className="block text-[10px] font-bold tracking-widest uppercase text-[#0D1117] mb-2">Type</label>
@@ -660,12 +666,12 @@ export default function PatientProfilePage() {
                   <div className="mb-4">
                     <p className="text-xs text-[#4A5568] mb-2">Preview:</p>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={xrayForm.url} alt="Preview" className="max-h-48 border border-gray-200" onError={e => (e.currentTarget.style.display = "none")} />
+                    <img src={normalizeImageUrl(xrayForm.url)} alt="Preview" className="max-h-48 border border-gray-200" onError={e => (e.currentTarget.style.display = "none")} />
                   </div>
                 )}
                 <div className="flex gap-3">
                   <button onClick={addXray} disabled={saving}
-                    className="flex items-center gap-2 bg-[#0D1117] hover:bg-[#C9A96E] text-white text-sm font-bold px-6 py-3 transition-all disabled:opacity-50">
+                    className="flex items-center gap-2 bg-[#0D1117] hover:bg-[#C1583B] text-white text-sm font-bold px-6 py-3 transition-all disabled:opacity-50">
                     {saving ? <Loader size={14} className="animate-spin" /> : <Save size={14} />} Save Image
                   </button>
                   <button onClick={() => setShowXrayForm(false)}
@@ -785,7 +791,7 @@ export default function PatientProfilePage() {
             </div>
 
             <button onClick={saveEdit} disabled={saving}
-              className="w-full flex items-center justify-center gap-2 bg-[#0D1117] hover:bg-[#C9A96E] text-white font-bold py-4 text-sm transition-all disabled:opacity-50">
+              className="w-full flex items-center justify-center gap-2 bg-[#0D1117] hover:bg-[#C1583B] text-white font-bold py-4 text-sm transition-all disabled:opacity-50">
               {saving ? <Loader size={16} className="animate-spin" /> : <Save size={16} />}
               {saving ? "Saving..." : "Save Changes"}
             </button>

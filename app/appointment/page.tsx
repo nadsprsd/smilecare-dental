@@ -4,6 +4,7 @@ import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { CheckCircle, ArrowLeft, ChevronRight, Shield, Clock } from "lucide-react";
 import { SERVICES } from "@/lib/doctors";
+import { getISTDateString } from "@/lib/constants";
 
 type DoctorSlot = {
   id: string;
@@ -55,7 +56,7 @@ function AppointmentForm() {
 
   const minDate = new Date();
   minDate.setDate(minDate.getDate() + 1);
-  const minDateStr = minDate.toISOString().split("T")[0];
+  const minDateStr = getISTDateString(minDate);
 
   // Fetch live availability whenever service + date are both chosen
   useEffect(() => {

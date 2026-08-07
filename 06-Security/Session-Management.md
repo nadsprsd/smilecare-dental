@@ -45,3 +45,36 @@ After logout, access to `/admin` should require a new login.
 Actual:
 
 Pending
+
+
+# Session Management
+
+## SEC-016
+
+### Test
+
+Verified authentication cookie configuration.
+
+### Cookie
+
+admin_session
+
+### Result
+
+✅ HttpOnly Enabled
+
+✅ Secure Enabled
+
+✅ SameSite=Lax
+
+✅ Cookie Path=/
+
+### Risk
+
+Low
+
+### Recommendation
+
+Current configuration is suitable for production.
+
+For higher security, consider reducing session lifetime or implementing server-side session invalidation.

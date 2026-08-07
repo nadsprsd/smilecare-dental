@@ -34,7 +34,12 @@ async function ensureSlotLockIndex(db: any) {
 // makes it structurally impossible rather than just "checked for".
 export async function POST(req: NextRequest) {
   try {
-    const raw = await req.json();
+    let raw: any;
+    try {
+      raw = await req.json();
+    } catch {
+      return Response.json({ success: false, message: "Malformed JSON" }, { status: 400 });
+    }
     const parsed = bookingSchema.safeParse(raw);
     if (!parsed.success) {
       return Response.json({ success: false, message: parsed.error.issues[0]?.message || "Invalid input" }, { status: 400 });

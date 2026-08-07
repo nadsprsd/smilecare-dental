@@ -138,7 +138,7 @@ export default function EditPostPage() {
               {saving ? <Loader size={13} className="animate-spin" /> : <Save size={13} />} Save Draft
             </button>
             <button onClick={() => handleSave("published")} disabled={saving}
-              className="flex items-center gap-2 bg-[#C9A96E] hover:bg-[#b8935a] text-[#0D1117] text-xs font-bold px-4 py-2 transition-all disabled:opacity-50">
+              className="flex items-center gap-2 bg-[#C1583B] hover:bg-[#b8935a] text-[#0D1117] text-xs font-bold px-4 py-2 transition-all disabled:opacity-50">
               {saving ? <Loader size={13} className="animate-spin" /> : <Eye size={13} />}
               {form.status === "published" ? "Update" : "Publish"}
             </button>
@@ -219,7 +219,7 @@ export default function EditPostPage() {
               <h4 className="font-bold text-[#0D1117] text-sm mb-4">Status</h4>
               <div className="space-y-3">
                 <button onClick={() => handleSave("published")} disabled={saving}
-                  className="w-full flex items-center justify-center gap-2 bg-[#0D1117] hover:bg-[#C9A96E] text-white font-semibold py-3 text-sm transition-all disabled:opacity-50">
+                  className="w-full flex items-center justify-center gap-2 bg-[#0D1117] hover:bg-[#C1583B] text-white font-semibold py-3 text-sm transition-all disabled:opacity-50">
                   <Eye size={14} /> {form.status === "published" ? "Update Post" : "Publish Now"}
                 </button>
                 <button onClick={() => handleSave("draft")} disabled={saving}

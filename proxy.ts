@@ -32,34 +32,51 @@ export function proxy(request: NextRequest) {   // ← changed from middleware
     "max-age=63072000; includeSubDomains; preload"
   );
 
-  // rate limit POST /api/appointments
-  if (pathname === "/api/appointments" && request.method === "POST") {
-    const ip =
-      request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-      request.headers.get("x-real-ip") ||
-      "unknown";
+  // Rate limiting — different limits per endpoint since login brute-force
+  // attempts need a much stricter window than normal booking traffic.
+  const ip =
+    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    request.headers.get("x-real-ip") ||
+    "unknown";
 
-    const { allowed, remaining } = getRateLimitResult(ip, 5, 60 * 1000);
+  const rateLimitRules: { match: () => boolean; limit: number; windowMs: number; key: string }[] = [
+    {
+      match: () => pathname === "/api/admin/login" && request.method === "POST",
+      limit: 5, windowMs: 15 * 60 * 1000, key: "login",
+    },
+    {
+      match: () => pathname === "/api/appointments" && request.method === "POST",
+      limit: 5, windowMs: 60 * 1000, key: "appointments",
+    },
+    {
+      match: () => pathname === "/api/bookings" && request.method === "POST",
+      limit: 5, windowMs: 60 * 1000, key: "bookings",
+    },
+  ];
+
+  for (const rule of rateLimitRules) {
+    if (!rule.match()) continue;
+    const { allowed, remaining } = getRateLimitResult(`${rule.key}:${ip}`, rule.limit, rule.windowMs);
 
     if (!allowed) {
       return new NextResponse(
         JSON.stringify({
           success: false,
-          message: "Too many requests. Please wait a minute before trying again.",
+          message: "Too many requests. Please wait before trying again.",
         }),
         {
           status:  429,
           headers: {
             "Content-Type":          "application/json",
-            "Retry-After":           "60",
-            "X-RateLimit-Limit":     "5",
+            "Retry-After":           String(Math.round(rule.windowMs / 1000)),
+            "X-RateLimit-Limit":     String(rule.limit),
             "X-RateLimit-Remaining": "0",
           },
         }
       );
     }
 
-    response.headers.set("X-RateLimit-Limit",     "5");
+    response.headers.set("X-RateLimit-Limit",     String(rule.limit));
     response.headers.set("X-RateLimit-Remaining", String(remaining));
   }
 

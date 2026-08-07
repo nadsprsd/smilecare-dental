@@ -28,7 +28,7 @@ export default function AdminSidebar() {
   };
 
   return (
-    <aside className="w-60 shrink-0 bg-[#0D1117] min-h-screen flex flex-col print:hidden">
+    <aside className="w-60 shrink-0 bg-[#0D1117] h-screen sticky top-0 flex flex-col print:hidden">
       <div className="flex items-center gap-2.5 px-6 py-6 border-b border-white/10">
         <div className="relative w-9 h-9 shrink-0">
           <Image src="/logo.png" alt="Vee Care Dental Clinic" fill sizes="36px" className="object-contain" />

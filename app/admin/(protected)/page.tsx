@@ -64,8 +64,10 @@ export default async function AdminPage() {
   const pending   = data.filter((d: any) => !d.status || d.status === "pending");
   const confirmed = data.filter((d: any) => d.status === "confirmed");
 
+  // Combines the legacy appointment inquiries with real bookings so this
+  // reflects actual demand, not just the old system's data.
   const serviceCounts: Record<string, number> = {};
-  data.forEach((d: any) => {
+  [...data, ...bookings].forEach((d: any) => {
     const s = d.service || "Other";
     serviceCounts[s] = (serviceCounts[s] || 0) + 1;
   });

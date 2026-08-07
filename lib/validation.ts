@@ -205,38 +205,38 @@ export const patientSchema = z.object({
     .max(120, "Age cannot exceed 120")
     .optional(),
 
-  address: z
-    .string()
-    .trim()
-    .max(300, "Address cannot exceed 300 characters")
-    .optional()
-    .transform((s) => s.replace(/<[^>]*>/g, "")),
+ address: z
+  .string()
+  .trim()
+  .max(300, "Address cannot exceed 300 characters")
+  .optional()
+  .transform((s) => (s ? s.replace(/<[^>]*>/g, "") : "")),
 
   source: z
     .string()
     .max(50, "Source is too long")
     .optional(),
 
-  medicalHistory: z
-    .string()
-    .trim()
-    .max(5000, "Medical history cannot exceed 5000 characters")
-    .optional()
-    .transform((s) => s.replace(/<[^>]*>/g, "")),
+ medicalHistory: z
+  .string()
+  .trim()
+  .max(5000, "Medical history cannot exceed 5000 characters")
+  .optional()
+  .transform((s) => (s ? s.replace(/<[^>]*>/g, "") : "")),
 
   dentalHistory: z
-    .string()
-    .trim()
-    .max(5000, "Dental history cannot exceed 5000 characters")
-    .optional()
-    .transform((s) => s.replace(/<[^>]*>/g, "")),
+  .string()
+  .trim()
+  .max(5000, "Dental history cannot exceed 5000 characters")
+  .optional()
+  .transform((s) => (s ? s.replace(/<[^>]*>/g, "") : "")),
 
   allergies: z
-    .string()
-    .trim()
-    .max(1000, "Allergies cannot exceed 1000 characters")
-    .optional()
-    .transform((s) => s.replace(/<[^>]*>/g, "")),
+  .string()
+  .trim()
+  .max(1000, "Allergies cannot exceed 1000 characters")
+  .optional()
+  .transform((s) => (s ? s.replace(/<[^>]*>/g, "") : "")),
 });
 
 export function sanitizeForMongo(data: AppointmentInput) {

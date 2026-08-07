@@ -155,27 +155,93 @@ export function isAllowedImageUrl(url: string): boolean {
 // Server-side validation for patient records — enforced here regardless of
 // what the admin UI sends, since client-side maxLength is only a UX hint,
 // not a real control. Limits per the August 2026 security assessment (SEC-022).
+// ----------------------
+// Patient Validation
+// ----------------------
+
 export const patientSchema = z.object({
-  name: z.string().trim().min(2, "Name is too short").max(100, "Name is too long")
-    .transform(s => s.replace(/<[^>]*>/g, "")),
-  phone: z.string().trim().regex(/^[0-9+\-\s]{10,15}$/, "Phone must be 10-15 digits"),
-  email: z.string().trim().max(254).optional().or(z.literal("")),
-  sex: z.enum(["Male", "Female", "Other"]).optional(),
-  dateOfBirth: z.string().optional().refine(
-    v => !v || new Date(v) <= new Date(),
-    "Date of birth cannot be in the future"
-  ),
-  age: z.coerce.number().min(0).max(120).optional(),
-  address: z.string().trim().max(300).optional().transform(s => s?.replace(/<[^>]*>/g, "")),
-  source: z.string().max(50).optional(),
-  medicalHistory: z.string().trim().max(5000).optional().transform(s => s?.replace(/<[^>]*>/g, "")),
-  dentalHistory: z.string().trim().max(5000).optional().transform(s => s?.replace(/<[^>]*>/g, "")),
-  allergies: z.string().trim().max(1000).optional().transform(s => s?.replace(/<[^>]*>/g, "")),
+  name: z
+    .string()
+    .trim()
+    .min(2, "Name must be at least 2 characters")
+    .max(100, "Name cannot exceed 100 characters")
+    .regex(/^[a-zA-Z\s.'-]+$/, "Name contains invalid characters")
+    .transform((s) => s.replace(/<[^>]*>/g, "")),
+
+  phone: z
+    .string()
+    .trim()
+    .regex(/^[0-9+\-\s]{10,15}$/, "Phone must be 10–15 digits"),
+
+  email: z
+    .string()
+    .trim()
+    .email("Invalid email address")
+    .max(254)
+    .optional()
+    .or(z.literal("")),
+
+  sex: z
+    .enum(["Male", "Female", "Other"])
+    .optional(),
+
+  dateOfBirth: z
+    .string()
+    .optional()
+    .refine(
+      (value) => {
+        if (!value) return true;
+        return new Date(value) <= new Date();
+      },
+      {
+        message: "Date of birth cannot be in the future",
+      }
+    ),
+
+  age: z
+    .coerce
+    .number()
+    .min(0, "Age cannot be negative")
+    .max(120, "Age cannot exceed 120")
+    .optional(),
+
+  address: z
+    .string()
+    .trim()
+    .max(300, "Address cannot exceed 300 characters")
+    .optional()
+    .transform((s) => s.replace(/<[^>]*>/g, "")),
+
+  source: z
+    .string()
+    .max(50, "Source is too long")
+    .optional(),
+
+  medicalHistory: z
+    .string()
+    .trim()
+    .max(5000, "Medical history cannot exceed 5000 characters")
+    .optional()
+    .transform((s) => s.replace(/<[^>]*>/g, "")),
+
+  dentalHistory: z
+    .string()
+    .trim()
+    .max(5000, "Dental history cannot exceed 5000 characters")
+    .optional()
+    .transform((s) => s.replace(/<[^>]*>/g, "")),
+
+  allergies: z
+    .string()
+    .trim()
+    .max(1000, "Allergies cannot exceed 1000 characters")
+    .optional()
+    .transform((s) => s.replace(/<[^>]*>/g, "")),
 });
 
 export function sanitizeForMongo(data: AppointmentInput) {
   const sanitize = (s: string) =>
-    s.replace(/[${}()[\]]/g, "").trim();
+    s.replace(/[${}()[]]/g, "").trim();
 
   return {
     ...data,

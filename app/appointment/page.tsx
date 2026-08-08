@@ -32,6 +32,63 @@ function formatSlot(t: string): string {
   return `${hour12}:${String(m).padStart(2, "0")} ${period}`;
 }
 
+function NotifyMeForm({ service, date }: { service: string; date: string }) {
+  const [name, setName]   = useState("");
+  const [phone, setPhone] = useState("");
+  const [state, setState] = useState<"idle" | "sending" | "sent" | "error">("idle");
+
+  const submit = async () => {
+    setState("sending");
+    try {
+      const res = await fetch("/api/waitlist", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, phone, service, date }),
+      });
+      const data = await res.json();
+      setState(data.success ? "sent" : "error");
+    } catch {
+      setState("error");
+    }
+  };
+
+  if (state === "sent") {
+    return (
+      <div className="bg-[#F2EDE3] border border-[#0F2E2E]/10 p-4 mb-4">
+        <p className="text-sm text-[#0F2E2E] font-medium">Thanks — we've got your details and will call you back.</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="bg-[#F4F7FA] border border-gray-200 p-4 mb-4">
+      <p className="text-sm text-[#0D1117] font-medium mb-1">No doctor available for this on {date}.</p>
+      <p className="text-xs text-[#4A5568] mb-3">Leave your number and we'll call you back to sort out a time — no need to keep checking dates yourself.</p>
+      <div className="flex flex-col sm:flex-row gap-2">
+        <input
+          type="text" value={name} onChange={e => setName(e.target.value)}
+          placeholder="Your name" maxLength={100}
+          className="flex-1 border-2 border-gray-200 focus:border-[#0D1117] px-3 py-2.5 outline-none text-sm"
+          style={{ fontSize: "16px" }}
+        />
+        <input
+          type="tel" value={phone} onChange={e => setPhone(e.target.value)}
+          placeholder="10-digit mobile" maxLength={10}
+          className="flex-1 border-2 border-gray-200 focus:border-[#0D1117] px-3 py-2.5 outline-none text-sm"
+          style={{ fontSize: "16px" }}
+        />
+        <button
+          onClick={submit}
+          disabled={state === "sending" || name.trim().length < 2 || !/^[6-9]\d{9}$/.test(phone)}
+          className="bg-[#0D1117] hover:bg-[#C1583B] text-white text-sm font-bold px-5 py-2.5 transition-colors disabled:opacity-40 whitespace-nowrap"
+        >
+          {state === "sending" ? "Sending..." : "Notify Me"}
+        </button>
+      </div>
+      {state === "error" && <p className="text-xs text-red-600 mt-2">Something went wrong — please call us directly instead.</p>}
+    </div>
+  );
+}
+
 function AppointmentForm() {
   const searchParams = useSearchParams();
   const [step,    setStep]    = useState(1);
@@ -128,22 +185,6 @@ function AppointmentForm() {
       }
 
       setConfirmedTier(data.booking?.confirmationStatus === "pending" ? "pending" : "confirmed");
-
-      // WhatsApp notification to the clinic — plain text, no emojis
-      const clinicPhone = process.env.NEXT_PUBLIC_CLINIC_WHATSAPP || "918075243127";
-      const message =
-        "New Booking - Vee Care\n\n" +
-        "Patient: " + form.name + "\n" +
-        "Phone: " + phoneClean + "\n" +
-        "Service: " + form.service + "\n" +
-        "Doctor: " + (selectedDoctor?.name || "") + "\n" +
-        "Date: " + new Date(form.date).toLocaleDateString("en-IN", { weekday: "long", day: "numeric", month: "long" }) + "\n" +
-        "Time: " + formatSlot(form.time) + "\n" +
-        "Status: " + (data.booking?.confirmationStatus === "pending" ? "PENDING - on-call doctor, needs confirmation" : "Confirmed") + "\n" +
-        "Notes: " + (form.notes || "None") + "\n\n" +
-        "Booked via Vee Care website";
-
-      window.open(`https://wa.me/${clinicPhone}?text=${encodeURIComponent(message)}`, "_blank");
 
       setDone(true);
     } catch (err) {
@@ -300,7 +341,7 @@ function AppointmentForm() {
               )}
 
               {form.date && !checking && !availError && doctors.length === 0 && (
-                <p className="text-sm text-[#4A5568] mb-4">No doctors available for this service on this date. Please try a different date.</p>
+                <NotifyMeForm service={form.service} date={form.date} />
               )}
 
               {doctors.map(doc => (

@@ -247,6 +247,10 @@ export default function PatientProfilePage() {
               className="flex items-center gap-1.5 border border-white/20 text-white/70 hover:text-white text-xs px-3 py-2 transition-colors">
               <FileText size={13} /> Full Record
             </Link>
+            <Link href={`/admin/patients/${id}/prescription`} target="_blank"
+              className="flex items-center gap-1.5 border border-white/20 text-white/70 hover:text-white text-xs px-3 py-2 transition-colors">
+              <FileText size={13} /> Prescriptions
+            </Link>
             <button onClick={deletePatient}
               className="border border-red-500/30 text-red-400 hover:bg-red-500/10 text-xs px-3 py-2 transition-all">
               Delete

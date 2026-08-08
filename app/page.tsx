@@ -7,7 +7,6 @@ import { ArrowRight, ArrowUpRight, Play } from "lucide-react";
 import type { Metadata } from "next";
 import CertificatesSection from "@/components/CertificatesSection";
 import VideoTestimonials from "@/components/VideoTestimonials";
-import GoogleReviews from "@/components/GoogleReviews";
 import FAQSection from "@/components/FAQSection";
 import HomeBlogSection from "@/components/HomeBlogSection";
 
@@ -441,8 +440,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
-      <GoogleReviews variant="preview" />
 
       {/* ════════════════════════════════════════
           BLOG PREVIEW

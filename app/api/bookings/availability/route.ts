@@ -35,15 +35,13 @@ export async function GET(req: NextRequest) {
       .toArray();
     const rosterMap = new Map(rosterDocs.map(r => [r.doctorId, r.status]));
 
-    // Existing non-cancelled bookings for this date, for these doctors
+    // Existing non-cancelled bookings for this date — clinic-wide, not
+    // filtered by doctor. The clinic has one chair, so a slot taken by ANY
+    // doctor (even one not offering this service) blocks it for everyone.
     const bookingDocs = await db.collection("bookings")
-      .find({ date, doctorId: { $in: candidates.map(d => d.id) }, confirmationStatus: { $ne: "cancelled" } })
+      .find({ date, confirmationStatus: { $ne: "cancelled" } })
       .toArray();
-    const takenByDoctor = new Map<string, Set<string>>();
-    for (const b of bookingDocs) {
-      if (!takenByDoctor.has(b.doctorId)) takenByDoctor.set(b.doctorId, new Set());
-      takenByDoctor.get(b.doctorId)!.add(b.time);
-    }
+    const takenClinicWide = new Set(bookingDocs.map(b => b.time));
 
     const doctors = candidates
       .filter(d => {
@@ -54,16 +52,13 @@ export async function GET(req: NextRequest) {
         // On-call doctor must be explicitly marked "active" for this date
         return rosterMap.get(d.id) === "active";
       })
-      .map(d => {
-        const taken = takenByDoctor.get(d.id) ?? new Set<string>();
-        return {
-          id: d.id,
-          name: d.name,
-          specialty: d.specialty,
-          type: d.type,
-          availableSlots: allSlots.filter(s => !taken.has(s)),
-        };
-      })
+      .map(d => ({
+        id: d.id,
+        name: d.name,
+        specialty: d.specialty,
+        type: d.type,
+        availableSlots: allSlots.filter(s => !takenClinicWide.has(s)),
+      }))
       .filter(d => d.availableSlots.length > 0);
 
     return Response.json({ success: true, doctors });

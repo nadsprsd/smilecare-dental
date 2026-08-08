@@ -105,6 +105,7 @@ export default function Footer() {
                 ["Contact",           "/contact"],
                 ["Privacy Policy",    "/privacy"],
                 ["Terms & Conditions","/terms"],
+                ["Sitemap",           "/site-map"],
               ].map(([label, href]) => (
                 <li key={href}>
                   <Link href={href} className="hover:text-white hover:translate-x-1 transition-all inline-block">

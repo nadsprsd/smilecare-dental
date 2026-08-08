@@ -118,6 +118,27 @@ export const bookingSchema = z.object({
 
 export type BookingInput = z.infer<typeof bookingSchema>;
 
+// A "waitlist" entry — captured when a patient wants a service/date combo
+// that has no bookable doctor (most commonly: the on-call specialist they
+// need simply wasn't marked active for that date). No slot is reserved;
+// this is a lead for staff to call back, not a booking.
+export const waitlistSchema = z.object({
+  name: z
+    .string()
+    .min(2, "Name must be at least 2 characters")
+    .max(100, "Name too long")
+    .regex(/^[a-zA-Z\s.'-]+$/, "Name contains invalid characters")
+    .transform(s => s.trim()),
+  phone: z
+    .string()
+    .regex(/^[6-9]\d{9}$/, "Enter valid 10-digit Indian mobile number")
+    .transform(s => s.trim()),
+  service: z.string().min(1).max(100),
+  date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Invalid date format"),
+});
+
+export type WaitlistInput = z.infer<typeof waitlistSchema>;
+
 // Domains we trust for X-ray/image URLs. Rejects javascript:, data:, ftp:,
 // file:, and any other protocol/host not explicitly allowed (SEC-019).
 const ALLOWED_IMAGE_HOSTS = [
@@ -131,13 +152,22 @@ const ALLOWED_IMAGE_HOSTS = [
 // A plain Google Drive "share" link (.../file/d/FILE_ID/view) is an HTML
 // viewer page, not an image — it can never render in an <img> tag, which is
 // exactly the "couldn't load this image" bug reported. This converts it to
-// Drive's direct-view format automatically so staff don't have to know the
-// difference. Google Photos share links have no stable direct-image format,
+// a real image URL automatically so staff don't have to know the difference.
+//
+// IMPORTANT: this deliberately does NOT use drive.google.com/uc?export=view —
+// Google has made that format unreliable; for many files it now forces a
+// browser download ("Google Drive can't scan this file for viruses" style
+// interstitial) instead of serving the image inline, which is exactly the
+// "downloads a fake file" symptom reported. lh3.googleusercontent.com is
+// Google's actual image CDN — the same one Drive/Photos thumbnails resolve
+// to under the hood — and reliably renders inline instead of downloading.
+//
+// Google Photos share links have no equivalent stable direct-image format,
 // so those still can't be auto-fixed — recommend Drive or Imgur instead.
 export function normalizeImageUrl(url: string): string {
   const driveMatch = url.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/);
   if (driveMatch) {
-    return `https://drive.google.com/uc?export=view&id=${driveMatch[1]}`;
+    return `https://lh3.googleusercontent.com/d/${driveMatch[1]}`;
   }
   return url;
 }
@@ -155,93 +185,27 @@ export function isAllowedImageUrl(url: string): boolean {
 // Server-side validation for patient records — enforced here regardless of
 // what the admin UI sends, since client-side maxLength is only a UX hint,
 // not a real control. Limits per the August 2026 security assessment (SEC-022).
-// ----------------------
-// Patient Validation
-// ----------------------
-
 export const patientSchema = z.object({
-  name: z
-    .string()
-    .trim()
-    .min(2, "Name must be at least 2 characters")
-    .max(100, "Name cannot exceed 100 characters")
-    .regex(/^[a-zA-Z\s.'-]+$/, "Name contains invalid characters")
-    .transform((s) => s.replace(/<[^>]*>/g, "")),
-
-  phone: z
-    .string()
-    .trim()
-    .regex(/^[0-9+\-\s]{10,15}$/, "Phone must be 10–15 digits"),
-
-  email: z
-    .string()
-    .trim()
-    .email("Invalid email address")
-    .max(254)
-    .optional()
-    .or(z.literal("")),
-
-  sex: z
-    .enum(["Male", "Female", "Other"])
-    .optional(),
-
-  dateOfBirth: z
-    .string()
-    .optional()
-    .refine(
-      (value) => {
-        if (!value) return true;
-        return new Date(value) <= new Date();
-      },
-      {
-        message: "Date of birth cannot be in the future",
-      }
-    ),
-
-  age: z
-    .coerce
-    .number()
-    .min(0, "Age cannot be negative")
-    .max(120, "Age cannot exceed 120")
-    .optional(),
-
- address: z
-  .string()
-  .trim()
-  .max(300, "Address cannot exceed 300 characters")
-  .optional()
-  .transform((s) => (s ? s.replace(/<[^>]*>/g, "") : "")),
-
-  source: z
-    .string()
-    .max(50, "Source is too long")
-    .optional(),
-
- medicalHistory: z
-  .string()
-  .trim()
-  .max(5000, "Medical history cannot exceed 5000 characters")
-  .optional()
-  .transform((s) => (s ? s.replace(/<[^>]*>/g, "") : "")),
-
-  dentalHistory: z
-  .string()
-  .trim()
-  .max(5000, "Dental history cannot exceed 5000 characters")
-  .optional()
-  .transform((s) => (s ? s.replace(/<[^>]*>/g, "") : "")),
-
-  allergies: z
-  .string()
-  .trim()
-  .max(1000, "Allergies cannot exceed 1000 characters")
-  .optional()
-  .transform((s) => (s ? s.replace(/<[^>]*>/g, "") : "")),
+  name: z.string().trim().min(2, "Name is too short").max(100, "Name is too long")
+    .transform(s => s.replace(/<[^>]*>/g, "")),
+  phone: z.string().trim().regex(/^[0-9+\-\s]{10,15}$/, "Phone must be 10-15 digits"),
+  email: z.string().trim().max(254).optional().or(z.literal("")),
+  sex: z.enum(["Male", "Female", "Other"]).optional(),
+  dateOfBirth: z.string().optional().refine(
+    v => !v || new Date(v) <= new Date(),
+    "Date of birth cannot be in the future"
+  ),
+  age: z.coerce.number().min(0).max(120).optional(),
+  address: z.string().trim().max(300).optional().transform(s => s?.replace(/<[^>]*>/g, "")),
+  source: z.string().max(50).optional(),
+  medicalHistory: z.string().trim().max(5000).optional().transform(s => s?.replace(/<[^>]*>/g, "")),
+  dentalHistory: z.string().trim().max(5000).optional().transform(s => s?.replace(/<[^>]*>/g, "")),
+  allergies: z.string().trim().max(1000).optional().transform(s => s?.replace(/<[^>]*>/g, "")),
 });
 
 export function sanitizeForMongo(data: AppointmentInput) {
   const sanitize = (s: string) =>
-    s.replace(/[${}()[]]/g, "").trim();
+    s.replace(/[${}()[\]]/g, "").trim();
 
   return {
     ...data,

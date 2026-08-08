@@ -1,13 +1,17 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
-import { ArrowLeft, Calendar, Check, X, MessageCircle } from "lucide-react";
+import { Calendar, Check, X, MessageCircle, UserPlus, PhoneCall } from "lucide-react";
 
 type Booking = {
   _id: string; patientName: string; phone: string; service: string;
   doctorId: string; doctorName: string; date: string; time: string;
   notes: string; confirmationStatus: "pending" | "confirmed" | "cancelled"; createdAt: string;
+};
+
+type WaitlistEntry = {
+  _id: string; name: string; phone: string; service: string; date: string;
+  contacted: boolean; createdAt: string;
 };
 
 function formatSlot(t: string): string {
@@ -27,6 +31,9 @@ export default function BookingsList() {
   const [filter, setFilter] = useState<"pending" | "confirmed" | "all">("pending");
   const [loading, setLoading] = useState(true);
 
+  const [waitlist, setWaitlist] = useState<WaitlistEntry[]>([]);
+  const [waitlistLoading, setWaitlistLoading] = useState(true);
+
   const load = () => {
     setLoading(true);
     const q = filter === "all" ? "" : `?status=${filter}`;
@@ -36,7 +43,24 @@ export default function BookingsList() {
       .finally(() => setLoading(false));
   };
 
+  const loadWaitlist = () => {
+    setWaitlistLoading(true);
+    fetch("/api/waitlist")
+      .then(r => r.json())
+      .then(data => { if (data.success) setWaitlist(data.entries); })
+      .finally(() => setWaitlistLoading(false));
+  };
+
   useEffect(load, [filter]);
+  useEffect(loadWaitlist, []);
+
+  const markContacted = async (id: string, contacted: boolean) => {
+    setWaitlist(list => list.map(w => w._id === id ? { ...w, contacted } : w));
+    await fetch("/api/waitlist", {
+      method: "PATCH", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id, contacted }),
+    });
+  };
 
   const updateStatus = async (id: string, confirmationStatus: "confirmed" | "cancelled") => {
     await fetch(`/api/bookings/${id}`, {
@@ -80,19 +104,54 @@ export default function BookingsList() {
   ].join("\n");
 
   return (
-    <div className="min-h-screen bg-[#F4F7FA]">
-      <div className="bg-[#0D1117] px-6 md:px-10 py-6">
-        <div className="max-w-4xl mx-auto">
-          <Link href="/admin" className="flex items-center gap-1.5 text-white/50 hover:text-white text-xs mb-3">
-            <ArrowLeft size={12} /> Dashboard
-          </Link>
-          <h1 className="text-white font-bold text-xl flex items-center gap-2">
-            <Calendar size={18} /> Bookings
-          </h1>
-        </div>
+    <div>
+      <div className="bg-white border-b border-gray-100 px-8 py-6">
+        <h1 className="font-bold text-xl text-[#0D1117] flex items-center gap-2">
+          <Calendar size={18} /> Bookings
+        </h1>
       </div>
 
       <div className="max-w-4xl mx-auto px-6 md:px-10 py-8">
+
+        {/* Waitlist — patients who wanted a service/date with no doctor available */}
+        {!waitlistLoading && waitlist.filter(w => !w.contacted).length > 0 && (
+          <div className="mb-8">
+            <h2 className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#4A5568] mb-3">
+              <UserPlus size={13} className="text-[#C1583B]" />
+              Interested Patients — No Doctor Was Available ({waitlist.filter(w => !w.contacted).length})
+            </h2>
+            <p className="text-xs text-[#4A5568] mb-3">
+              These patients tried to book but no doctor was bookable for their date — usually because an on-call
+              specialist wasn't marked Active on the Roster. Call them back, or activate the doctor and let them know.
+            </p>
+            <div className="space-y-2">
+              {waitlist.filter(w => !w.contacted).map(w => (
+                <div key={w._id} className="bg-white border border-[#C1583B]/20 p-4 flex items-center justify-between flex-wrap gap-3">
+                  <div>
+                    <div className="font-semibold text-[#0D1117] text-sm">{w.name} <span className="text-xs text-[#4A5568] font-normal">· {w.phone}</span></div>
+                    <div className="text-xs text-[#4A5568] mt-0.5">
+                      Wanted {w.service} on {new Date(w.date).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    <a
+                      href={`tel:${w.phone}`}
+                      className="flex items-center gap-1.5 border border-gray-200 text-[#4A5568] hover:text-[#0D1117] text-xs font-medium px-3 py-2"
+                    >
+                      <PhoneCall size={13} /> Call
+                    </a>
+                    <button
+                      onClick={() => markContacted(w._id, true)}
+                      className="flex items-center gap-1.5 bg-[#0F2E2E] hover:bg-[#0D1117] text-white text-xs font-bold px-3 py-2"
+                    >
+                      <Check size={13} /> Mark Contacted
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
         <div className="flex gap-2 mb-6">
           {(["pending", "confirmed", "all"] as const).map(f => (
             <button

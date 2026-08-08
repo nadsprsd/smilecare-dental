@@ -14,6 +14,15 @@ async function isAuth(): Promise<boolean> {
   return c.get("admin_session")?.value === "authenticated";
 }
 
+// The clinic currently has ONE treatment chair, so only one booking can
+// exist for the whole clinic at any given date+time — regardless of which
+// doctor it's with. Two different doctors both being "free" at 12:30pm
+// doesn't matter if there's nowhere to actually see the second patient.
+// If they add a second chair later, bump this and the locking mechanism
+// below needs to change from a unique index to a counted-capacity check
+// (a unique index can only ever enforce "exactly one", not "up to N").
+export const CLINIC_CHAIR_CAPACITY = 1;
+
 // Ensures the slot-locking index exists. Cheap no-op if it's already there —
 // safe to call on every request rather than requiring a separate migration step.
 //
@@ -22,10 +31,21 @@ async function isAuth(): Promise<boolean> {
 // this used { confirmationStatus: { $ne: "cancelled" } }, which MongoDB
 // rejects outright, making every booking fail. Using a plain boolean field
 // works within that limitation instead.
+//
+// The index is on (date, time) only — NOT (doctorId, date, time) — because
+// with a single chair, the whole clinic can only serve one patient at a
+// given time, no matter which doctor it's with.
 async function ensureSlotLockIndex(db: any) {
+  // Best-effort cleanup of the old per-doctor index this replaces — safe to
+  // ignore if it doesn't exist (e.g. on a fresh database).
+  try {
+    await db.collection("bookings").dropIndex("slot_lock");
+  } catch {
+    // didn't exist — fine
+  }
   await db.collection("bookings").createIndex(
-    { doctorId: 1, date: 1, time: 1 },
-    { unique: true, partialFilterExpression: { isActive: { $eq: true } }, name: "slot_lock" }
+    { date: 1, time: 1 },
+    { unique: true, partialFilterExpression: { isActive: { $eq: true } }, name: "slot_lock_clinic_wide" }
   );
 }
 
@@ -75,8 +95,10 @@ export async function POST(req: NextRequest) {
       await db.collection("bookings").insertOne(booking as any);
     } catch (err: any) {
       if (err?.code === 11000) {
-        // The unique index caught a race — someone else took this exact slot first.
-        return Response.json({ success: false, message: "That slot was just booked by someone else. Please pick another." }, { status: 409 });
+        // The unique index caught a race — someone else took this exact
+        // clinic slot first (possibly with a different doctor — the clinic
+        // only has one chair, so that still counts as taken).
+        return Response.json({ success: false, message: "That time slot was just booked by someone else. Please pick another." }, { status: 409 });
       }
       throw err;
     }

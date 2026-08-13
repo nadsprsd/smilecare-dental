@@ -50,7 +50,7 @@ export default function AboutPage() {
       <section className="relative min-h-[60vh] flex items-end overflow-hidden bg-[#0D1117]">
         <div className="absolute inset-0">
           <Image
-            src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=1600&q=80"
+            src="/photos/clinic-storefront.webp"
             alt="Vee Care Dental Clinic"
             fill
             className="object-cover opacity-30"
@@ -140,8 +140,8 @@ export default function AboutPage() {
             <div className="grid grid-cols-2 gap-3">
               <div className="relative aspect-[3/4] overflow-hidden">
                 <Image
-                  src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=600&q=85&fit=crop&crop=face,top"
-                  alt="Dr. Priya Menon"
+                  src="/photos/clinic-team-hero.webp"
+                  alt="Vee Care Dental Clinic team at work"
                   fill
                   className="object-cover object-top"
                   sizes="300px"
@@ -150,7 +150,7 @@ export default function AboutPage() {
               <div className="space-y-3 mt-8">
                 <div className="relative aspect-square overflow-hidden">
                   <Image
-                    src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=600&q=85&fit=crop"
+                    src="/photos/clinic-procedure-2.webp"
                     alt="Vee Care Clinic"
                     fill
                     className="object-cover"
@@ -159,7 +159,7 @@ export default function AboutPage() {
                 </div>
                 <div className="relative aspect-square overflow-hidden">
                   <Image
-                    src="https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=600&q=85&fit=crop"
+                    src="/photos/clinic-technology.webp"
                     alt="Dental Equipment"
                     fill
                     className="object-cover"

@@ -4,120 +4,48 @@ import Image from "next/image";
 import Link from "next/link";
 import { X, ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 
-const CATEGORIES = ["All", "Before & After", "Our Clinic", "Our Team", "Procedures"];
+const CATEGORIES = ["All", "Our Clinic", "Procedures"];
 
+// Real photos from the clinic's own Google Business Profile. Only honest,
+// generic captions here — no invented statistics, no doctor names attached
+// to photos we can't verify, no fabricated before/after claims. Expand this
+// list as the clinic sends more real photos.
 const GALLERY = [
-  // Before & After
   {
-    id: 1, cat: "Before & After",
-    title: "Teeth Whitening Result",
-    sub: "8 shades brighter — single 90-minute session",
-    img: "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=800&q=85&fit=crop",
+    id: 1, cat: "Our Clinic",
+    title: "Vee Care Dental Clinic",
+    sub: "Our clinic signage, Tripunithura",
+    img: "/photos/clinic-storefront.webp",
   },
   {
-    id: 2, cat: "Before & After",
-    title: "Complete Smile Makeover",
-    sub: "Porcelain veneers + whitening — 3 visits",
-    img: "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=800&q=85&fit=crop",
+    id: 2, cat: "Procedures",
+    title: "Patient Care in Progress",
+    sub: "Our team at work in the treatment room",
+    img: "/photos/clinic-team-hero.webp",
   },
   {
-    id: 3, cat: "Before & After",
-    title: "Dental Implant — Day 90",
-    sub: "Single implant — indistinguishable from natural tooth",
-    img: "https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=800&q=85&fit=crop",
+    id: 3, cat: "Procedures",
+    title: "Treatment in Progress",
+    sub: "Focused, careful chairside care",
+    img: "/photos/clinic-procedure-1.webp",
   },
   {
-    id: 4, cat: "Before & After",
-    title: "Orthodontic Transformation",
-    sub: "18 months ceramic braces — adult patient",
-    img: "https://images.unsplash.com/photo-1629909615957-be38d48fbbe4?w=800&q=85&fit=crop",
+    id: 4, cat: "Procedures",
+    title: "Our Team at Work",
+    sub: "Dentist and assistant during a procedure",
+    img: "/photos/clinic-procedure-2.webp",
   },
   {
-    id: 5, cat: "Before & After",
-    title: "Composite Bonding",
-    sub: "Chipped front teeth restored — single visit",
-    img: "https://images.unsplash.com/photo-1602052793312-b99c2a9ee797?w=800&q=85&fit=crop",
+    id: 5, cat: "Our Clinic",
+    title: "Modern Dental Technology",
+    sub: "Digital imaging used for treatment planning",
+    img: "/photos/clinic-technology.webp",
   },
   {
-    id: 6, cat: "Before & After",
-    title: "Full Mouth Rehabilitation",
-    sub: "Complete restoration — 6 visits over 8 weeks",
-    img: "https://images.unsplash.com/photo-1598256989800-fe5f95da9787?w=800&q=85&fit=crop",
-  },
-  // Clinic
-  {
-    id: 7, cat: "Our Clinic",
-    title: "Reception & Waiting Area",
-    sub: "Clean, modern and calming — designed to reduce anxiety",
-    img: "https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=800&q=85&fit=crop",
-  },
-  {
-    id: 8, cat: "Our Clinic",
-    title: "Digital X-Ray Suite",
-    sub: "90% less radiation than conventional X-ray",
-    img: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=800&q=85&fit=crop",
-  },
-  {
-    id: 9, cat: "Our Clinic",
-    title: "Primary Treatment Room",
-    sub: "State-of-the-art dental unit — imported from Germany",
-    img: "https://images.unsplash.com/photo-1581591524425-c7e0978865fc?w=800&q=85&fit=crop",
-  },
-  {
-    id: 10, cat: "Our Clinic",
-    title: "Sterilisation Room",
-    sub: "Hospital-grade Class B autoclave — every instrument sterilised",
-    img: "https://images.unsplash.com/photo-1576671081837-49000212a370?w=800&q=85&fit=crop",
-  },
-  // Team
-  {
-    id: 11, cat: "Our Team",
-    title: "Dr. Priya Menon",
-    sub: "Chief Dentist & Implantologist — 12 years, 800+ implants",
-    img: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=800&q=85&fit=crop&crop=face",
-  },
-  {
-    id: 12, cat: "Our Team",
-    title: "Dr. Arjun Nair",
-    sub: "Orthodontist — Invisalign certified, 8 years",
-    img: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=800&q=85&fit=crop&crop=face",
-  },
-  {
-    id: 13, cat: "Our Team",
-    title: "Dr. Sreelakshmi R.",
-    sub: "Pediatric Dentist — 6 years, rated 5.0 stars",
-    img: "https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=800&q=85&fit=crop&crop=face",
-  },
-  {
-    id: 14, cat: "Our Team",
-    title: "Our Full Care Team",
-    sub: "Dentists, hygienists and support staff — 10 dedicated professionals",
-    img: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=800&q=85&fit=crop",
-  },
-  // Procedures
-  {
-    id: 15, cat: "Procedures",
-    title: "Implant Procedure",
-    sub: "Performed by Dr. Priya — precision guided placement",
-    img: "https://images.unsplash.com/photo-1550831107-1553da8c8464?w=800&q=85&fit=crop",
-  },
-  {
-    id: 16, cat: "Procedures",
-    title: "Professional Scaling & Cleaning",
-    sub: "Removes tartar buildup — recommended every 6 months",
-    img: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&q=85&fit=crop",
-  },
-  {
-    id: 17, cat: "Procedures",
-    title: "Orthodontic Fitting",
-    sub: "Ceramic braces placement — Dr. Arjun Nair",
-    img: "https://images.unsplash.com/photo-1598257006458-087169a1f08d?w=800&q=85&fit=crop",
-  },
-  {
-    id: 18, cat: "Procedures",
-    title: "Pediatric First Visit",
-    sub: "Dr. Sreelakshmi's gentle approach with young patients",
-    img: "https://images.unsplash.com/photo-1581591524425-c7e0978865fc?w=800&q=85&fit=crop",
+    id: 6, cat: "Procedures",
+    title: "Chairside Care",
+    sub: "Precision and attention at every visit",
+    img: "/photos/clinic-procedure-3.webp",
   },
 ];
 

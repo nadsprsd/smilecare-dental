@@ -63,23 +63,23 @@ function NotifyMeForm({ service, date }: { service: string; date: string }) {
     <div className="bg-[#F4F7FA] border border-gray-200 p-4 mb-4">
       <p className="text-sm text-[#0D1117] font-medium mb-1">No doctor available for this on {date}.</p>
       <p className="text-xs text-[#4A5568] mb-3">Leave your number and we'll call you back to sort out a time — no need to keep checking dates yourself.</p>
-      <div className="flex flex-col sm:flex-row gap-2">
+      <div className="flex flex-col gap-2">
         <input
           type="text" value={name} onChange={e => setName(e.target.value)}
           placeholder="Your name" maxLength={100}
-          className="flex-1 border-2 border-gray-200 focus:border-[#0D1117] px-3 py-2.5 outline-none text-sm"
+          className="w-full border-2 border-gray-200 focus:border-[#0D1117] px-3 py-2.5 outline-none text-sm"
           style={{ fontSize: "16px" }}
         />
         <input
           type="tel" value={phone} onChange={e => setPhone(e.target.value)}
           placeholder="10-digit mobile" maxLength={10}
-          className="flex-1 border-2 border-gray-200 focus:border-[#0D1117] px-3 py-2.5 outline-none text-sm"
+          className="w-full border-2 border-gray-200 focus:border-[#0D1117] px-3 py-2.5 outline-none text-sm"
           style={{ fontSize: "16px" }}
         />
         <button
           onClick={submit}
           disabled={state === "sending" || name.trim().length < 2 || !/^[6-9]\d{9}$/.test(phone)}
-          className="bg-[#0D1117] hover:bg-[#C1583B] text-white text-sm font-bold px-5 py-2.5 transition-colors disabled:opacity-40 whitespace-nowrap"
+          className="w-full bg-[#0D1117] hover:bg-[#C1583B] text-white text-sm font-bold px-5 py-2.5 transition-colors disabled:opacity-40"
         >
           {state === "sending" ? "Sending..." : "Notify Me"}
         </button>

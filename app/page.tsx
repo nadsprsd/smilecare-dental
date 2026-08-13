@@ -17,12 +17,12 @@ export const metadata: Metadata = {
 };
 
 /* ── Real Unsplash images ── */
-const HERO_IMG = "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=900&q=85&fit=crop";
-const CLINIC_IMG   = "https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=900&q=85&fit=crop";
-const SMILE_IMG    = "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=900&q=85&fit=crop";
-const EQUIP_IMG    = "https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=900&q=85&fit=crop";
-const TEAM_IMG     = "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=900&q=85&fit=crop";
-const PATIENT_IMG  = "https://images.unsplash.com/photo-1598256989800-fe5f95da9787?w=900&q=85&fit=crop";
+const HERO_IMG      = "/photos/clinic-team-hero.webp";
+const CLINIC_IMG    = "/photos/clinic-storefront.webp";
+const SMILE_IMG     = "/photos/clinic-procedure-1.webp";
+const EQUIP_IMG     = "/photos/clinic-technology.webp";
+const TEAM_IMG      = "/photos/clinic-procedure-2.webp";
+const PATIENT_IMG   = "/photos/clinic-procedure-3.webp";
 
 export default function HomePage() {
   return ( 
@@ -212,7 +212,7 @@ export default function HomePage() {
             {/* Large featured service */}
             <div className="md:col-span-2 md:row-span-2 relative img-zoom overflow-hidden min-h-[400px] group border-r border-b border-gray-200">
               <Image
-                src="https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=900&q=85&fit=crop"
+                src="/photos/clinic-procedure-1.webp"
                 alt="Dental Implants"
                 fill
                 className="object-cover"

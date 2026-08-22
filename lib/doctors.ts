@@ -1,10 +1,10 @@
 // lib/doctors.ts
 //
-// Real roster from Vee Care Dental Clinic. Doctor "type" (full-time vs
-// on-call) and the service→doctor mapping below are my best assignment
-// based on each doctor's specialty — NOT confirmed by the clinic yet.
-// You said "1 full-time + 5 on-call" but the real list has 8 doctors,
-// so this needs Dr. Vineeth's sign-off before it governs real bookings.
+// Real roster from Vee Care Dental Clinic. Vineeth and Anumuthu are the
+// full-time team — confirmed by the clinic (Aug 2026) as always bookable,
+// for every service, so patients are never shown "no doctor available."
+// The other 6 are on-call specialists, each tied to their own specialty,
+// only bookable on days they're marked Active on the Roster page.
 // Everything here is plain data — edit directly, no other code changes needed.
 
 export type DoctorType = "full-time" | "on-call";
@@ -43,7 +43,7 @@ export const DOCTORS: Doctor[] = [
     degree: "BDS, MDS",
     specialty: "Chief Dental Surgeon & Endodontist (Root Canal Specialist)",
     type: "full-time", // clinic's stated lead — confident on this one
-    services: ["General Dentistry", "Root Canal Treatment", "Teeth Cleaning", "Tooth Filling", "Gum Care", "Laser Dentistry", "Smile Correction", "Teeth Whitening"],
+    services: [...SERVICES], // always bookable, every service — clinic's explicit instruction (Aug 2026)
   },
   {
     id: "anumuthu",
@@ -51,7 +51,7 @@ export const DOCTORS: Doctor[] = [
     degree: "BDS",
     specialty: "Resident Dental Surgeon",
     type: "full-time", // guess — residents are typically on-site daily; please confirm
-    services: ["General Dentistry", "Teeth Cleaning", "Tooth Filling", "Gum Care", "Pediatric Dentistry"],
+    services: [...SERVICES], // always bookable, every service — clinic's explicit instruction (Aug 2026)
   },
   {
     id: "reshma",
@@ -139,3 +139,4 @@ export function generateSlotsForDay(dayOfWeek: number): string[] {
   }
   return slots;
 }
+

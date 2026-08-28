@@ -3,12 +3,25 @@ export const revalidate = 0;
 
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, ArrowUpRight, Play } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Play, Stethoscope } from "lucide-react";
 import type { Metadata } from "next";
 import CertificatesSection from "@/components/CertificatesSection";
 import VideoTestimonials from "@/components/VideoTestimonials";
 import FAQSection from "@/components/FAQSection";
 import HomeBlogSection from "@/components/HomeBlogSection";
+import { DOCTORS } from "@/lib/doctors";
+
+// Homepage features 3 doctors: both full-time doctors (always relevant, always
+// bookable) plus one real specialist — pulled directly from the same roster
+// used everywhere else, never hardcoded separately again.
+const HOMEPAGE_DOCTORS = DOCTORS.filter(d => ["vineeth", "anumuthu", "sreeja"].includes(d.id))
+  .map(d => ({
+    name: d.name,
+    role: d.specialty,
+    edu:  d.degree,
+    img:  d.photo ?? null,
+    spec: d.services.slice(0, 3),
+  }));
 
 export const metadata: Metadata = {
   title: "Best Dental Clinic in Tripunithura, Ernakulam — Vee Care",
@@ -22,7 +35,6 @@ const CLINIC_IMG    = "/photos/clinic-storefront.webp";
 const SMILE_IMG     = "/photos/clinic-procedure-1.webp";
 const EQUIP_IMG     = "/photos/clinic-technology.webp";
 const TEAM_IMG      = "/photos/clinic-procedure-2.webp";
-const PATIENT_IMG   = "/photos/clinic-procedure-3.webp";
 
 export default function HomePage() {
   return ( 
@@ -68,8 +80,8 @@ export default function HomePage() {
               className="text-white/65 mb-10 max-w-lg leading-relaxed"
               style={{ fontSize: "1.1rem", fontFamily: "var(--font-body)" }}
             >
-              Combining advanced technology with a human touch — specialist dentists
-              delivering world-class care at Tripunithura since 2014.
+              Combining advanced technology with a human touch — a full-time doctor
+              and a team of specialists delivering real care in Tripunithura.
             </p>
 
             <div className="flex flex-wrap gap-4 mb-16">
@@ -92,10 +104,10 @@ export default function HomePage() {
             {/* Stats row */}
             <div className="flex flex-wrap gap-10 border-t border-white/15 pt-10">
               {[
-                { num: "2,000+", label: "Patients Treated" },
-                { num: "10+",    label: "Years of Excellence" },
-                { num: "4.9★",   label: "Google Rating" },
-                { num: "3",      label: "Specialist Doctors" },
+                { num: "8",  label: "Doctors on Our Team" },
+                { num: "6",  label: "Specialities Covered" },
+                { num: "17", label: "Services Offered" },
+                { num: "1",  label: "Chair, No Double-Booking" },
               ].map(s => (
                 <div key={s.label}>
                   <div className="display-text text-white text-3xl font-semibold">{s.num}</div>
@@ -284,42 +296,23 @@ export default function HomePage() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                name: "Dr. Priya Menon",
-                role: "Implantologist & Chief Dentist",
-                exp:  "12 Years",
-                edu:  "MDS Prosthodontics, AIMS Kochi",
-                img:  "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=600&q=85&fit=crop&crop=face",
-                spec: ["Implants", "Crowns", "Full Mouth Rehab"],
-              },
-              {
-                name: "Dr. Arjun Nair",
-                role: "Orthodontist",
-                exp:  "8 Years",
-                edu:  "MDS Orthodontics, Govt. Dental College",
-                img:  "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=600&q=85&fit=crop&crop=face",
-                spec: ["Braces", "Invisalign", "Cosmetics"],
-              },
-              {
-                name: "Dr. Sreelakshmi R.",
-                role: "Pediatric Dentist",
-                exp:  "6 Years",
-                edu:  "BDS Pedodontics, Amrita School",
-                img:  "https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=600&q=85&fit=crop&crop=face",
-                spec: ["Kids Dental", "Preventive", "Fillings"],
-              },
-            ].map((doc, i) => (
+            {HOMEPAGE_DOCTORS.map((doc) => (
               <div key={doc.name} className="group">
                 {/* Photo */}
                 <div className="relative overflow-hidden img-zoom aspect-[3/4] mb-5 bg-[#F2EDE3]">
-                  <Image
-                    src={doc.img}
-                    alt={doc.name}
-                    fill
-                    className="object-cover object-top grayscale group-hover:grayscale-0 transition-all duration-500"
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                  />
+                  {doc.img ? (
+                    <Image
+                      src={doc.img}
+                      alt={doc.name}
+                      fill
+                      className="object-cover object-top grayscale group-hover:grayscale-0 transition-all duration-500"
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                    />
+                  ) : (
+                    <div className="absolute inset-0 flex items-center justify-center bg-[#0F2E2E]/10">
+                      <Stethoscope size={48} className="text-[#0F2E2E]" strokeWidth={1.25} />
+                    </div>
+                  )}
                   {/* Overlay on hover */}
                   <div className="absolute inset-0 bg-[#0D1117]/0 group-hover:bg-[#0D1117]/20 transition-all duration-500" />
                   {/* Book button */}
@@ -339,7 +332,6 @@ export default function HomePage() {
                       <h3 className="display-text text-[#0D1117] text-xl">{doc.name}</h3>
                       <p className="text-[#C1583B] text-xs font-medium tracking-wide mt-0.5">{doc.role}</p>
                     </div>
-                    <span className="text-[#0D1117]/40 text-xs border border-[#0D1117]/15 px-2 py-1">{doc.exp}</span>
                   </div>
                   <p className="text-[#4A5568] text-xs mb-3">{doc.edu}</p>
                   <div className="flex flex-wrap gap-1.5">
@@ -356,90 +348,6 @@ export default function HomePage() {
 
       <CertificatesSection variant="highlight" />
       <VideoTestimonials />
-
-      {/* ════════════════════════════════════════
-          TESTIMONIALS — full width dark
-      ════════════════════════════════════════ */}
-      <section className="section-pad bg-[#0D1117] noise relative overflow-hidden">
-        {/* Background image */}
-        <div className="absolute inset-0 opacity-10">
-          <Image src={PATIENT_IMG} alt="" fill className="object-cover" sizes="100vw" />
-        </div>
-
-        <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12">
-          <div className="text-center mb-16">
-            <span className="gold-rule mx-auto" />
-            <span className="label-text block mb-4">Patient Stories</span>
-            <h2 className="display-text text-white" style={{ fontSize: "clamp(2.2rem, 4vw, 3.5rem)" }}>
-              Real Results,
-              <br />
-              <span className="italic text-[#C1583B]">Real People.</span>
-            </h2>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-6">
-            {[
-              {
-                text: "I was terrified of dental procedures. Dr. Priya made my implant completely painless. Three months later, I can't even tell which is the implant — it's that natural.",
-                name: "Ramesh Kumar", city: "Tripunithura", treatment: "Dental Implants",
-                img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80",
-              },
-              {
-                text: "My daughter used to cry just hearing the word 'dentist'. After Dr. Sreelakshmi, she asks when she gets to go back. That transformation is priceless.",
-                name: "Anitha Suresh", city: "Ernakulam", treatment: "Pediatric Dentistry",
-                img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&q=80",
-              },
-              {
-                text: "18 months of braces and the result is beyond what I imagined. Dr. Arjun showed me exactly what to expect before we started. Completely transparent, completely worth it.",
-                name: "Mohammed Fasal", city: "Maradu", treatment: "Orthodontics",
-                img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&q=80",
-              },
-            ].map(t => (
-              <div key={t.name} className="border border-white/10 p-8 bg-white/5 backdrop-blur-sm">
-                {/* Stars */}
-                <div className="flex gap-1 mb-5">
-                  {[1,2,3,4,5].map(i => (
-                    <svg key={i} width="14" height="14" viewBox="0 0 24 24" fill="#C1583B">
-                      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                    </svg>
-                  ))}
-                </div>
-                <p className="text-white/80 leading-relaxed mb-6 text-sm italic">"{t.text}"</p>
-                <div className="flex items-center gap-3 pt-5 border-t border-white/10">
-                  <div className="relative w-10 h-10 rounded-full overflow-hidden shrink-0">
-                    <Image src={t.img} alt={t.name} fill className="object-cover" sizes="40px" />
-                  </div>
-                  <div>
-                    <div className="text-white font-medium text-sm">{t.name}</div>
-                    <div className="text-white/40 text-xs">{t.city} · {t.treatment}</div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Rating row */}
-          <div className="mt-14 pt-10 border-t border-white/10 flex flex-wrap items-center justify-center gap-12 text-center">
-            <div>
-              <div className="display-text text-5xl text-white font-semibold">4.9</div>
-              <div className="flex gap-1 justify-center mt-2">
-                {[1,2,3,4,5].map(i => <svg key={i} width="16" height="16" viewBox="0 0 24 24" fill="#C1583B"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>)}
-              </div>
-              <div className="text-white/40 text-xs mt-1">180+ Google Reviews</div>
-            </div>
-            <div className="w-px h-12 bg-white/15 hidden md:block" />
-            <div>
-              <div className="display-text text-5xl text-white font-semibold">2,000+</div>
-              <div className="text-white/40 text-xs mt-2">Patients Treated</div>
-            </div>
-            <div className="w-px h-12 bg-white/15 hidden md:block" />
-            <div>
-              <div className="display-text text-5xl text-white font-semibold">10+</div>
-              <div className="text-white/40 text-xs mt-2">Years of Service</div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* ════════════════════════════════════════
           BLOG PREVIEW

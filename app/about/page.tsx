@@ -7,17 +7,9 @@ import CertificatesSection from "@/components/CertificatesSection";
 export const metadata: Metadata = {
   title: "About Vee Care Dental Clinic – Tripunithura, Kerala",
   description:
-    "Learn about Vee Care Dental Clinic in Tripunithura. Founded in 2014, we are Ernakulam's most trusted dental clinic with 2,000+ happy patients.",
+    "Vee Care Dental Clinic in Tripunithura, Udayamperoor — a full-time doctor plus a team of specialists across orthodontics, oral surgery, prosthodontics and implantology. Book a free consultation.",
 };
 
-const MILESTONES = [
-  { year: "2014", title: "Founded",         desc: "Vee Care opened its doors in Tripunithura with one doctor and a vision for accessible, premium dental care." },
-  { year: "2016", title: "First 500 Patients", desc: "Within two years we had treated over 500 patients, earning a reputation for pain-free, transparent treatment." },
-  { year: "2019", title: "Expanded Team",   desc: "Added Dr. Arjun Nair (orthodontist) and Dr. Sreelakshmi (pediatric dentist) to serve every family member." },
-  { year: "2021", title: "Digital X-Ray",   desc: "Invested in digital X-ray technology — 90% less radiation, instant results, better diagnosis." },
-  { year: "2023", title: "2,000 Patients",  desc: "Crossed 2,000 patients treated — a milestone built entirely on referrals and word of mouth." },
-  { year: "2024", title: "4.9 Star Rating", desc: "Achieved 4.9 stars on Google with 180+ reviews — the highest-rated dental clinic in Tripunithura." },
-];
 
 const VALUES = [
   {
@@ -50,7 +42,7 @@ export default function AboutPage() {
       <section className="relative min-h-[60vh] flex items-end overflow-hidden bg-[#0D1117]">
         <div className="absolute inset-0">
           <Image
-            src="/photos/clinic-storefront.webp"
+            src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=1600&q=80"
             alt="Vee Care Dental Clinic"
             fill
             className="object-cover opacity-30"
@@ -67,13 +59,13 @@ export default function AboutPage() {
             className="text-white font-bold leading-tight mb-5"
             style={{ fontFamily: "Georgia, serif", fontSize: "clamp(2.5rem, 5vw, 4.5rem)" }}
           >
-            A Decade of Smiles
+            Dental Care, Done
             <br />
-            <span className="italic text-[#C1583B]">in Tripunithura.</span>
+            <span className="italic text-[#C1583B]">Properly.</span>
           </h1>
           <p className="text-white/60 max-w-xl text-base leading-relaxed">
-            Founded in 2014 with a simple belief — that every family in Kerala
-            deserves access to world-class dental care without travelling to the city.
+            Built around a simple belief — that every family in Tripunithura and
+            Ernakulam deserves access to world-class dental care close to home.
           </p>
         </div>
       </section>
@@ -83,10 +75,10 @@ export default function AboutPage() {
         <div className="max-w-7xl mx-auto px-6 md:px-12 py-10">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             {[
-              { num: "2,000+", label: "Patients Treated"    },
-              { num: "10+",    label: "Years of Excellence" },
-              { num: "4.9★",   label: "Google Rating"       },
-              { num: "3",      label: "Specialist Doctors"  },
+              { num: "8",  label: "Doctors on Our Team"     },
+              { num: "6",  label: "Specialities Covered"    },
+              { num: "17", label: "Services Offered"        },
+              { num: "1",  label: "Clinic, Tripunithura"    },
             ].map(s => (
               <div key={s.label}>
                 <div className="text-white font-bold text-3xl md:text-4xl" style={{ fontFamily: "Georgia, serif" }}>
@@ -116,20 +108,22 @@ export default function AboutPage() {
               <span className="italic text-[#C1583B]">A Family Commitment.</span>
             </h2>
             <p className="text-[#4A5568] leading-relaxed mb-5">
-              Vee Care was born from a frustration. Our founder, Dr. Priya Menon,
-              watched families in Tripunithura travel 45 minutes to Kochi for basic
-              dental procedures — not because better care wasn't possible locally,
-              but because no one had invested in bringing it here.
+              Vee Care Dental Clinic was built around one belief — that families in
+              Tripunithura and Ernakulam deserve dental care that doesn't ask them to
+              compromise, whether that's on the quality of treatment, the comfort of
+              the visit, or the honesty of what they're told.
             </p>
             <p className="text-[#4A5568] leading-relaxed mb-5">
-              In 2014, she changed that. Vee Care opened with imported equipment,
-              a team trained at the best institutes in Kerala, and one uncompromising
-              rule: the same standard of care for every patient, regardless of budget.
+              Our team combines a full-time doctor always on hand for everyday care
+              with a bench of specialists, in orthodontics, oral surgery, prosthodontics,
+              and implantology, brought in specifically for the cases that need them.
+              It means patients get the right doctor for the job, not just whoever's
+              available.
             </p>
             <p className="text-[#4A5568] leading-relaxed mb-8">
-              Ten years later, we have treated over 2,000 patients — nearly all of
-              them referred by someone who had been treated here before. That is the
-              only metric we care about.
+              Every treatment plan starts with a real conversation, and every patient
+              leaves knowing exactly what was done and why. That's the standard we hold
+              ourselves to, visit after visit.
             </p>
             <Link href="/doctors" className="inline-flex items-center gap-2 bg-[#0D1117] hover:bg-[#C1583B] text-white font-semibold px-6 py-3.5 transition-all duration-300 text-sm">
               Meet Our Doctors <ArrowRight size={15} />
@@ -150,8 +144,8 @@ export default function AboutPage() {
               <div className="space-y-3 mt-8">
                 <div className="relative aspect-square overflow-hidden">
                   <Image
-                    src="/photos/clinic-procedure-2.webp"
-                    alt="Vee Care Clinic"
+                    src="/photos/clinic-storefront.webp"
+                    alt="Vee Care Dental Clinic"
                     fill
                     className="object-cover"
                     sizes="200px"
@@ -167,11 +161,6 @@ export default function AboutPage() {
                   />
                 </div>
               </div>
-            </div>
-            {/* Floating card */}
-            <div className="absolute -bottom-4 -left-4 bg-[#C1583B] text-white p-5 shadow-xl">
-              <div className="text-3xl font-bold" style={{ fontFamily: "Georgia, serif" }}>10+</div>
-              <div className="text-xs opacity-80 mt-0.5">Years Serving<br />Tripunithura</div>
             </div>
           </div>
         </div>
@@ -204,57 +193,6 @@ export default function AboutPage() {
                 <p className="text-[#4A5568] text-sm leading-relaxed">{v.desc}</p>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Timeline ── */}
-      <section className="py-20 md:py-28 px-6 md:px-12">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-14">
-            <span className="text-[10px] font-bold tracking-widest uppercase text-[#C1583B] block mb-3">
-              Our Journey
-            </span>
-            <div className="w-10 h-0.5 bg-[#C1583B] mx-auto mb-5" />
-            <h2
-              className="text-[#0D1117] font-bold"
-              style={{ fontFamily: "Georgia, serif", fontSize: "clamp(1.8rem, 3.5vw, 3rem)" }}
-            >
-              A Decade of Growth
-            </h2>
-          </div>
-
-          <div className="relative">
-            {/* Vertical line */}
-            <div className="absolute left-[60px] md:left-1/2 top-0 bottom-0 w-px bg-gray-100" />
-
-            <div className="space-y-10">
-              {MILESTONES.map((m, i) => (
-                <div
-                  key={m.year}
-                  className={`relative flex gap-8 ${
-                    i % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
-                  } items-start`}
-                >
-                  {/* Year bubble */}
-                  <div className="relative z-10 flex-shrink-0 w-[60px] md:w-auto md:flex-1 flex md:justify-end">
-                    <div className={`${i % 2 === 0 ? "md:mr-8" : "md:ml-8 md:mr-0"}`}>
-                      <div className="w-16 h-16 bg-[#0D1117] flex items-center justify-center shrink-0">
-                        <span className="text-[#C1583B] font-bold text-sm">{m.year}</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Content */}
-                  <div className={`flex-1 pb-2 ${i % 2 !== 0 ? "md:text-right" : ""}`}>
-                    <h3 className="font-bold text-[#0D1117] mb-1" style={{ fontFamily: "Georgia, serif" }}>
-                      {m.title}
-                    </h3>
-                    <p className="text-[#4A5568] text-sm leading-relaxed">{m.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       </section>

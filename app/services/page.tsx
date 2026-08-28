@@ -40,7 +40,7 @@ const SERVICES = [
     duration: "2–3 visits over 3 months",
     img: "https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=900&q=85&fit=crop",
     description:
-      "Dental implants are the gold standard for replacing missing teeth — and for good reason. A Swiss titanium post is placed directly into your jawbone, where it fuses naturally over 6–8 weeks. A custom porcelain crown is then fitted on top, creating a tooth that looks, feels and functions exactly like your natural one. Dr. Priya Menon has completed over 800 successful implant procedures at Vee Care.",
+      "Dental implants are the gold standard for replacing missing teeth — and for good reason. A titanium post is placed directly into your jawbone, where it fuses naturally over 6–8 weeks. A custom porcelain crown is then fitted on top, creating a tooth that looks, feels and functions exactly like your natural one. Our implant specialists plan every case around your bone density and long-term comfort, not just the fastest possible fix.",
     whyItMatters:
       "Unlike dentures that slip or bridges that require grinding adjacent teeth, implants preserve your jawbone, protect neighbouring teeth, and last a lifetime with proper care. They are the only tooth replacement that actually prevents bone loss.",
     includes: [
@@ -62,7 +62,7 @@ const SERVICES = [
     duration: "12–24 months",
     img:  "https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=900&q=85&fit=crop",
     description:
-      "Crooked or crowded teeth affect more than your appearance — they are harder to clean, leading to cavities and gum disease over time. We offer all three types of orthodontic treatment: traditional metal braces (most economical), clear ceramic braces (less visible), and Invisalign-style clear aligners (completely invisible). Dr. Arjun Nair uses digital 3D simulation so you see your expected result before a single brace is placed.",
+      "Crooked or crowded teeth affect more than your appearance — they are harder to clean, leading to cavities and gum disease over time. We offer all three types of orthodontic treatment: traditional metal braces (most economical), clear ceramic braces (less visible), and clear aligner therapy (removable and discreet). Our orthodontist plans your treatment digitally, so you know what to expect before a single brace is placed.",
     whyItMatters:
       "Straight teeth are healthier teeth. Properly aligned teeth are significantly easier to brush and floss, reducing long-term dental costs. And the confidence boost from a straight smile is something patients consistently describe as life-changing.",
     includes: [
@@ -104,7 +104,7 @@ const SERVICES = [
     duration: "30–45 minutes",
     img: "https://images.unsplash.com/photo-1581591524425-c7e0978865fc?w=900&q=85&fit=crop",
     description:
-      "A child's first dental experience shapes their relationship with dental care for life. Dr. Sreelakshmi specialises in making that experience positive — even for children who arrive terrified. Our clinic environment uses child-friendly language, colourful decor, and a gentle step-by-step approach that demystifies every instrument before it's used. Children who visit Vee Care regularly grow up comfortable with dental care — which means fewer problems and lower costs as adults.",
+      "A child's first dental experience shapes their relationship with dental care for life. Our team specialises in making that experience positive — even for children who arrive nervous. Our clinic environment uses child-friendly language, a calm setting, and a gentle step-by-step approach that demystifies every instrument before it's used. Children who visit Vee Care regularly grow up comfortable with dental care — which means fewer problems and lower costs as adults.",
     whyItMatters:
       "Childhood cavities left untreated cause pain, infection, and problems with adult teeth development. Early preventive care — fluoride treatments, fissure sealants, and habit guidance — prevents the vast majority of dental problems before they start.",
     includes: [

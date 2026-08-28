@@ -7,6 +7,8 @@ import {
   Calendar, Clock, Phone, ArrowRight,
   TrendingUp, CheckCircle, AlertCircle, Shield, PenSquare, Users,
 } from "lucide-react";
+import ConfirmButton from "@/components/ConfirmButton";
+import CancelButton  from "@/components/CancelButton";
 import { getISTDateString } from "@/lib/constants";
 
 async function getData() {
@@ -28,22 +30,6 @@ async function getBookings() {
   }
 }
 
-async function getBookingStats() {
-  try {
-    const db = await connectDB();
-    const today = getISTDateString();
-    const [total, todayCount, pendingCount, confirmedCount] = await Promise.all([
-      db.collection("bookings").countDocuments({}),
-      db.collection("bookings").countDocuments({ date: today, isActive: true }),
-      db.collection("bookings").countDocuments({ confirmationStatus: "pending", isActive: true }),
-      db.collection("bookings").countDocuments({ confirmationStatus: "confirmed", isActive: true }),
-    ]);
-    return { total, today: todayCount, pending: pendingCount, confirmed: confirmedCount };
-  } catch {
-    return { total: 0, today: 0, pending: 0, confirmed: 0 };
-  }
-}
-
 async function getStats() {
   try {
     const db           = await connectDB();
@@ -56,12 +42,27 @@ async function getStats() {
   }
 }
 
+function StatusBadge({ status }: { status?: string }) {
+  const s = status || "pending";
+  const map: Record<string, { bg: string; label: string }> = {
+    pending:   { bg: "bg-yellow-50 text-yellow-700 border border-yellow-200", label: "Pending"   },
+    confirmed: { bg: "bg-green-50  text-green-700  border border-green-200",  label: "Confirmed" },
+    cancelled: { bg: "bg-red-50    text-red-700    border border-red-200",    label: "Cancelled" },
+    completed: { bg: "bg-blue-50   text-blue-700   border border-blue-200",   label: "Completed" },
+  };
+  const { bg, label } = map[s] || map.pending;
+  return <span className={`text-[11px] font-semibold px-2.5 py-1 ${bg}`}>{label}</span>;
+}
+
 export default async function AdminPage() {
-  const [data, stats, bookings, bookingStats] = await Promise.all([getData(), getStats(), getBookings(), getBookingStats()]);
+  const [data, stats, bookings] = await Promise.all([getData(), getStats(), getBookings()]);
 
   const today     = getISTDateString();
   const todayBookings   = bookings.filter((b: any) => b.date === today);
   const pendingBookings = bookings.filter((b: any) => b.confirmationStatus === "pending");
+  const todayApts = data.filter((d: any) => d.date === today);
+  const pending   = data.filter((d: any) => !d.status || d.status === "pending");
+  const confirmed = data.filter((d: any) => d.status === "confirmed");
 
   // Combines the legacy appointment inquiries with real bookings so this
   // reflects actual demand, not just the old system's data.
@@ -142,10 +143,10 @@ export default async function AdminPage() {
         {/* Stat cards */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           {[
-            { label: "Total Bookings", value: bookingStats.total,      Icon: Calendar,    color: "text-[#0D1117]",  border: "border-t-2 border-[#0D1117]"  },
-            { label: "Today",          value: bookingStats.today,      Icon: Clock,       color: "text-blue-600",   border: "border-t-2 border-blue-500"   },
-            { label: "Pending",        value: bookingStats.pending,    Icon: AlertCircle, color: "text-yellow-600", border: "border-t-2 border-yellow-400" },
-            { label: "Confirmed",      value: bookingStats.confirmed,  Icon: CheckCircle, color: "text-green-600",  border: "border-t-2 border-green-500"  },
+            { label: "Total Bookings", value: data.length,      Icon: Calendar,    color: "text-[#0D1117]",  border: "border-t-2 border-[#0D1117]"  },
+            { label: "Today",          value: todayApts.length, Icon: Clock,       color: "text-blue-600",   border: "border-t-2 border-blue-500"   },
+            { label: "Pending",        value: pending.length,   Icon: AlertCircle, color: "text-yellow-600", border: "border-t-2 border-yellow-400" },
+            { label: "Confirmed",      value: confirmed.length, Icon: CheckCircle, color: "text-green-600",  border: "border-t-2 border-green-500"  },
           ].map(({ label, value, Icon, color, border }) => (
             <div key={label} className={`bg-white ${border} p-5 shadow-sm`}>
               <div className="flex items-center justify-between mb-3">
@@ -157,9 +158,33 @@ export default async function AdminPage() {
           ))}
         </div>
 
-        {/* Most Booked Services */}
-        <div className="mb-8">
+        {/* Today + Chart */}
+        <div className="grid lg:grid-cols-3 gap-6 mb-8">
           <div className="bg-white shadow-sm p-6">
+            <h3 className="font-bold text-[#0D1117] mb-4 flex items-center gap-2 text-xs uppercase tracking-widest">
+              <Clock size={13} className="text-[#C1583B]" /> Today's Schedule
+            </h3>
+            {todayApts.length === 0 ? (
+              <p className="text-[#4A5568] text-sm text-center py-6">No appointments today</p>
+            ) : (
+              <div className="space-y-3">
+                {todayApts.map((apt: any) => (
+                  <div key={apt._id.toString()} className="flex items-center gap-3 py-2 border-b border-gray-50 last:border-0">
+                    <div className="w-14 shrink-0 text-center">
+                      <div className="text-xs font-bold text-[#0D1117]">{apt.time}</div>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="font-medium text-sm text-[#0D1117] truncate">{apt.name}</div>
+                      <div className="text-xs text-[#4A5568] truncate">{apt.service}</div>
+                    </div>
+                    <StatusBadge status={apt.status} />
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="bg-white shadow-sm p-6 lg:col-span-2">
             <h3 className="font-bold text-[#0D1117] mb-5 flex items-center gap-2 text-xs uppercase tracking-widests">
               <TrendingUp size={13} className="text-[#C1583B]" /> Most Booked Services
             </h3>
@@ -181,6 +206,106 @@ export default async function AdminPage() {
               </div>
             )}
           </div>
+        </div>
+
+        {/* Appointments table */}
+        <div className="bg-white shadow-sm mb-6">
+          <div className="px-6 py-5 border-b border-gray-100 flex items-center justify-between flex-wrap gap-3">
+            <div>
+              <h3 className="font-bold text-[#0D1117] text-xs uppercase tracking-widest">
+                Older Contact-Form Enquiries
+                <span className="ml-2 text-[#4A5568] font-normal normal-case text-xs">({data.length} total)</span>
+              </h3>
+              <p className="text-[10px] text-[#4A5568] mt-1">
+                Separate from the online Bookings system above — this is the original phone/contact-form enquiry list.
+              </p>
+            </div>
+            <div className="flex items-center gap-2 text-xs text-green-600 bg-green-50 px-3 py-1.5 border border-green-100">
+              <Shield size={11} /> Patient data secured
+            </div>
+          </div>
+
+          {data.length === 0 ? (
+            <div className="text-center py-20 text-[#4A5568]">
+              <Calendar size={40} className="mx-auto mb-3 opacity-30" />
+              <p className="font-medium">No appointments yet</p>
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-gray-100">
+                    {["Patient","Service","Date","Time","Doctor","Status","Booked At","Actions"].map(h => (
+                      <th key={h} className="text-left px-5 py-3.5 text-[10px] font-bold tracking-widest uppercase text-[#4A5568] bg-[#F4F7FA] whitespace-nowrap">
+                        {h}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {data.map((apt: any, idx: number) => (
+                    <tr key={apt._id.toString()} className={`border-b border-gray-50 hover:bg-[#F4F7FA] transition-colors ${idx % 2 !== 0 ? "bg-[#FAFBFC]" : ""}`}>
+                      <td className="px-5 py-4">
+                        <div className="font-semibold text-[#0D1117] text-sm">{apt.name}</div>
+                        <a href={`tel:${apt.phone}`} className="text-xs text-[#4A5568] hover:text-[#C1583B] flex items-center gap-1 mt-0.5">
+                          <Phone size={11} /> {apt.phone}
+                        </a>
+                        {apt.consent && (
+                          <span className="text-[9px] text-green-600 flex items-center gap-0.5 mt-0.5">
+                            <Shield size={8} /> Consent given
+                          </span>
+                        )}
+                      </td>
+                      <td className="px-5 py-4 max-w-[160px]">
+                        <span className="text-[#0D1117] font-medium text-xs">{apt.service}</span>
+                      </td>
+                      <td className="px-5 py-4 whitespace-nowrap">
+                        <span className="font-semibold text-[#0D1117] text-xs">
+                          {apt.date ? new Date(apt.date + "T00:00:00").toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }) : "—"}
+                        </span>
+                        {apt.date === today && (
+                          <span className="ml-2 bg-blue-50 text-blue-600 text-[10px] font-bold px-1.5 py-0.5 border border-blue-200">TODAY</span>
+                        )}
+                      </td>
+                      <td className="px-5 py-4">
+                        <span className="text-[#0D1117] text-xs font-medium">{apt.time || "—"}</span>
+                      </td>
+                      <td className="px-5 py-4">
+                        <span className="text-[#4A5568] text-xs">{apt.doctor || "No preference"}</span>
+                      </td>
+                      <td className="px-5 py-4">
+                        <StatusBadge status={apt.status} />
+                      </td>
+                      <td className="px-5 py-4 whitespace-nowrap">
+                        <span className="text-[#4A5568] text-xs">
+                          {apt.createdAt
+                            ? new Date(apt.createdAt).toLocaleDateString("en-IN", { day: "numeric", month: "short" }) + " " +
+                              new Date(apt.createdAt).toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" })
+                            : "—"}
+                        </span>
+                      </td>
+                      <td className="px-5 py-4">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          {(!apt.status || apt.status === "pending") && (
+                            <ConfirmButton id={apt._id.toString()} name={apt.name} phone={apt.phone} service={apt.service} date={apt.date} time={apt.time} />
+                          )}
+                          {apt.status !== "cancelled" && apt.status !== "completed" && (
+                            <CancelButton id={apt._id.toString()} />
+                          )}
+                          <a
+                            href={`https://wa.me/${(apt.phone||"").replace(/\D/g,"").length===10?"91"+apt.phone.replace(/\D/g,""):apt.phone.replace(/\D/g,"")}`}
+                            target="_blank" rel="noopener noreferrer"
+                            className="bg-[#25D366] hover:bg-[#128C7E] text-white text-[10px] font-bold px-2.5 py-1.5 transition-colors">
+                            WA
+                          </a>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
 
         {/* Security info */}

@@ -62,7 +62,7 @@ export default function Footer() {
 
             <p className="text-white/50 text-sm leading-relaxed mb-6">
               Providing quality dental care to families in Tripunithura and
-              Ernakulam since 2014. Your smile is our priority.
+              Ernakulam. Your smile is our priority.
             </p>
 
             {/* Social icons */}

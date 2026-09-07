@@ -149,8 +149,8 @@ export default function HomePage() {
               </div>
               {/* Floating stat card */}
               <div className="absolute -bottom-6 -right-4 bg-[#0D1117] text-white p-6 shadow-2xl">
-                <div className="display-text text-4xl font-semibold text-[#C1583B]">10+</div>
-                <div className="text-white/60 text-xs mt-1 tracking-wide">Years Serving<br/>Tripunithura</div>
+                <div className="display-text text-4xl font-semibold text-[#C1583B]">2025</div>
+                <div className="text-white/60 text-xs mt-1 tracking-wide">Established in<br/>Udayamperoor</div>
               </div>
             </div>
 
@@ -167,13 +167,14 @@ export default function HomePage() {
                 Meets Compassion.
               </h2>
               <p className="text-[#4A5568] leading-relaxed mb-5 text-base">
-                Vee Care was founded with one belief — that exceptional dental care should be
-                accessible to every family in Kerala. We invested in technology that most clinics
-                in Kochi still don't have, and built a team of specialists who genuinely love what they do.
+                Vee Care Dental Clinic was founded in June 2025 by Dr. Vineeth N.H, with one
+                simple goal — to bring specialist-level dental care to Udayamperoor and
+                Tripunithura, close to home, without patients having to travel into Kochi for it.
               </p>
               <p className="text-[#4A5568] leading-relaxed mb-10 text-base">
-                Over 2,000 patients later, we remain the most trusted dental clinic in Tripunithura —
-                not because of advertising, but because patients send their families to us.
+                We're a growing clinic built on a full-time doctor plus a bench of visiting
+                specialists across implants, orthodontics, oral surgery and prosthodontics —
+                so patients get the right doctor for the job, every time.
               </p>
               <div className="grid grid-cols-2 gap-6 mb-10">
                 {[
@@ -235,26 +236,22 @@ export default function HomePage() {
                 <span className="label-text block mb-2">Most Requested</span>
                 <h3 className="display-text text-white text-3xl mb-2">Dental Implants</h3>
                 <p className="text-white/70 text-sm mb-5 max-w-xs">Permanent, natural-looking tooth replacement. Swiss titanium, lifetime warranty.</p>
-                <div className="flex items-center justify-between">
-                  <span className="text-[#C1583B] font-semibold text-sm">From ₹18,000</span>
-                  <Link href="/services#implants"
-                    className="bg-white/15 hover:bg-white/25 text-white text-xs px-4 py-2 border border-white/30 transition-all">
-                    Learn More →
-                  </Link>
-                </div>
+                <Link href="/services#implants"
+                  className="inline-block bg-white/15 hover:bg-white/25 text-white text-xs px-4 py-2 border border-white/30 transition-all">
+                  Learn More →
+                </Link>
               </div>
             </div>
 
             {[
-              { img:"https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=600&q=80", title:"Teeth Whitening",   price:"From ₹3,000",  sub:"8 shades brighter, one session" },
+              { img:"https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=600&q=80", title:"Teeth Whitening",   sub:"8 shades brighter, one session" },
               {
                 img: "https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=900&q=85&fit=crop",
                 title: "Braces & Aligners",
-                price: "From ₹25,000",
                 sub: "Metal, ceramic, or invisible",
               },
-              { img:"https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=600&q=80", title:"Root Canal",       price:"From ₹4,000",  sub:"Single-visit, painless RCT" },
-              { img:"https://images.unsplash.com/photo-1581591524425-c7e0978865fc?w=600&q=80", title:"Kids Dentistry",     price:"From ₹500",    sub:"Gentle, stress-free care" },
+              { img:"https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=600&q=80", title:"Root Canal",       sub:"Single-visit, painless RCT" },
+              { img:"https://images.unsplash.com/photo-1581591524425-c7e0978865fc?w=600&q=80", title:"Kids Dentistry",     sub:"Gentle, stress-free care" },
             ].map((svc, i) => (
               <Link key={svc.title} href="/services"
                 className={`relative img-zoom overflow-hidden min-h-[200px] group border-b border-gray-200 ${i % 2 === 0 ? "" : "border-l border-gray-200"} block`}>
@@ -262,8 +259,7 @@ export default function HomePage() {
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0D1117]/75 via-[#0D1117]/20 to-transparent" />
                 <div className="absolute bottom-0 left-0 p-5">
                   <h3 className="display-text text-white text-xl mb-0.5">{svc.title}</h3>
-                  <p className="text-white/60 text-xs mb-2">{svc.sub}</p>
-                  <span className="text-[#C1583B] font-semibold text-xs">{svc.price}</span>
+                  <p className="text-white/60 text-xs">{svc.sub}</p>
                 </div>
                 <div className="absolute top-3 right-3 w-8 h-8 bg-white/10 hover:bg-white/20 border border-white/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                   <ArrowUpRight size={14} className="text-white" strokeWidth={1.5} />
@@ -271,6 +267,37 @@ export default function HomePage() {
               </Link>
             ))}
 
+          </div>
+        </div>
+      </section>
+
+      {/* ════════════════════════════════════════
+          SPECIAL SERVICES — highlight strip
+      ════════════════════════════════════════ */}
+      <section className="py-14 bg-white border-t border-gray-100">
+        <div className="max-w-7xl mx-auto px-6 md:px-12">
+          <span className="label-text block mb-5 text-center md:text-left">Also Specialising In</span>
+          <div className="flex flex-wrap justify-center md:justify-start gap-3">
+            {[
+              { label: "Single-Visit Root Canal", href: "/services#rct" },
+              { label: "Veneers",                 href: "/services#smile" },
+              { label: "Smile Design",             href: "/services#smile" },
+              { label: "Clear Aligner Treatment",  href: "/services#braces" },
+              { label: "Laser Dentistry",          href: "/services" },
+              { label: "Kids Dental Treatments",   href: "/services#kids" },
+              { label: "Tooth Whitening",          href: "/services#whitening" },
+              { label: "Tooth Cleaning",           href: "/services#checkup" },
+              { label: "Digital X-Ray",            href: "/services" },
+              { label: "Intra-Oral Camera",        href: "/services" },
+            ].map(item => (
+              <Link
+                key={item.label}
+                href={item.href}
+                className="text-xs font-medium text-[#4A5568] hover:text-white hover:bg-[#C1583B] border border-gray-200 hover:border-[#C1583B] px-4 py-2 transition-colors"
+              >
+                {item.label}
+              </Link>
+            ))}
           </div>
         </div>
       </section>

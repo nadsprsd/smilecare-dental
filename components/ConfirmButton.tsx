@@ -54,7 +54,7 @@ export default function ConfirmButton({ id, name, phone, service, date, time }: 
         `Service : ${service}\n` +
         `Date    : ${formattedDate}\n` +
         `Time    : ${time}\n\n` +
-        `Location: MG Road, Tripunithura, Ernakulam\n\n` +
+        `Location: RM Arcade, Vaikom Road Jn, Near Police Station, Udayamperoor\n\n` +
         `Please arrive 5 minutes early.\n` +
         `To reschedule, reply to this message or call us.\n\n` +
         `See you soon!\n` +

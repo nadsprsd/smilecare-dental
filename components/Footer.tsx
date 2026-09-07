@@ -149,17 +149,17 @@ export default function Footer() {
             <ul className="space-y-4 text-white/55 text-sm">
               <li className="flex gap-3">
                 <MapPin size={16} className="shrink-0 mt-0.5 text-[#C1583B]" />
-                <span>MG Road, Tripunithura,<br />Ernakulam, Kerala 682301</span>
+                <span>RM Arcade, Vaikom Road Jn,<br />Near Police Station, Udayamperoor, Kerala 682307</span>
               </li>
               <li className="flex gap-3">
                 <Phone size={16} className="shrink-0 text-[#C1583B]" />
-                <a href="tel:+917994072017" className="hover:text-white transition-colors">
+                <a href="tel:+918075243127" className="hover:text-white transition-colors">
                   +91 8075243127
                 </a>
               </li>
               <li className="flex gap-3">
                 <Mail size={16} className="shrink-0 text-[#C1583B]" />
-                <a href="mailto:info@smilecare.in" className="hover:text-white transition-colors">
+                <a href="mailto:info@veecaredental.in" className="hover:text-white transition-colors">
                   info@veecaredental.in
                 </a>
               </li>

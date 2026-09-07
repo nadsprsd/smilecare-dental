@@ -59,24 +59,24 @@ export default function ContactPage() {
                 {
                   icon: MapPin,
                   title: "Address",
-                  info: "MG Road, Tripunithura\nErnakulam, Kerala 682301",
-                  href: "https://maps.google.com/?q=Tripunithura+Kerala",
+                  info: "RM Arcade, Vaikom Road Jn\nNear Police Station, Udayamperoor, Kerala 682307",
+                  href: "https://maps.google.com/?q=RM+Arcade+Vaikom+Road+Udayamperoor+Kerala",
                   color: "text-[#C1583B]",
                   bg:    "bg-[#C1583B]/10",
                 },
                 {
                   icon: Phone,
                   title: "Phone",
-                  info: "+91 7994072017",
-                  href: "tel:+917994072017",
+                  info: "+91 8075243127",
+                  href: "tel:+918075243127",
                   color: "text-[#00A3E0]",
                   bg:    "bg-[#00A3E0]/10",
                 },
                 {
                   icon: Mail,
                   title: "Email",
-                  info: "info@smilecare.in",
-                  href: "mailto:info@smilecare.in",
+                  info: "info@veecaredental.in",
+                  href: "mailto:info@veecaredental.in",
                   color: "text-green-500",
                   bg:    "bg-green-50",
                 },
@@ -115,7 +115,7 @@ export default function ContactPage() {
                   Find Us on Map
                 </h3>
                 <a
-                  href="https://maps.google.com/?q=Tripunithura+Ernakulam+Kerala"
+                  href="https://maps.google.com/?q=RM+Arcade+Vaikom+Road+Udayamperoor+Kerala"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-[#00A3E0] text-xs hover:underline"
@@ -125,7 +125,7 @@ export default function ContactPage() {
               </div>
               <div className="relative h-72">
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3929.4!2d76.3486!3d9.9474!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b0872f0c1c4cc45%3A0x4a8a9ad8d0e8c0f!2sTripunithura%2C%20Kerala!5e0!3m2!1sen!2sin!4v1234567890"
+                  src="https://www.google.com/maps?q=RM+Arcade,+Vaikom+Road,+Udayamperoor,+Kerala+682307&output=embed"
                   width="100%"
                   height="100%"
                   style={{ border: 0 }}
@@ -138,7 +138,7 @@ export default function ContactPage() {
               </div>
               <div className="px-5 py-3 bg-[#F2EDE3] text-xs text-[#4A5568] flex items-center gap-2">
                 <MapPin size={12} className="text-[#C1583B]" />
-                MG Road, Tripunithura, Ernakulam, Kerala 682301
+                RM Arcade, Vaikom Road Jn, Near Police Station, Udayamperoor, Kerala 682307
               </div>
             </div>
 

@@ -36,8 +36,8 @@ export default function Navbar() {
       {/* Top bar */}
       <div className="bg-[#0A2540] text-white/70 text-xs py-2 hidden md:block">
         <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
-          <span>RM Arcade,Udayamperoor,Tripunithura · Mon–Sat 9AM–7PM</span>
-          <a href="tel:+917994072017" className="text-[#00C9B1] font-semibold hover:text-white transition-colors">
+          <span>RM Arcade, Vaikom Road Jn, Udayamperoor · Mon–Sat 9AM–7PM</span>
+          <a href="tel:+918075243127" className="text-[#00C9B1] font-semibold hover:text-white transition-colors">
           +91 8075243127
           </a>
         </div>
@@ -82,7 +82,7 @@ export default function Navbar() {
 
             {/* ── Desktop CTA (hidden below lg) ── */}
             <div className="hidden lg:flex items-center gap-2 shrink-0">
-              <a href="tel:+917994072017"
+              <a href="tel:+918075243127"
                 className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-[#00A3E0] font-medium px-2">
                 <Phone size={14} /> Call
               </a>
@@ -112,7 +112,7 @@ export default function Navbar() {
           {/* ── Mobile menu ── */}
           {open && (
             <div className="lg:hidden border-t border-gray-100 px-4 pb-5 pt-3">
-              <a href="tel:+917994072017"
+              <a href="tel:+918075243127"
                 className="flex items-center gap-2 px-3 py-3 text-sm font-semibold text-[#00A3E0] border border-[#00A3E0]/20 rounded-xl mb-3">
                 <Phone size={15} /> +91 8075243127
               </a>

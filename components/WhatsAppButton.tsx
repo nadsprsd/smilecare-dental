@@ -1,7 +1,7 @@
 "use client";
 
 export default function WhatsAppButton() {
-  const phone   = process.env.NEXT_PUBLIC_CLINIC_WHATSAPP || "917994072017";
+  const phone   = process.env.NEXT_PUBLIC_CLINIC_WHATSAPP || "918075243127";
   const message = encodeURIComponent(
     "Hi Vee Care! I'd like to book a dental appointment."
   );

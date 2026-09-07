@@ -14,26 +14,17 @@ export interface Certificate {
 
 export const CERTIFICATES: Certificate[] = [
   {
-    id: "doctor-1",
-    doctorName: "Dr. [Full Name]",
-    degree: "BDS, MDS (Prosthodontics)",
+    id: "vineeth-nh",
+    doctorName: "Dr. Vineeth N.H",
+    degree: "BDS — Government Dental College, Calicut · MDS in Endodontics — Kerala University of Health Sciences",
     certifications: [
-      "Advanced Implantology Training",
-      "Invisalign / Clear Aligner Certified",
+      "1st Place, Poster Presentation — IACDE National Conference, Rajahmundry (2022)",
+      "2nd Place, Paper Presentation — IACDE National Conference, Bhopal (2023)",
+      "Member, Indian Dental Association (IDA)",
+      "Member, CAESOK",
+      "Member, Indian Association of Conservative Dentistry and Endodontics (IACDE)",
     ],
     year: "",
-    // image left unset on purpose — the component shows a clean fallback
-    // icon instead of a broken image until a real photo is added here,
-    // e.g. image: "/certificates/doctor-1.jpg"
-  },
-  {
-    id: "doctor-2",
-    doctorName: "Dr. [Full Name]",
-    degree: "BDS, MDS (Orthodontics)",
-    certifications: [
-      "Root Canal & Endodontics Specialisation",
-      "Smile Design Certification",
-    ],
-    year: "",
+    image: "/doctors/vineeth.jpg",
   },
 ];

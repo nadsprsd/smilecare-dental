@@ -44,8 +44,10 @@ export const metadata: Metadata = {
 // LocalBusiness / Dentist structured data — this is what tells Google
 // "this is a real local clinic" and directly powers the Maps/local-pack
 // trust signals (rating stars in search results, knowledge panel, etc).
-// Fill in the real phone/address/hours once confirmed — placeholders
-// won't hurt anything, they just won't help until they're accurate.
+// Phone and address are the real, confirmed clinic details. Note: the
+// opening hours below (9AM–8PM / 9AM–2PM Sun) don't match the 10AM–8PM /
+// 10AM–4PM Sun hours used elsewhere in the app (lib/doctors.ts) — worth
+// confirming which is correct before final launch.
 const localBusinessSchema = {
   "@context": "https://schema.org",
   "@type": "Dentist",
@@ -55,9 +57,10 @@ const localBusinessSchema = {
   telephone: "+91-8075243127",
   address: {
     "@type": "PostalAddress",
-    streetAddress: "Kandanad",
-    addressLocality: "Tripunithura",
+    streetAddress: "RM Arcade, Vaikom Road Jn, Near Police Station",
+    addressLocality: "Udayamperoor",
     addressRegion: "Kerala",
+    postalCode: "682307",
     addressCountry: "IN",
   },
   areaServed: ["Tripunithura", "Ernakulam", "Kandanad", "Kakkanad", "Kochi"],

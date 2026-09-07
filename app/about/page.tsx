@@ -166,6 +166,49 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* ── Meet Our Founder ── */}
+      <section className="py-20 md:py-28 bg-[#F2EDE3] px-6 md:px-12">
+        <div className="max-w-5xl mx-auto grid md:grid-cols-[220px_1fr] gap-10 md:gap-14 items-start">
+          <div className="relative aspect-square w-full max-w-[220px] mx-auto md:mx-0 overflow-hidden">
+            <Image
+              src="/doctors/vineeth.jpg"
+              alt="Dr. Vineeth N.H, Founder, Vee Care Dental Clinic"
+              fill
+              className="object-cover"
+              sizes="220px"
+            />
+          </div>
+          <div>
+            <span className="text-[10px] font-bold tracking-widest uppercase text-[#C1583B] block mb-3">
+              Meet Our Founder
+            </span>
+            <h2
+              className="text-[#0D1117] font-bold mb-2 leading-tight"
+              style={{ fontFamily: "Georgia, serif", fontSize: "clamp(1.6rem, 3vw, 2.4rem)" }}
+            >
+              Dr. Vineeth N.H
+            </h2>
+            <p className="text-[#C1583B] text-sm font-semibold mb-5">
+              Founder &amp; Chief Dental Surgeon, BDS, MDS (Endodontics)
+            </p>
+            <p className="text-[#4A5568] leading-relaxed mb-4">
+              Dr. Vineeth started Vee Care Dental Clinic in Udayamperoor in June 2025,
+              after years of training and clinical practice in endodontics. The idea was
+              simple: patients in and around Udayamperoor and Tripunithura shouldn't have
+              to travel into Kochi to see a specialist for a root canal, an implant, or a
+              child's first dental visit.
+            </p>
+            <p className="text-[#4A5568] leading-relaxed">
+              He completed his BDS at Government Dental College, Calicut, and his MDS in
+              Endodontics from Kerala University of Health Sciences. Since then, he's built
+              Vee Care around a small, straightforward promise — every patient gets an
+              honest diagnosis, a clear explanation of their options, and a treatment plan
+              built around what they actually need.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* ── Values ── */}
       <section className="py-20 bg-[#F2EDE3] px-6 md:px-12">
         <div className="max-w-7xl mx-auto">

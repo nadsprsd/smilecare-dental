@@ -56,6 +56,7 @@ export const DOCTORS: Doctor[] = [
     specialty: "Resident Dental Surgeon",
     type: "full-time", // guess — residents are typically on-site daily; please confirm
     services: [...SERVICES], // always bookable, every service — clinic's explicit instruction (Aug 2026)
+    photo: "/doctors/anumuthu.jpg",
     bio: "Dr. Anumuthu P.M. is a dedicated and patient-focused General Dentist with clinical experience in preventive, restorative, periodontal, and minor surgical dental care. He completed his Bachelor of Dental Surgery (BDS) from Government Dental College, Kottayam, and gained extensive hands-on experience during his clinical internship and subsequent practice in multispecialty dental clinics. He provides comprehensive dental care for pediatric, adult, and geriatric patients, with a strong focus on accurate diagnosis, individualized treatment planning, patient education, and preventive oral healthcare. Dr. Anumuthu believes in compassionate, comfortable, and evidence-based dental care while continuously developing his clinical knowledge and skills.",
   },
   {
@@ -65,6 +66,8 @@ export const DOCTORS: Doctor[] = [
     specialty: "General Surgeon",
     type: "on-call",
     services: ["Tooth Extractions"], // guess — likely surgical support/clearance, please confirm her actual bookable role
+    photo: "/doctors/reshma.jpg",
+    bio: "Dr. Reshma R is a General Surgeon in Ernakulam with 4 years of experience in the field. She completed her MBBS from Malabar Medical College in 2019, her MS in General Surgery from Government Medical College, Nanded in 2026, and her Senior Residency at KEM Hospital, Mumbai.",
   },
   {
     id: "arun-george",
@@ -112,6 +115,7 @@ export const DOCTORS: Doctor[] = [
     specialty: "Prosthodontist & Implantologist",
     type: "on-call",
     services: ["Dental Implants", "Crown and Bridges", "Veneers", "Fixed and Removable Dentures"],
+    photo: "/doctors/akhil.jpg",
     bio: "Dr. Akhil S. is a skilled Prosthodontist and Implantologist dedicated to providing comprehensive dental care with a special focus on restorative, prosthetic, and implant dentistry. He completed his BDS from Government Dental College, Kozhikode, Kerala, followed by his MDS from Government Dental College, Kolkata, West Bengal. With experience in both general dentistry and specialized prosthodontic practice, Dr. Akhil provides a wide range of treatments, from routine dental care to advanced prosthetic rehabilitation and implant-supported restorations, including complete and removable partial dentures, crowns and bridges, veneers, full mouth rehabilitation, and comprehensive prosthetic care. His goal is to help patients regain not only oral function but also confidence through personalized prosthodontic and implant treatment.",
   },
 ];

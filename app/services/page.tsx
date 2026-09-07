@@ -15,7 +15,6 @@ const SERVICES = [
     id: "whitening",
     title: "Teeth Whitening",
     subtitle: "Professional In-Clinic Treatment",
-    price: "From ₹3,000",
     duration: "90 minutes · Single session",
     img: "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=900&q=85&fit=crop",
     description:
@@ -36,7 +35,6 @@ const SERVICES = [
     id: "implants",
     title: "Dental Implants",
     subtitle: "Swiss Titanium · Lifetime Durability",
-    price: "From ₹18,000 per tooth",
     duration: "2–3 visits over 3 months",
     img: "https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=900&q=85&fit=crop",
     description:
@@ -58,7 +56,6 @@ const SERVICES = [
     id: "braces",
     title: "Braces & Aligners",
     subtitle: "Metal · Ceramic · Invisible",
-    price: "From ₹25,000",
     duration: "12–24 months",
     img:  "https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=900&q=85&fit=crop",
     description:
@@ -79,7 +76,6 @@ const SERVICES = [
     id: "rct",
     title: "Root Canal Treatment",
     subtitle: "Single-Visit · Completely Painless",
-    price: "From ₹4,000",
     duration: "1–2 hours · Usually single visit",
     img: "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=900&q=85&fit=crop",
     description:
@@ -100,7 +96,6 @@ const SERVICES = [
     id: "kids",
     title: "Pediatric Dentistry",
     subtitle: "Gentle · Stress-Free · Child-Friendly",
-    price: "From ₹500",
     duration: "30–45 minutes",
     img: "https://images.unsplash.com/photo-1581591524425-c7e0978865fc?w=900&q=85&fit=crop",
     description:
@@ -121,7 +116,6 @@ const SERVICES = [
     id: "smile",
     title: "Smile Makeover",
     subtitle: "Complete Cosmetic Transformation",
-    price: "Custom Quote — Free Consultation",
     duration: "Multiple visits over 4–8 weeks",
     img: "https://images.unsplash.com/photo-1602052793312-b99c2a9ee797?w=900&q=85&fit=crop",
     description:
@@ -143,13 +137,12 @@ const SERVICES = [
     id: "checkup",
     title: "Dental Checkup & Cleaning",
     subtitle: "Prevention Is Always Cheaper Than Cure",
-    price: "₹300 only",
     duration: "45–60 minutes",
     img: "https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=900&q=85&fit=crop",
     description:
       "Most serious dental problems — cavities, gum disease, oral cancer — are completely preventable or easily treated when caught early. Our comprehensive checkup includes a full oral examination, digital X-rays, and professional scaling and polishing. In 45 minutes, we catch anything developing before it becomes expensive or painful. We recommend this every 6 months for all adults and every 3–4 months for children.",
     whyItMatters:
-      "At ₹300, this is the best-value investment in your health. A cavity caught today is a ₹1,000 filling. Left for a year, it becomes a ₹4,000 root canal. Left longer, it's an extraction and implant. Prevention genuinely pays.",
+      "This is one of the best-value investments in your health. A cavity caught today is a simple filling. Left for a year, it can become a root canal. Left longer, it's an extraction and implant. Prevention genuinely pays.",
     includes: [
       "Full oral examination by a qualified dentist",
       "Digital X-rays (low radiation) if required",
@@ -164,7 +157,6 @@ const SERVICES = [
     id: "dentures",
     title: "Dentures & Bridges",
     subtitle: "Restore Function · Restore Confidence",
-    price: "From ₹8,000",
     duration: "2–4 visits over 2–3 weeks",
     img: "https://images.unsplash.com/photo-1598256989800-fe5f95da9787?w=900&q=85&fit=crop",
     description:
@@ -249,12 +241,9 @@ export default function ServicesPage() {
                   className="object-cover"
                   sizes="(max-width: 768px) 100vw, 50vw"
                 />
-                {/* Price tag */}
+                {/* Duration + CTA */}
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#0D1117]/80 to-transparent p-6 flex items-end justify-between">
-                  <div>
-                    <div className="text-white/60 text-xs mb-1">{svc.duration}</div>
-                    <div className="text-[#C1583B] font-bold text-lg">{svc.price}</div>
-                  </div>
+                  <div className="text-white/80 text-sm font-medium">{svc.duration}</div>
                   <Link
                     href={`/appointment?service=${encodeURIComponent(svc.title)}`}
                     className="bg-white text-[#0D1117] text-xs font-semibold px-4 py-2.5 hover:bg-[#C1583B] hover:text-white transition-all"

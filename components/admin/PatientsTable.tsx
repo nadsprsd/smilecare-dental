@@ -81,7 +81,7 @@ export default function PatientsTable({ patients }: { patients: Patient[] }) {
         </button>
       </div>
       <p className="text-xs text-[#4A5568] mb-4 -mt-2">
-        &ldquo;Ongoing Treatment&rdquo; = procedure not yet clinically finished. &ldquo;Balance Due&rdquo; = money still owed — a patient can be in either, both, or neither.
+        &ldquo;Ongoing Treatment&rdquo; = procedure not yet clinically finished. &ldquo;Balance Due&rdquo; = money still owed a patient can be in either, both, or neither.
       </p>
 
       {/* Search bar */}

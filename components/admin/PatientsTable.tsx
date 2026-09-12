@@ -14,26 +14,76 @@ interface Patient {
   sex: string;
   source: string;
   alerts?: { message: string }[];
-  treatments?: { date: string; treatment: string }[];
+  treatments?: { date: string; treatment: string; status?: string; estimatedAmount?: number; paidAmount?: number }[];
 }
 
 export default function PatientsTable({ patients }: { patients: Patient[] }) {
   const [query, setQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState<"all" | "ongoing" | "due">("all");
   const withAlerts = patients.filter(p => p.alerts && p.alerts.length > 0);
 
+  const isOngoing = (p: Patient) =>
+    (p.treatments ?? []).some(t => t.status === "planned" || t.status === "in-progress");
+  const balanceDue = (p: Patient) =>
+    (p.treatments ?? []).reduce((sum, t) => sum + ((t.estimatedAmount ?? 0) - (t.paidAmount ?? 0)), 0);
+
+  const ongoingPatients = patients.filter(isOngoing);
+  const duePatients = patients.filter(p => balanceDue(p) > 0);
+
   const filtered = useMemo(() => {
+    const base =
+      statusFilter === "ongoing" ? patients.filter(isOngoing) :
+      statusFilter === "due"     ? patients.filter(p => balanceDue(p) > 0) :
+      patients;
     const q = query.trim().toLowerCase();
-    if (!q) return patients;
-    return patients.filter(p =>
+    if (!q) return base;
+    return base.filter(p =>
       p.name?.toLowerCase().includes(q) ||
       p.phone?.toLowerCase().includes(q) ||
       p.registrationNumber?.toLowerCase().includes(q) ||
       p.email?.toLowerCase().includes(q)
     );
-  }, [query, patients]);
+  }, [query, patients, statusFilter]);
 
   return (
     <>
+      {/* Status filter tabs */}
+      <div className="flex gap-2 mb-4">
+        <button
+          onClick={() => setStatusFilter("all")}
+          className={`text-xs font-bold px-4 py-2 transition-colors ${
+            statusFilter === "all"
+              ? "bg-[#0D1117] text-white"
+              : "bg-white text-[#4A5568] border border-gray-200 hover:border-[#0D1117]"
+          }`}
+        >
+          All Patients ({patients.length})
+        </button>
+        <button
+          onClick={() => setStatusFilter("ongoing")}
+          className={`text-xs font-bold px-4 py-2 transition-colors ${
+            statusFilter === "ongoing"
+              ? "bg-blue-600 text-white"
+              : "bg-white text-[#4A5568] border border-gray-200 hover:border-blue-600"
+          }`}
+        >
+          Ongoing Treatment ({ongoingPatients.length})
+        </button>
+        <button
+          onClick={() => setStatusFilter("due")}
+          className={`text-xs font-bold px-4 py-2 transition-colors ${
+            statusFilter === "due"
+              ? "bg-[#C1583B] text-white"
+              : "bg-white text-[#4A5568] border border-gray-200 hover:border-[#C1583B]"
+          }`}
+        >
+          Balance Due ({duePatients.length})
+        </button>
+      </div>
+      <p className="text-xs text-[#4A5568] mb-4 -mt-2">
+        &ldquo;Ongoing Treatment&rdquo; = procedure not yet clinically finished. &ldquo;Balance Due&rdquo; = money still owed — a patient can be in either, both, or neither.
+      </p>
+
       {/* Search bar */}
       <div className="bg-white shadow-sm p-4 mb-6 flex items-center gap-3">
         <Search size={18} className="text-[#4A5568] shrink-0" />
@@ -71,7 +121,13 @@ export default function PatientsTable({ patients }: { patients: Patient[] }) {
         <div className="px-6 py-5 border-b border-gray-100 flex items-center justify-between">
           <h3 className="font-bold text-[#0D1117] text-xs uppercase tracking-widest flex items-center gap-2">
             <Users size={14} className="text-[#C1583B]" />
-            {query ? `Search Results (${filtered.length})` : `All Patients (${patients.length})`}
+            {query
+              ? `Search Results (${filtered.length})`
+              : statusFilter === "ongoing"
+              ? `Ongoing Treatment (${filtered.length})`
+              : statusFilter === "due"
+              ? `Balance Due (${filtered.length})`
+              : `All Patients (${patients.length})`}
           </h3>
           <Link href="/admin/patients/new"
             className="flex items-center gap-2 bg-[#0D1117] hover:bg-[#C1583B] text-white text-xs font-bold px-4 py-2 transition-all">
@@ -98,7 +154,7 @@ export default function PatientsTable({ patients }: { patients: Patient[] }) {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-gray-100">
-                  {["Reg No","Patient","Phone","Age/Sex","Source","Alerts","Last Visit","Action"].map(h => (
+                  {["Reg No","Patient","Phone","Age/Sex","Source","Alerts","Last Visit","Balance Due","Action"].map(h => (
                     <th key={h} className="text-left px-5 py-3.5 text-[10px] font-bold tracking-widest uppercase text-[#4A5568] bg-[#F4F7FA] whitespace-nowrap">
                       {h}
                     </th>
@@ -108,6 +164,7 @@ export default function PatientsTable({ patients }: { patients: Patient[] }) {
               <tbody>
                 {filtered.map((p, idx) => {
                   const lastTreatment = p.treatments?.[p.treatments.length - 1];
+                  const due = balanceDue(p);
                   return (
                     <tr key={p._id} className={`border-b border-gray-50 hover:bg-[#F4F7FA] transition-colors ${idx % 2 !== 0 ? "bg-[#FAFBFC]" : ""}`}>
                       <td className="px-5 py-4">
@@ -147,8 +204,20 @@ export default function PatientsTable({ patients }: { patients: Patient[] }) {
                       <td className="px-5 py-4">
                         {lastTreatment ? (
                           <div>
-                            <div className="text-xs font-medium text-[#0D1117]">
-                              {new Date(lastTreatment.date).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
+                            <div className="flex items-center gap-1.5">
+                              <span className="text-xs font-medium text-[#0D1117]">
+                                {new Date(lastTreatment.date).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
+                              </span>
+                              {lastTreatment.status && (
+                                <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-sm ${
+                                  lastTreatment.status === "completed"   ? "bg-green-50 text-green-700" :
+                                  lastTreatment.status === "in-progress" ? "bg-blue-50 text-blue-700" :
+                                  lastTreatment.status === "planned"     ? "bg-yellow-50 text-yellow-700" :
+                                  "bg-gray-50 text-gray-500"
+                                }`}>
+                                  {lastTreatment.status}
+                                </span>
+                              )}
                             </div>
                             <div className="text-[10px] text-[#4A5568] mt-0.5 truncate max-w-[120px]">
                               {lastTreatment.treatment}
@@ -156,6 +225,13 @@ export default function PatientsTable({ patients }: { patients: Patient[] }) {
                           </div>
                         ) : (
                           <span className="text-[10px] text-gray-300">No visits</span>
+                        )}
+                      </td>
+                      <td className="px-5 py-4">
+                        {due > 0 ? (
+                          <span className="text-xs font-bold text-[#C1583B]">₹{due.toLocaleString("en-IN")}</span>
+                        ) : (
+                          <span className="text-[10px] text-gray-300">—</span>
                         )}
                       </td>
                       <td className="px-5 py-4">

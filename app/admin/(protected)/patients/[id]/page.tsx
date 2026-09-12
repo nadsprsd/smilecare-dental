@@ -117,6 +117,20 @@ export default function PatientProfilePage() {
     if (data.success) { setPatient(data.patient); setEditForm(data.patient); }
   };
 
+  const [statusUpdating, setStatusUpdating] = useState<string | null>(null);
+  const updateTreatmentStatus = async (treatmentId: string, status: string) => {
+    setStatusUpdating(treatmentId);
+    try {
+      const res = await fetch(`/api/patients/${id}/treatments`, {
+        method: "PATCH", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ treatmentId, status }),
+      });
+      const data = await res.json();
+      if (data.success) await reload();
+      else alert("Could not update status. Please try again.");
+    } finally { setStatusUpdating(null); }
+  };
+
   const addTreatment = async () => {
     if (!treatForm.treatment || !treatForm.doctor) { alert("Treatment and doctor are required"); return; }
     setSaving(true);
@@ -402,6 +416,13 @@ export default function PatientProfilePage() {
               </button>
             </div>
 
+            {patient.treatments.length > 0 && (
+              <p className="text-xs text-[#4A5568] mb-5 -mt-3">
+                The status badge tracks the procedure (planned → in-progress → completed), not payment —
+                click it to update as work progresses. A separate orange badge shows if money is still due.
+              </p>
+            )}
+
             {/* Add treatment form */}
             {showTreatForm && (
               <div className="bg-white shadow-sm p-7 mb-6 border-l-4 border-[#C1583B]">
@@ -571,12 +592,27 @@ export default function PatientProfilePage() {
                       <div className="flex-1">
                         <div className="flex items-center gap-3 mb-2 flex-wrap">
                           <span className="font-bold text-[#0D1117]">{t.treatment}</span>
-                          <span className={`text-[10px] font-bold px-2.5 py-1 ${
-                            t.status === "completed"   ? "bg-green-50 text-green-700 border border-green-200" :
-                            t.status === "in-progress" ? "bg-blue-50 text-blue-700 border border-blue-200" :
-                            t.status === "planned"     ? "bg-yellow-50 text-yellow-700 border border-yellow-200" :
-                            "bg-gray-50 text-gray-600 border border-gray-200"
-                          }`}>{t.status}</span>
+                          <select
+                            value={t.status}
+                            disabled={statusUpdating === t._id}
+                            onChange={e => updateTreatmentStatus(t._id, e.target.value)}
+                            className={`text-[10px] font-bold px-2 py-1 border outline-none cursor-pointer disabled:opacity-50 ${
+                              t.status === "completed"   ? "bg-green-50 text-green-700 border-green-200" :
+                              t.status === "in-progress" ? "bg-blue-50 text-blue-700 border-blue-200" :
+                              t.status === "planned"     ? "bg-yellow-50 text-yellow-700 border-yellow-200" :
+                              "bg-gray-50 text-gray-600 border-gray-200"
+                            }`}
+                          >
+                            <option value="planned">planned</option>
+                            <option value="in-progress">in-progress</option>
+                            <option value="completed">completed</option>
+                            <option value="cancelled">cancelled</option>
+                          </select>
+                          {t.estimatedAmount - t.paidAmount > 0 && (
+                            <span className="text-[10px] font-bold px-2 py-1 bg-[#C1583B]/10 text-[#C1583B] border border-[#C1583B]/30">
+                              ₹{(t.estimatedAmount - t.paidAmount).toLocaleString("en-IN")} due
+                            </span>
+                          )}
                         </div>
                         <div className="text-sm text-[#4A5568]">
                           {t.doctor} · {new Date(t.date).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })}

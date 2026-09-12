@@ -6,6 +6,13 @@ import PatientsTable from "@/components/admin/PatientsTable";
 export default async function PatientsListPage() {
   const patients = await getAllPatients();
   const withAlerts = patients.filter(p => p.alerts && p.alerts.length > 0);
+  const ongoing = patients.filter(p =>
+    (p.treatments ?? []).some(t => t.status === "planned" || t.status === "in-progress")
+  );
+  const totalDue = patients.reduce(
+    (sum, p) => sum + (p.treatments ?? []).reduce((s, t) => s + ((t.estimatedAmount ?? 0) - (t.paidAmount ?? 0)), 0),
+    0
+  );
 
   return (
     <div>
@@ -20,10 +27,18 @@ export default async function PatientsListPage() {
       <div className="max-w-6xl mx-auto px-6 md:px-8 py-8">
 
         {/* Stats */}
-        <div className="grid grid-cols-3 gap-4 mb-8">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
           <div className="bg-white border-t-2 border-[#0D1117] p-5 shadow-sm">
             <div className="text-[#4A5568] text-xs font-medium uppercase tracking-wide mb-2">Total Patients</div>
             <div className="text-3xl font-bold text-[#0D1117]">{patients.length}</div>
+          </div>
+          <div className="bg-white border-t-2 border-blue-400 p-5 shadow-sm">
+            <div className="text-[#4A5568] text-xs font-medium uppercase tracking-wide mb-2">Ongoing Treatment</div>
+            <div className="text-3xl font-bold text-blue-600">{ongoing.length}</div>
+          </div>
+          <div className="bg-white border-t-2 border-red-400 p-5 shadow-sm">
+            <div className="text-[#4A5568] text-xs font-medium uppercase tracking-wide mb-2">Balance Due</div>
+            <div className="text-3xl font-bold text-red-600">₹{totalDue.toLocaleString("en-IN")}</div>
           </div>
           <div className="bg-white border-t-2 border-yellow-400 p-5 shadow-sm">
             <div className="text-[#4A5568] text-xs font-medium uppercase tracking-wide mb-2">With Alerts</div>

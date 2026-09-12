@@ -20,4 +20,4 @@ export default function WhatsAppButton() {
       <span className="font-semibold text-sm hidden sm:block">WhatsApp Us</span>
     </a>
   );
-}
+}

@@ -194,13 +194,13 @@ export default function AboutPage() {
             <p className="text-[#4A5568] leading-relaxed mb-4">
               Dr. Vineeth started Vee Care Dental Clinic in Udayamperoor in June 2025,
               after years of training and clinical practice in endodontics. The idea was
-              simple: patients in and around Udayamperoor and Tripunithura shouldn't have
+              simple: patients in and around Udayamperoor and Tripunithura shouldn&apos;t have
               to travel into Kochi to see a specialist for a root canal, an implant, or a
-              child's first dental visit.
+              child&apos;s first dental visit.
             </p>
             <p className="text-[#4A5568] leading-relaxed">
               He completed his BDS at Government Dental College, Calicut, and his MDS in
-              Endodontics from Kerala University of Health Sciences. Since then, he's built
+              Endodontics from Kerala University of Health Sciences. Since then, he&apos;s built
               Vee Care around a small, straightforward promise — every patient gets an
               honest diagnosis, a clear explanation of their options, and a treatment plan
               built around what they actually need.
